@@ -4,7 +4,7 @@ buildscript {
 
 plugins { id "io.spring.dependency-management" }
 
-ext { springBootVersion = '2.1.0.RELEASE' }
+ext { springBootVersion = '2.0.1.RELEASE' }
 
 apply plugin: 'groovy'
 
@@ -20,7 +20,7 @@ dependencies {
     implementation('org.springframework.boot:spring-boot-starter') {
         exclude module: "logback-classic"
     }
-    implementation group: 'org.codehaus.groovy', name: 'groovy'
+    implementation group: 'org.codehaus.groovy', name: 'groovy-all'
 
     implementation group: 'joda-time', name: 'joda-time', version: '2.9.9'
     implementation 'com.fasterxml.jackson.datatype:jackson-datatype-joda:2.4.2'
