@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="nl.ithelden.NDTRCValidatorTest" tests="1" skipped="0" failures="0" errors="0" timestamp="2020-06-26T12:04:18" hostname="Maurices-MacBook-Pro-3.local" time="0.038">
+  <properties/>
+  <testcase name="testSample1" classname="nl.ithelden.NDTRCValidatorTest" time="0.038"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>
