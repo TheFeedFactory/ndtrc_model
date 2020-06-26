@@ -20,7 +20,7 @@ dependencies {
     implementation('org.springframework.boot:spring-boot-starter') {
         exclude module: "logback-classic"
     }
-    implementation group: 'org.codehaus.groovy', name: 'groovy-all', version: '2.4.9'
+    implementation group: 'org.codehaus.groovy', name: 'groovy'
 
     implementation group: 'joda-time', name: 'joda-time', version: '2.9.9'
     implementation 'com.fasterxml.jackson.datatype:jackson-datatype-joda:2.4.2'

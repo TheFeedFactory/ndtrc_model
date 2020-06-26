@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="nl.ithelden.NDTRCSerializerTest" tests="8" skipped="0" failures="0" errors="0" timestamp="2020-06-26T12:04:17" hostname="Maurices-MacBook-Pro-3.local" time="0.81">
+<testsuite name="nl.ithelden.NDTRCSerializerTest" tests="8" skipped="0" failures="0" errors="0" timestamp="2020-06-26T12:17:36" hostname="Maurices-MacBook-Pro-3.local" time="0.862">
   <properties/>
   <testcase name="testTRCItemCategoriesTypes" classname="nl.ithelden.NDTRCSerializerTest" time="0.174"/>
-  <testcase name="testContactInfo" classname="nl.ithelden.NDTRCSerializerTest" time="0.042"/>
-  <testcase name="testCalendarSingleDate" classname="nl.ithelden.NDTRCSerializerTest" time="0.077"/>
-  <testcase name="testErrorInProduction" classname="nl.ithelden.NDTRCSerializerTest" time="0.493"/>
-  <testcase name="testExtraPriceInformations" classname="nl.ithelden.NDTRCSerializerTest" time="0.005"/>
-  <testcase name="testCalendarPatternDate" classname="nl.ithelden.NDTRCSerializerTest" time="0.012"/>
+  <testcase name="testContactInfo" classname="nl.ithelden.NDTRCSerializerTest" time="0.08"/>
+  <testcase name="testCalendarSingleDate" classname="nl.ithelden.NDTRCSerializerTest" time="0.07"/>
+  <testcase name="testErrorInProduction" classname="nl.ithelden.NDTRCSerializerTest" time="0.516"/>
+  <testcase name="testExtraPriceInformations" classname="nl.ithelden.NDTRCSerializerTest" time="0.004"/>
+  <testcase name="testCalendarPatternDate" classname="nl.ithelden.NDTRCSerializerTest" time="0.011"/>
   <testcase name="testGISCoordinate" classname="nl.ithelden.NDTRCSerializerTest" time="0.0"/>
-  <testcase name="testTRCItemCategories" classname="nl.ithelden.NDTRCSerializerTest" time="0.005"/>
+  <testcase name="testTRCItemCategories" classname="nl.ithelden.NDTRCSerializerTest" time="0.006"/>
   <system-out><![CDATA[]]></system-out>
   <system-err><![CDATA[]]></system-err>
 </testsuite>
