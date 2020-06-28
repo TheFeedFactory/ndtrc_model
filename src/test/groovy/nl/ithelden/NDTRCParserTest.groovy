@@ -18,7 +18,7 @@ class NDTRCParserTest {
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
     <nofrecords>1</nofrecords>
     <trcitems>
-        <trcitem creationdate="2017-04-21T12:13:47+02:00"
+        <trcitem
             externalid="rotterdam_marketing_formulier_ithelden_c93b8297c5555cdb643355b93df3909f"
             owner="Rotterdam Marketing Invoerders" wfstatus="draft" published="false"
             deleted="false" offline="true" entitytype="EVENEMENT">
