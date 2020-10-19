@@ -114,16 +114,16 @@ class TRCItem {
     @JsonProperty String legalowner
 
     @JsonProperty String externalid
-    @JsonProperty String validator
 
-    @JsonProperty WFStatus wfstatus
+    @JsonProperty String validator
+    @JsonProperty String validatedby // deprecated
+    @JsonProperty WFStatus wfstatus // deprecated
 
     @JsonProperty String cidn
     @JsonProperty Boolean published
     @JsonProperty Boolean deleted
-    @JsonProperty String validatedby
-    @JsonProperty Boolean offline
-    @JsonProperty Boolean isprivate
+    @JsonProperty Boolean offline // deprecated
+    @JsonProperty Boolean isprivate //  deprecated
 
     @JsonProperty EntityType entitytype
     @JsonProperty String productiontrcid
@@ -141,8 +141,14 @@ class TRCItem {
     @JsonProperty String userorganisation
     @JsonProperty List<PriceElement> priceElements = []
     @JsonProperty List<ExtraPriceInformation> extrapriceinformations = []
+    @JsonProperty Translations translations = new Translations()
 
-    enum WFStatus { draft, readyforvalidation, approved, rejected, deleted }
+    static class Translations {
+        String primaryLanguage = "NL" // ISO name of language
+        List<String> availableLanguages = ["NL"]
+    }
+
+    enum WFStatus { draft, readyforvalidation, approved, rejected, deleted } // deprecated
     enum EntityType { EVENEMENT, LOCATIE }
 
     // below are workflow related fields, they are not part of the XSD of TRItem
