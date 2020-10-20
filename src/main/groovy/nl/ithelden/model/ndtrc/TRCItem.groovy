@@ -131,6 +131,7 @@ class TRCItem {
     @JsonProperty Calendar calendar
     @JsonProperty Contactinfo contactinfo
     @JsonProperty TRCItemCategories trcItemCategories
+    @JsonProperty List<Category> categories = []
     @JsonProperty List<Performer> performers = []
     @JsonProperty List<File> files = []
     @JsonProperty List<TRCItemDetail> trcItemDetails = []
@@ -150,6 +151,15 @@ class TRCItem {
 
     enum WFStatus { draft, readyforvalidation, approved, rejected, deleted } // deprecated
     enum EntityType { EVENEMENT, LOCATIE }
+
+    static class Category {
+        String id
+        List<Translation> translations = []
+
+        static class Translation {
+            String lang, text
+        }
+    }
 
     // below are workflow related fields, they are not part of the XSD of TRItem
     @JsonProperty Boolean forceoverwrite
