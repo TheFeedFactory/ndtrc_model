@@ -1,5 +1,6 @@
 package nl.ithelden.services
 
+import groovy.util.logging.Slf4j
 import nl.ithelden.model.ndtrc.*
 import nl.ithelden.model.ndtrc.Calendar.When
 import org.dom4j.Element
@@ -8,6 +9,7 @@ import org.joda.time.format.DateTimeFormat
 import org.joda.time.format.DateTimeFormatter
 import org.joda.time.format.ISODateTimeFormat
 
+@Slf4j
 class NDTRCParser {
     static DateTimeFormatter dayFormatter = DateTimeFormat.forPattern('dd/MM/YYYY')
 
@@ -512,7 +514,8 @@ class NDTRCParser {
         }?.parseDateTime(date)
 
         if (!parsedDate) {
-            throw new RuntimeException("Cannot parse date: ${date}")
+            log.warn("Cannot parse date: ${date}")
+//            throw new RuntimeException()
         }
         return parsedDate
     }
