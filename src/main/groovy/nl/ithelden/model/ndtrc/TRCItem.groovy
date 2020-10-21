@@ -145,8 +145,8 @@ class TRCItem {
     @JsonProperty Translations translations = new Translations()
 
     static class Translations {
-        String primaryLanguage = "NL" // ISO name of language
-        List<String> availableLanguages = ["NL"]
+        String primaryLanguage = "nl" // ISO name of language
+        List<String> availableLanguages = ["nl"]
     }
 
     enum WFStatus { draft, readyforvalidation, approved, rejected, deleted } // deprecated
