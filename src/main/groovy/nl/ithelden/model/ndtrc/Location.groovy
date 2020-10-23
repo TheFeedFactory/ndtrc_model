@@ -11,6 +11,7 @@ class Location {
 
     @ToString(includeNames = true)
     static class LocationItem {
+        @JsonProperty String id
         @JsonProperty String trcid
         @JsonProperty String text
     }
