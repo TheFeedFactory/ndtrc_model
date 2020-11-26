@@ -75,8 +75,8 @@ class NDTRCSerializerTest {
          </contactinfo>
          */
         Contactinfo contactinfo = new Contactinfo(
-                mail: new Contactinfo.Mail(email: 'giuseppe@revolt.nl', descriptioncode: 'CDC-004'),
-                phone: new Contactinfo.Phone(number: '0655059554', descriptioncode: 'CDC-004'),
+                mails: [new Contactinfo.Mail(email: 'giuseppe@revolt.nl', descriptioncode: 'CDC-004')],
+                phones: [new Contactinfo.Phone(number: '0655059554', descriptioncode: 'CDC-004')],
                 urls: [
                     new Contactinfo.Url(
                         url: new URL('http://www.annabel.nu'),

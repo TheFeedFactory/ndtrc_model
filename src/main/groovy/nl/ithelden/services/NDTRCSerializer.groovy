@@ -424,15 +424,39 @@ class NDTRCSerializer {
         if (contactinfo.address) {
             contactinfoElement.add(serializeAddress(contactinfo.address))
         }
+        if (contactinfo.addresses) {
+            contactinfo.addresses.each { Address address ->
+                contactinfoElement.add(serializeAddress(address))
+            }
+        }
+
         if (contactinfo.mail) {
             contactinfoElement.add(serializeMail(contactinfo.mail))
         }
+        if (contactinfo.mails) {
+            contactinfo.mails.each { Contactinfo.Mail mail ->
+                contactinfoElement.add(serializeMail(mail))
+            }
+        }
+
         if (contactinfo.phone) {
             contactinfoElement.add(serializePhone(contactinfo.phone))
         }
+        if (contactinfo.phones) {
+            contactinfo.phones.each { Contactinfo.Phone phone ->
+                contactinfoElement.add(serializePhone(phone))
+            }
+        }
+
         if (contactinfo.fax) {
             contactinfoElement.add(serializeFax(contactinfo.fax))
         }
+        if (contactinfo.faxes) {
+            contactinfo.faxes.each { Contactinfo.Fax fax ->
+                contactinfoElement.add(serializeFax(fax))
+            }
+        }
+
         if (contactinfo.urls) {
             contactinfo.urls.each {Contactinfo.Url url ->
                 contactinfoElement.add(serializeUrl(url))

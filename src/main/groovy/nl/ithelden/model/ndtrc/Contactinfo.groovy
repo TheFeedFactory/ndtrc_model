@@ -4,10 +4,15 @@ import com.fasterxml.jackson.annotation.JsonProperty
 
 class Contactinfo {
     @JsonProperty String label
+    @JsonProperty List<Mail> mails = []
+    @JsonProperty List<Phone> phones = []
+    @JsonProperty List<Fax> faxes = []
+    @JsonProperty List<Url> urls = []
+    @JsonProperty List<Address> addresses = []
+
     @JsonProperty Mail mail
     @JsonProperty Phone phone
     @JsonProperty Fax fax
-    @JsonProperty List<Url> urls = []
     @JsonProperty Address address
 
     static class Mail {
@@ -54,5 +59,43 @@ class Contactinfo {
     static class DescriptionTranslation {
         @JsonProperty String lang
         @JsonProperty String label
+    }
+
+    void convertToV1() {
+        if (this.mails && !this.mail) {
+            this.mail = mails.first()
+            this.mails = []
+        }
+        if (this.addresses && !this.address) {
+            this.address = addresses.first()
+            this.addresses = []
+        }
+        if (this.faxes && !this.fax) {
+            this.fax = faxes.first()
+            this.faxes = []
+        }
+        if (this.phones && !this.phone) {
+            this.phone = phones.first()
+            this.phones = []
+        }
+    }
+
+    void convertToV2() {
+        if (!this.mails && this.mail) {
+            this.mails = [this.mail]
+            this.mail = null
+        }
+        if (!this.addresses && this.address) {
+            this.addresses = [this.address]
+            this.address = null
+        }
+        if (!this.faxes && this.fax) {
+            this.faxes = [this.fax]
+            this.fax = null
+        }
+        if (!this.phones && this.phone) {
+            this.phones = [this.phone]
+            this.phone = null
+        }
     }
 }

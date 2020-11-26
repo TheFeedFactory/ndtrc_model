@@ -282,19 +282,28 @@ class NDTRCParser {
     }
 
     static Contactinfo parseContactInfo(Element contactInfoElement) {
-        Address address = parseAddress(contactInfoElement.element('address'))
-        Contactinfo.Mail mail = parseMail(contactInfoElement.element('mail'))
-        Contactinfo.Phone phone = parsePhone(contactInfoElement.element('phone'))
-        Contactinfo.Fax fax = parseFax(contactInfoElement.element('fax'))
+        List<Address> addresses = contactInfoElement.selectNodes('*[local-name()="address"]').collect { Element urlElement ->
+            return parseAddress(urlElement)
+        }
+        List<Contactinfo.Mail> mails = contactInfoElement.selectNodes('*[local-name()="mail"]').collect { Element urlElement ->
+            return parseMail(urlElement)
+        }
+        List<Contactinfo.Fax> faxes = contactInfoElement.selectNodes('*[local-name()="fax"]').collect { Element urlElement ->
+            return parseFax(urlElement)
+        }
+        List<Contactinfo.Phone> phones = contactInfoElement.selectNodes('*[local-name()="phone"]').collect { Element urlElement ->
+            return parsePhone(urlElement)
+        }
+
         List<Contactinfo.Url> urls = contactInfoElement.selectNodes('*[local-name()="url"]').collect { Element urlElement ->
             return parseUrl(urlElement)
         }
 
         return new Contactinfo(
-            mail: mail,
-            phone: phone,
-            fax: fax,
-            address: address,
+            mails: mails,
+            phones: phones,
+            faxes: faxes,
+            addresses: addresses,
             urls: urls
         )
     }

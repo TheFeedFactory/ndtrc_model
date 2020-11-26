@@ -39,7 +39,6 @@ class PriceElement {
 
     @ToString(includeNames = true)
     static class Comment {
-        @JsonProperty String lang
         @JsonProperty String text
     }
 }
