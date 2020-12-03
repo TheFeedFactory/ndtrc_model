@@ -344,7 +344,7 @@ class NDTRCSerializer {
             Element pricecommentsElement = mainElement.addElement('pricecomments')
 
             priceElement.comments.each {
-                pricecommentsElement.addElement('pricecomment').addAttribute('lang', it.lang).setText(it.text ?: "")
+                pricecommentsElement.addElement('pricecomment').setText(it.text ?: "")
             }
         }
 
