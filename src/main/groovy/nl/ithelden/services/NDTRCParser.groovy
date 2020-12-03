@@ -23,6 +23,8 @@ class NDTRCParser {
             externalid: trcItemElement.attributeValue('externalid'),
             lastupdated: trcItemElement.attributeValue('lastupdated') ? parseDate(trcItemElement.attributeValue('lastupdated')) : null,
             lastupdatedby: trcItemElement.attributeValue('lastupdatedby'),
+            markers: trcItemElement.selectSingleNode('markers')?.getText(),
+            keywords: trcItemElement.selectSingleNode('keywords')?.getText(),
             owner: trcItemElement.attributeValue('owner'),
             isprivate: trcItemElement.attributeValue('private') ? Boolean.parseBoolean(trcItemElement.attributeValue('private')) : null,
             validator: trcItemElement.attributeValue('validator'),
