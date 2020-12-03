@@ -26,7 +26,7 @@ class NDTRCParser {
             markers: trcItemElement.selectSingleNode('markers')?.getText(),
             keywords: trcItemElement.selectSingleNode('keywords')?.getText(),
             owner: trcItemElement.attributeValue('owner'),
-            isprivate: trcItemElement.attributeValue('private') ? Boolean.parseBoolean(trcItemElement.attributeValue('private')) : Boolean.FALSE,
+            isprivate: trcItemElement.attributeValue('private') ? Boolean.parseBoolean(trcItemElement.attributeValue('private')) : null,
             validator: trcItemElement.attributeValue('validator'),
             wfstatus: trcItemElement.attributeValue('wfstatus') ? TRCItem.WFStatus.valueOf(trcItemElement.attributeValue('wfstatus')) : null,
             cidn: trcItemElement.attributeValue('cidn'),
