@@ -121,9 +121,9 @@ class TRCItem {
 
     @JsonProperty String cidn
     @JsonProperty Boolean published
-    @JsonProperty Boolean deleted
-    @JsonProperty Boolean offline // deprecated
-    @JsonProperty Boolean isprivate //  deprecated
+    @JsonProperty Boolean deleted = Boolean.FALSE
+    @JsonProperty Boolean offline = Boolean.FALSE // deprecated
+    @JsonProperty Boolean isprivate = Boolean.FALSE //  deprecated
 
     @JsonProperty EntityType entitytype
     @JsonProperty String productiontrcid
