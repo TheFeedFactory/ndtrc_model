@@ -404,7 +404,6 @@ class NDTRCParser {
         if (priceCommentsElement) {
             newPriceElement.comments = priceCommentsElement.selectNodes('*[local-name()="pricecomment"]').collect { Element pricecommentElement ->
                 return new PriceElement.Comment(
-                    lang: pricecommentElement.attributeValue('lang'),
                     text: pricecommentElement.getText()
                 )
             }
