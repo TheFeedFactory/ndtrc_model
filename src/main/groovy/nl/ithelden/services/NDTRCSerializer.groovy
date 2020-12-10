@@ -340,11 +340,13 @@ class NDTRCSerializer {
             }
         }
 
-        if (priceElement.comments) {
+        if (priceElement.comments?.any { it?.text?.trim() }) {
             Element pricecommentsElement = mainElement.addElement('pricecomments')
 
             priceElement.comments.each {
-                pricecommentsElement.addElement('pricecomment').setText(it.text ?: "")
+                if (it?.text) {
+                    pricecommentsElement.addElement('pricecomment').setText(it.text ?: "")
+                }
             }
         }
 
