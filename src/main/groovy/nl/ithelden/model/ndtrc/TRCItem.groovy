@@ -131,7 +131,6 @@ class TRCItem {
     @JsonProperty Calendar calendar
     @JsonProperty Contactinfo contactinfo
     @JsonProperty TRCItemCategories trcItemCategories
-    @JsonProperty List<Category> categories = []
     @JsonProperty List<Performer> performers = []
     @JsonProperty List<File> files = []
     @JsonProperty List<TRCItemDetail> trcItemDetails = []
