@@ -78,6 +78,8 @@ class NDTRCParserTest {
 
 
             </trcitemdetails>
+            <keywords>covid_keyword</keywords>
+            <markers>covid_marker</markers>
             <location>
                 <address>
                     <physical giscoordinateType="points">

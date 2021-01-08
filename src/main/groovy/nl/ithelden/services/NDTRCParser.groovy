@@ -14,6 +14,7 @@ class NDTRCParser {
     static DateTimeFormatter dayFormatter = DateTimeFormat.forPattern('dd/MM/YYYY')
 
     static TRCItem parseTRCItem(Element trcItemElement) {
+        println(trcItemElement.selectSingleNode('markers')?.getText())
         TRCItem trcItem = new TRCItem(
             availablefrom: trcItemElement.attributeValue('availablefrom') ? parseDate(trcItemElement.attributeValue('availablefrom')) : null,
             availableto: trcItemElement.attributeValue('availableto') ? parseDate(trcItemElement.attributeValue('availableto')) : null,
@@ -23,8 +24,6 @@ class NDTRCParser {
             externalid: trcItemElement.attributeValue('externalid'),
             lastupdated: trcItemElement.attributeValue('lastupdated') ? parseDate(trcItemElement.attributeValue('lastupdated')) : null,
             lastupdatedby: trcItemElement.attributeValue('lastupdatedby'),
-            markers: trcItemElement.selectSingleNode('markers')?.getText(),
-            keywords: trcItemElement.selectSingleNode('keywords')?.getText(),
             owner: trcItemElement.attributeValue('owner'),
             isprivate: trcItemElement.attributeValue('private') ? Boolean.parseBoolean(trcItemElement.attributeValue('private')) : null,
             validator: trcItemElement.attributeValue('validator'),
@@ -39,6 +38,13 @@ class NDTRCParser {
             entitytype: trcItemElement.attributeValue('entitytype') ? TRCItem.EntityType.valueOf(trcItemElement.attributeValue('entitytype')): null,
             productiontrcid: trcItemElement.attributeValue('productiontrcid'),
         )
+
+        if (trcItemElement.element('markers')) {
+            trcItem.markers = trcItemElement.element('markers').getText()
+        }
+        if (trcItemElement.element('keywords')) {
+            trcItem.keywords = trcItemElement.element('keywords').getText()
+        }
 
         if (trcItemElement.element('calendar')) {
             trcItem.calendar = parseCalendar(trcItemElement.element('calendar'))
