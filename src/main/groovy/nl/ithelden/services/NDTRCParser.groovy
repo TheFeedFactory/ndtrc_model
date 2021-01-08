@@ -14,7 +14,6 @@ class NDTRCParser {
     static DateTimeFormatter dayFormatter = DateTimeFormat.forPattern('dd/MM/YYYY')
 
     static TRCItem parseTRCItem(Element trcItemElement) {
-        println(trcItemElement.selectSingleNode('markers')?.getText())
         TRCItem trcItem = new TRCItem(
             availablefrom: trcItemElement.attributeValue('availablefrom') ? parseDate(trcItemElement.attributeValue('availablefrom')) : null,
             availableto: trcItemElement.attributeValue('availableto') ? parseDate(trcItemElement.attributeValue('availableto')) : null,
