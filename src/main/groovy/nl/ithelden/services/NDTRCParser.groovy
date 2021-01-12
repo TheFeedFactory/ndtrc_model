@@ -67,6 +67,10 @@ class NDTRCParser {
             }
         }
 
+        if (trcItemElement.element('trcitemrelations')) {
+            trcItem.trcitemRelation = parseRelations(trcItemElement.element('trcitemrelations'))
+        }
+
         if (trcItemElement.element('priceinformation')) {
             trcItem.priceElements = trcItemElement.selectNodes('*[local-name()="priceinformation"]/*[local-name()="priceelement"]').collect { Element priceElement ->
                 return parsePriceElement(priceElement)
@@ -357,14 +361,35 @@ class NDTRCParser {
                 catid: categoryElement.attributeValue('catid'),
                 valueid: categoryElement.attributeValue('valueid'),
                 value: categoryElement.attributeValue('value'),
-                datatype: categoryElement.attributeValue('datatype') ? TRCItemCategories.Category.DataType.valueOf(categoryElement.attributeValue('datatype')) : null,
+                datatype: categoryElement.attributeValue('datatype') ? categoryElement.attributeValue('datatype') : null,
                 categoryTranslations: categoryElement.selectNodes('*[local-name()="categorytranslation"]').collect { Element categoryTranslationElement ->
                     return new TRCItemCategories.CategoryTranslation(
-                        lang: categoryTranslationElement.attributeValue('lang'),
-                        label: categoryTranslationElement.attributeValue('label '),
-                        unit: categoryTranslationElement.attributeValue('unit'),
-                        explanation: categoryTranslationElement.attributeValue('explanation'),
-                        value: categoryTranslationElement.attributeValue('value')
+                            lang: categoryTranslationElement.attributeValue('lang'),
+                            label: categoryTranslationElement.attributeValue('label'),
+                            unit: categoryTranslationElement.attributeValue('unit'),
+                            explanation: categoryTranslationElement.attributeValue('explanation'),
+                            value: categoryTranslationElement.attributeValue('value'),
+                            catid: categoryTranslationElement.attributeValue('catid')
+                    )
+                },
+                parentCategoryTranslations: categoryElement.selectNodes('*[local-name()="parentcategorytranslation"]').collect { Element categoryTranslationElement ->
+                        return new TRCItemCategories.CategoryTranslation(
+                                lang: categoryTranslationElement.attributeValue('lang'),
+                                label: categoryTranslationElement.attributeValue('label'),
+                                unit: categoryTranslationElement.attributeValue('unit'),
+                                explanation: categoryTranslationElement.attributeValue('explanation'),
+                                value: categoryTranslationElement.attributeValue('value'),
+                                catid: categoryTranslationElement.attributeValue('catid')
+                        )
+                },
+                valueCategoryTranslations: categoryElement.selectNodes('*[local-name()="valuecategorytranslation"]').collect { Element categoryTranslationElement ->
+                    return new TRCItemCategories.CategoryTranslation(
+                            lang: categoryTranslationElement.attributeValue('lang'),
+                            label: categoryTranslationElement.attributeValue('label'),
+                            unit: categoryTranslationElement.attributeValue('unit'),
+                            explanation: categoryTranslationElement.attributeValue('explanation'),
+                            value: categoryTranslationElement.attributeValue('value'),
+                            catid: categoryTranslationElement.attributeValue('catid')
                     )
                 }
             )
@@ -376,6 +401,88 @@ class NDTRCParser {
             )
         }
         return trcItemCategories
+    }
+
+    static TrcitemRelation parseRelations(Element categoriesElement) {
+        TrcitemRelation trcitemRelation = new TrcitemRelation(
+            subItemGroups: categoriesElement.selectNodes('*[local-name()="subitemgroup"]/*[local-name()="subitem"]').collect { Element subitemgroupElement ->
+                return pareseSubItemGroup(subitemgroupElement)
+            }
+        )
+        return trcitemRelation
+    }
+
+    static SubItemGroup pareseSubItemGroup(Element subitemElement) {
+        SubItemGroup subItemGroup = new SubItemGroup(
+            trcid: subitemElement.attributeValue('trcid')
+        )
+
+        subItemGroup.categories = subitemElement.selectNodes('*[local-name()="categories"]/*[local-name()="category"]').collect { Element categoryElement ->
+            return new SubItemGroup.Category(
+                    catid: categoryElement.attributeValue('catid'),
+                    valueid: categoryElement.attributeValue('valueid'),
+                    value: categoryElement.attributeValue('value'),
+                    datatype: categoryElement.attributeValue('datatype') ? categoryElement.attributeValue('datatype') : null,
+                    categoryTranslations: categoryElement.selectNodes('*[local-name()="categorytranslation"]').collect { Element categoryTranslationElement ->
+                        return new SubItemGroup.CategoryTranslation(
+                                lang: categoryTranslationElement.attributeValue('lang'),
+                                label: categoryTranslationElement.attributeValue('label'),
+                                unit: categoryTranslationElement.attributeValue('unit'),
+                                explanation: categoryTranslationElement.attributeValue('explanation'),
+                                value: categoryTranslationElement.attributeValue('value'),
+                                catid: categoryTranslationElement.attributeValue('catid')
+                        )
+                    },
+                    parentCategoryTranslations: categoryElement.selectNodes('*[local-name()="parentcategorytranslation"]').collect { Element categoryTranslationElement ->
+                        return new SubItemGroup.CategoryTranslation(
+                                lang: categoryTranslationElement.attributeValue('lang'),
+                                label: categoryTranslationElement.attributeValue('label'),
+                                unit: categoryTranslationElement.attributeValue('unit'),
+                                explanation: categoryTranslationElement.attributeValue('explanation'),
+                                value: categoryTranslationElement.attributeValue('value'),
+                                catid: categoryTranslationElement.attributeValue('catid')
+                        )
+                    },
+                    valueCategoryTranslations: categoryElement.selectNodes('*[local-name()="valuecategorytranslation"]').collect { Element categoryTranslationElement ->
+                        return new SubItemGroup.CategoryTranslation(
+                                lang: categoryTranslationElement.attributeValue('lang'),
+                                label: categoryTranslationElement.attributeValue('label'),
+                                unit: categoryTranslationElement.attributeValue('unit'),
+                                explanation: categoryTranslationElement.attributeValue('explanation'),
+                                value: categoryTranslationElement.attributeValue('value'),
+                                catid: categoryTranslationElement.attributeValue('catid')
+                        )
+                    }
+            )
+        }
+
+        Element typeElement = (Element) subitemElement.selectSingleNode('*[local-name()="type"]')
+
+        subItemGroup.type = new SubItemGroup.Type(
+            catid: typeElement.attributeValue('catid'),
+            isDefault: typeElement.attributeValue('default') ? Boolean.parseBoolean(typeElement.attributeValue('isDefault')) : null,
+            categoryTranslations: typeElement.selectNodes('*[local-name()="categorytranslation"]').collect { Element categoryTranslationElement ->
+                return new SubItemGroup.CategoryTranslation(
+                        lang: categoryTranslationElement.attributeValue('lang'),
+                        label: categoryTranslationElement.attributeValue('label'),
+                        unit: categoryTranslationElement.attributeValue('unit'),
+                        explanation: categoryTranslationElement.attributeValue('explanation'),
+                        value: categoryTranslationElement.attributeValue('value'),
+                        catid: categoryTranslationElement.attributeValue('catid')
+                )
+            },
+        )
+
+        subItemGroup.subItemTranslations = subitemElement.selectNodes('*[local-name()="subitemdetails"]/*[local-name()="subitemdetail"]').collect { Element translationElement ->
+            return new SubItemGroup.SubItemTranslation(
+                lang: translationElement.attributeValue('lang'),
+                title: translationElement.selectSingleNode('*[local-name()="title"]')?.getText(),
+            )
+        }
+
+        subItemGroup.media = parseMedia(subitemElement.element('media'))
+
+        return subItemGroup
     }
 
     static PriceElement parsePriceElement(Element priceElement) {

@@ -134,6 +134,7 @@ class TRCItem {
     @JsonProperty List<Performer> performers = []
     @JsonProperty List<File> files = []
     @JsonProperty List<TRCItemDetail> trcItemDetails = []
+    @JsonProperty TrcitemRelation trcitemRelation
     @JsonProperty String keywords
     @JsonProperty String markers
     @JsonProperty Location location

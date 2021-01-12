@@ -4,22 +4,24 @@ import com.fasterxml.jackson.annotation.JsonProperty
 import groovy.transform.ToString
 
 /**
- * Categorisation of the object. The categorisation cotnains 4 subelements: types (indicating the type of the item),
- * categories (indicating the properties of the item) soldout (indicating whether the items are soldout) and
- * cancelled (indication whether the items are cancelled).
- */
-@ToString(includeNames = true)
-class TRCItemCategories {
-
-    @JsonProperty List<Type> types = []  // Type indication of the item (Hotel, Camping Site, ...)
+ * used to define a way to map rooms and other types to a item
+*/
+class SubItemGroup {
+    @JsonProperty String trcid // ID of this type (random)
+    @JsonProperty Type type
     @JsonProperty List<Category> categories = []  // Categories/properties of the item
-    @JsonProperty Boolean soldout  // Boolean flag indicating the item is soldout
-    @JsonProperty Boolean canceled // Boolean flag indicating the item is cancelled
+    @JsonProperty List<SubItemTranslation> subItemTranslations
+    @JsonProperty List<File> media // media
+
+    static class SubItemTranslation {
+        String lang, title
+    }
 
     @ToString(includeNames = true)
     static class Type {
-       @JsonProperty String catid // ID of the category
-       @JsonProperty Boolean isDefault // Boolean flag indicating this is the "default" (or main) type
+        @JsonProperty String catid // ID of the category
+        @JsonProperty Boolean isDefault // Boolean flag indicating this is the "default" (or main) type
+        @JsonProperty List<CategoryTranslation> categoryTranslations= []
     }
 
     @ToString(includeNames = true)

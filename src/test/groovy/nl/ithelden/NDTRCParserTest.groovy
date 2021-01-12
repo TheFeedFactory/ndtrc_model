@@ -124,6 +124,20 @@ class NDTRCParserTest {
 
 
     @Test
+    void testRelations() {
+        String source = this.getClass().getResourceAsStream("/testRelationsItem.xml").getText("UTF-8")
+
+        TRCItem trcItem = NDTRCParser.parseTRCItem(DocumentHelper.parseText(source).getRootElement().element("trcitems").element("trcitem"))
+
+        Element element = NDTRCSerializer.serializeTRCItem(trcItem)
+
+        String original = prettyPrint(DocumentHelper.parseText(source).getRootElement().element("trcitems").element("trcitem").asXML())
+        String serialized = prettyPrint(element).replaceAll(" cancelled=\"false\" soldout=\"false\"", "")
+
+        Assert.assertEquals(original.replaceAll("\\s+",""), serialized.replaceAll("\\s+",""))
+    }
+
+    @Test
     void testExtraPriceInformations() {
         TRCItem trcItem = new TRCItem(
             extrapriceinformations:[
