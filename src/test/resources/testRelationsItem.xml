@@ -5,6 +5,111 @@
                 externalid="rotterdam_marketing_formulier_ithelden_c93b8297c5555cdb643355b93df3909f"
                 owner="Rotterdam Marketing Invoerders" wfstatus="draft" published="false"
                 deleted="false" offline="true" entitytype="EVENEMENT">
+            <trcitemcategories>
+                <types>
+                    <type catid="1.3.4">
+                        Hotel
+                        <categorytranslation lang="nl" label="Hotel" />
+                        <categorytranslation lang="de" label="Hotel" />
+                        <categorytranslation lang="en" label="Hotel" />
+                        <categorytranslation lang="fr" label="Hôtel" />
+                        <categorytranslation lang="it" label="Hotel" />
+                        <categorytranslation lang="es" label="Hotel" />
+                    </type>
+                </types>
+                <categories>
+                    <category catid="41.2" value="true" datatype="yesno">
+                        <categorytranslation lang="nl" label="Acceptant VVV Cadeaubon" unit="" explanation="" />
+                        <categorytranslation lang="de" label="Annahmestelle für VVV-Geschenkgutscheine" unit="" explanation="" />
+                        <categorytranslation lang="en" label="Accepts VVV gift voucher" unit="" explanation="" />
+                        <categorytranslation lang="fr" label="Accepte bon-cadeau syndicat d´initiative VVV" unit="" explanation="" />
+                        <categorytranslation lang="it" label="Accetta buoni regalo VVV" unit="" explanation="" />
+                        <categorytranslation lang="es" label="Aceptante de bono regalo de la Oficina de Turismo" unit="" explanation="" />
+                        <parentcategorytranslation lang="nl" label="Winkel" unit="" explanation="" catid="41" />
+                        <parentcategorytranslation lang="de" label="Geschäft" unit="" explanation="" catid="41" />
+                        <parentcategorytranslation lang="en" label="Shop" unit="" explanation="" catid="41" />
+                        <parentcategorytranslation lang="fr" label="Magasin" unit="" explanation="" catid="41" />
+                        <parentcategorytranslation lang="it" label="Negozio" unit="" explanation="" catid="41" />
+                        <parentcategorytranslation lang="es" label="Tienda" unit="" explanation="" catid="41" />
+                    </category>
+                    <category catid="41.12" value="true" datatype="yesno">
+                        <categorytranslation lang="nl" label="Fysieke winkel" unit="" explanation="" />
+                        <categorytranslation lang="de" label="Fysieke winkel" unit="" explanation="" />
+                        <categorytranslation lang="en" label="Fysieke winkel" unit="" explanation="" />
+                        <categorytranslation lang="fr" label="Fysieke winkel" unit="" explanation="" />
+                        <categorytranslation lang="it" label="Fysieke winkel" unit="" explanation="" />
+                        <categorytranslation lang="es" label="Fysieke winkel" unit="" explanation="" />
+                        <parentcategorytranslation lang="nl" label="Winkel" unit="" explanation="" catid="41" />
+                        <parentcategorytranslation lang="de" label="Geschäft" unit="" explanation="" catid="41" />
+                        <parentcategorytranslation lang="en" label="Shop" unit="" explanation="" catid="41" />
+                        <parentcategorytranslation lang="fr" label="Magasin" unit="" explanation="" catid="41" />
+                        <parentcategorytranslation lang="it" label="Negozio" unit="" explanation="" catid="41" />
+                        <parentcategorytranslation lang="es" label="Tienda" unit="" explanation="" catid="41" />
+                    </category>
+                    <category catid="55.1" value="714100" datatype="integer">
+                        <categorytranslation lang="nl" label="Synergy Relatiecode" unit="" explanation="" />
+                        <categorytranslation lang="de" label="" unit="" explanation="" />
+                        <categorytranslation lang="en" label="" unit="" explanation="" />
+                        <categorytranslation lang="fr" label="" unit="" explanation="" />
+                        <categorytranslation lang="it" label="" unit="" explanation="" />
+                        <categorytranslation lang="es" label="" unit="" explanation="" />
+                        <parentcategorytranslation lang="nl" label="Synergy" unit="" explanation="" catid="55" />
+                        <parentcategorytranslation lang="de" label="" unit="" explanation="" catid="55" />
+                        <parentcategorytranslation lang="en" label="" unit="" explanation="" catid="55" />
+                        <parentcategorytranslation lang="fr" label="" unit="" explanation="" catid="55" />
+                        <parentcategorytranslation lang="it" label="" unit="" explanation="" catid="55" />
+                        <parentcategorytranslation lang="es" label="" unit="" explanation="" catid="55" />
+                    </category>
+                    <category catid="55.2" value="817114" datatype="freetext">
+                        <categorytranslation lang="nl" label="Archie-Cleavis ID" unit="" explanation="Archie-Cleavis ID afkomstig uit Synergy" />
+                        <categorytranslation lang="de" label="" unit="" explanation="" />
+                        <categorytranslation lang="en" label="" unit="" explanation="" />
+                        <categorytranslation lang="fr" label="" unit="" explanation="" />
+                        <categorytranslation lang="it" label="" unit="" explanation="" />
+                        <categorytranslation lang="es" label="" unit="" explanation="" />
+                        <parentcategorytranslation lang="nl" label="Synergy" unit="" explanation="" catid="55" />
+                        <parentcategorytranslation lang="de" label="" unit="" explanation="" catid="55" />
+                        <parentcategorytranslation lang="en" label="" unit="" explanation="" catid="55" />
+                        <parentcategorytranslation lang="fr" label="" unit="" explanation="" catid="55" />
+                        <parentcategorytranslation lang="it" label="" unit="" explanation="" catid="55" />
+                        <parentcategorytranslation lang="es" label="" unit="" explanation="" catid="55" />
+                    </category>
+                    <category catid="1.2" datatype="multichoice">
+                        <categoryvalues>
+                            <categoryvalue catid="1.2.6">
+                                <categorytranslation lang="nl" label="VVV Cadeaubon" unit="" explanation="" />
+                                <categorytranslation lang="de" label="VVV Gutschein" unit="" explanation="" />
+                                <categorytranslation lang="en" label="VVV Cadeaubon" unit="" explanation="" />
+                                <categorytranslation lang="fr" label="VVV Cadeau Voucher" unit="" explanation="" />
+                                <categorytranslation lang="it" label="VVV Buono Regalo" unit="" explanation="" />
+                                <categorytranslation lang="es" label="VVV Bono de Regalo" unit="" explanation="" />
+                            </categoryvalue>
+                            <categoryvalue catid="1.2.10">
+                                <categorytranslation lang="nl" label="VVV Cadeaukaart" unit="" explanation="" />
+                                <categorytranslation lang="de" label="VVV Cadeaukaart" unit="" explanation="" />
+                                <categorytranslation lang="en" label="VVV Cadeaukaart" unit="" explanation="" />
+                                <categorytranslation lang="fr" label="VVV Cadeaukaart" unit="" explanation="" />
+                                <categorytranslation lang="it" label="VVV Cadeaukaart" unit="" explanation="" />
+                                <categorytranslation lang="es" label="VVV Cadeaukaart" unit="" explanation="" />
+                            </categoryvalue>
+                        </categoryvalues>
+                        <categorytranslation lang="nl" label="Betaalmogelijkheden" unit="" explanation="" />
+                        <categorytranslation lang="de" label="Bezahloptionen" unit="" explanation="" />
+                        <categorytranslation lang="en" label="Payment options" unit="" explanation="" />
+                        <categorytranslation lang="fr" label="Possibilités de paiement" unit="" explanation="" />
+                        <categorytranslation lang="it" label="Possibilità di pagamento" unit="" explanation="" />
+                        <categorytranslation lang="es" label="Posibilidades de pago" unit="" explanation="" />
+                        <parentcategorytranslation lang="nl" label="Voorzieningen betaling" unit="" explanation="" catid="1" />
+                        <parentcategorytranslation lang="de" label="Zahlungsoptionen" unit="" explanation="" catid="1" />
+                        <parentcategorytranslation lang="en" label="Payment facilities" unit="" explanation="" catid="1" />
+                        <parentcategorytranslation lang="fr" label="Équipements de paiement" unit="" explanation="" catid="1" />
+                        <parentcategorytranslation lang="it" label="Strutture di pagamento" unit="" explanation="" catid="1" />
+                        <parentcategorytranslation lang="es" label="Pago de provisiones" unit="" explanation="" catid="1" />
+                    </category>
+                </categories>
+                <soldout>false</soldout>
+                <canceled>false</canceled>
+            </trcitemcategories>
             <trcitemrelations>
                 <subitemgroup catid="5.2">
                     <subitem trcid="40e6f6b0-0b14-420c-822f-5184dc84eaaa">

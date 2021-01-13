@@ -41,6 +41,7 @@ class SubItemGroup {
     @ToString(includeNames = true)
     static class CategoryValue {
         @JsonProperty String catid // ID of the category
+        @JsonProperty List<CategoryTranslation> categorytranslations = []  // translations
     }
 
     @ToString(includeNames = true)

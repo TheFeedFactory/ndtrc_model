@@ -352,8 +352,8 @@ class NDTRCParser {
 
     static TRCItemCategories parseCategories(Element categoriesElement) {
         TRCItemCategories trcItemCategories = new TRCItemCategories(
-            soldout: categoriesElement.attributeValue('soldout') ? Boolean.parseBoolean(categoriesElement.attributeValue('soldout')) : null,
-            canceled: categoriesElement.attributeValue('canceled') ? Boolean.parseBoolean(categoriesElement.attributeValue('canceled')) : null,
+            soldout: categoriesElement.element('soldout') ? Boolean.parseBoolean(categoriesElement.element('soldout').getText()) : null,
+            canceled: categoriesElement.element('canceled') ? Boolean.parseBoolean(categoriesElement.element('canceled').getText()) : null,
         )
 
         trcItemCategories.categories = categoriesElement.selectNodes('*[local-name()="categories"]/*[local-name()="category"]').collect { Element categoryElement ->
@@ -362,6 +362,21 @@ class NDTRCParser {
                 valueid: categoryElement.attributeValue('valueid'),
                 value: categoryElement.attributeValue('value'),
                 datatype: categoryElement.attributeValue('datatype') ? categoryElement.attributeValue('datatype') : null,
+                categoryvalues: categoryElement.selectNodes('*[local-name()="categoryvalues"]/*[local-name()="categoryvalue"]').collect { Element categoryValueElement ->
+                    return new TRCItemCategories.CategoryValue(
+                            catid: categoryValueElement.attributeValue('catid'),
+                            categorytranslations: categoryValueElement.selectNodes('*[local-name()="categorytranslation"]').collect { Element categoryTranslationElement ->
+                                return new TRCItemCategories.CategoryTranslation(
+                                        lang: categoryTranslationElement.attributeValue('lang'),
+                                        label: categoryTranslationElement.attributeValue('label'),
+                                        unit: categoryTranslationElement.attributeValue('unit'),
+                                        explanation: categoryTranslationElement.attributeValue('explanation'),
+                                        value: categoryTranslationElement.attributeValue('value'),
+                                        catid: categoryTranslationElement.attributeValue('catid')
+                                )
+                            }
+                    )
+                },
                 categoryTranslations: categoryElement.selectNodes('*[local-name()="categorytranslation"]').collect { Element categoryTranslationElement ->
                     return new TRCItemCategories.CategoryTranslation(
                             lang: categoryTranslationElement.attributeValue('lang'),
@@ -397,7 +412,17 @@ class NDTRCParser {
         trcItemCategories.types = categoriesElement.selectNodes('*[local-name()="types"]/*[local-name()="type"]').collect { Element typeElement ->
             return new TRCItemCategories.Type(
                 catid: typeElement.attributeValue('catid'),
-                isDefault: typeElement.attributeValue('default') ? Boolean.parseBoolean(typeElement.attributeValue('isDefault')) : null
+                isDefault: typeElement.attributeValue('default') ? Boolean.parseBoolean(typeElement.attributeValue('isDefault')) : null,
+                categoryTranslations: typeElement.selectNodes('*[local-name()="categorytranslation"]').collect { Element categoryTranslationElement ->
+                    return new TRCItemCategories.CategoryTranslation(
+                            lang: categoryTranslationElement.attributeValue('lang'),
+                            label: categoryTranslationElement.attributeValue('label'),
+                            unit: categoryTranslationElement.attributeValue('unit'),
+                            explanation: categoryTranslationElement.attributeValue('explanation'),
+                            value: categoryTranslationElement.attributeValue('value'),
+                            catid: categoryTranslationElement.attributeValue('catid')
+                    )
+                }
             )
         }
         return trcItemCategories
@@ -423,6 +448,21 @@ class NDTRCParser {
                     valueid: categoryElement.attributeValue('valueid'),
                     value: categoryElement.attributeValue('value'),
                     datatype: categoryElement.attributeValue('datatype') ? categoryElement.attributeValue('datatype') : null,
+                    categoryvalues: categoryElement.selectNodes('*[local-name()="categoryvalues"]/*[local-name()="categoryvalue"]').collect { Element categoryValueElement ->
+                        return new SubItemGroup.CategoryValue(
+                                catid: categoryValueElement.attributeValue('catid'),
+                                categorytranslations: categoryValueElement.selectNodes('*[local-name()="categorytranslation"]').collect { Element categoryTranslationElement ->
+                                    return new SubItemGroup.CategoryTranslation(
+                                            lang: categoryTranslationElement.attributeValue('lang'),
+                                            label: categoryTranslationElement.attributeValue('label'),
+                                            unit: categoryTranslationElement.attributeValue('unit'),
+                                            explanation: categoryTranslationElement.attributeValue('explanation'),
+                                            value: categoryTranslationElement.attributeValue('value'),
+                                            catid: categoryTranslationElement.attributeValue('catid')
+                                    )
+                                }
+                        )
+                    },
                     categoryTranslations: categoryElement.selectNodes('*[local-name()="categorytranslation"]').collect { Element categoryTranslationElement ->
                         return new SubItemGroup.CategoryTranslation(
                                 lang: categoryTranslationElement.attributeValue('lang'),
