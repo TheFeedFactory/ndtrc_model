@@ -10,4 +10,10 @@ import groovy.transform.ToString
 @ToString(includeNames = true)
 class TrcitemRelation {
     @JsonProperty List<SubItemGroup> subItemGroups
+
+    void cleanEmptyItems() {
+        subItemGroups?.each {
+            it?.cleanEmptyItems()
+        }
+    }
 }

@@ -53,4 +53,20 @@ class SubItemGroup {
         @JsonProperty String value
         @JsonProperty String explanation
     }
+
+    void cleanEmptyItems() {
+        this.categories = this.categories?.findAll { Category category ->
+            if ("freetext".equalsIgnoreCase(category.datatype) && !category.value) {
+                return false
+            }
+            if ("multichoice".equalsIgnoreCase(category.datatype) && !category.valueid) {
+                return false
+            }
+            if ("choice".equalsIgnoreCase(category.datatype) && !category.valueid) {
+                return false
+            }
+
+            return true
+        }
+    }
 }
