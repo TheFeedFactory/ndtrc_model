@@ -600,6 +600,18 @@ class NDTRCSerializer {
             }
 
             if(address.zipcode?.trim()) { physicalElement.addElement('zipcode').addText(address.zipcode.trim()) }
+            if(address.province?.trim()) { physicalElement.addElement('province').addText(address.province.trim()) }
+            if (address.gisCoordinates) {
+                Element giscoordinatesElement = physicalElement.addElement('giscoordinates')
+
+                address.gisCoordinates.each { GISCoordinate gisCoordinate ->
+                    giscoordinatesElement.add(serializeGISCoordinate(gisCoordinate))
+                }
+                if (address.gisCoordinates.size() > 0) {
+                    physicalElement.addElement("xcoordinate").setText(address.gisCoordinates[0].xcoordinate)
+                    physicalElement.addElement("ycoordinate").setText(address.gisCoordinates[0].ycoordinate)
+                }
+            }
         } else {
             Element virtualElement = addressElement.addElement('virtual')
             virtualElement.addElement('title').addText(address.title?.trim() ?: label)

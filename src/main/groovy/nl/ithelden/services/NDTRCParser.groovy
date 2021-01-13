@@ -583,7 +583,15 @@ class NDTRCParser {
             housenr: element.selectSingleNode('*[local-name()="physical"]/*[local-name()="housenr"]')?.getText(),
             street: element.selectSingleNode('*[local-name()="physical"]/*[local-name()="street"]')?.getText(),
             streettrcid: element.selectSingleNode('*[local-name()="physical"]/*[local-name()="street"]/@trcid')?.getText(),
-            zipcode: element.selectSingleNode('*[local-name()="physical"]/*[local-name()="zipcode"]')?.getText()
+            zipcode: element.selectSingleNode('*[local-name()="physical"]/*[local-name()="zipcode"]')?.getText(),
+            province: element.selectSingleNode('*[local-name()="physical"]/*[local-name()="province"]')?.getText(),
+            gisCoordinates:element.selectNodes('*[local-name()="physical"]/*[local-name()="giscoordinates"]/*[local-name()="giscoordinate"]').collect { Element gisElement ->
+                return new GISCoordinate(
+                        xcoordinate: gisElement.element("xcoordinate")?.getText(),
+                        ycoordinate: gisElement.element("ycoordinate")?.getText(),
+                        label: gisElement.element("label")?.getText(),
+                )
+            }
         )
     }
 

@@ -16,6 +16,7 @@ class Address {
     @JsonProperty String streettrcid
 
     @JsonProperty String zipcode
+    @JsonProperty String province
 
     @JsonProperty List<GISCoordinate> gisCoordinates = []
 }

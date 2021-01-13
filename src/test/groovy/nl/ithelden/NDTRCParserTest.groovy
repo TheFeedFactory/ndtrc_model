@@ -89,6 +89,14 @@ class NDTRCParserTest {
                         <housenr>15</housenr>
                         <street>Remmet van Milplaats</street>
                         <zipcode>3067 AN</zipcode>
+                        <giscoordinates>
+                           <giscoordinate>
+                              <xcoordinate>5,0743970</xcoordinate>
+                              <ycoordinate>52,4929970</ycoordinate>
+                           </giscoordinate>
+                        </giscoordinates>
+                        <xcoordinate>5,0743970</xcoordinate>
+                        <ycoordinate>52,4929970</ycoordinate>                        
                     </physical>
                 </address>
                 <label>Cursuscentrum CurZus&amp;Zo</label>
