@@ -20,6 +20,9 @@ class Calendar {
     @JsonProperty Boolean alwaysopen
 
     @JsonProperty Comment comment
+    @JsonProperty CalendarType calendarType
+
+    static enum CalendarType { NONE, ALWAYSOPEN, ONREQUEST, OPENINGTIMES, PATTERNDATES, SINGLEDATES }
 
     static class SingleDate {
         @JsonProperty DateTime date
