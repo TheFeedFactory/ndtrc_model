@@ -98,5 +98,37 @@ class Calendar {
         @JsonProperty String label
         @JsonProperty String lang
     }
-    
+
+    void determineCalendarType() {
+        if (calendarType != null) {
+            // never change it whenever it is set
+            return
+        }
+
+        if (this.alwaysopen) {
+            this.calendarType = CalendarType.ALWAYSOPEN
+            return
+        }
+
+        if (this.onrequest) {
+            this.calendarType = CalendarType.ONREQUEST
+            return
+        }
+
+        if (this.singleDates?.size() > 0) {
+            this.calendarType = CalendarType.SINGLEDATES
+            return
+        }
+
+        if (this.patternDates?.size() > 0) {
+            if (!this.patternDates[0].enddate && !this.patternDates[0].startdate) {
+                this.calendarType = CalendarType.OPENINGTIMES
+            } else {
+                this.calendarType = CalendarType.PATTERNDATES
+            }
+            return
+        }
+
+        this.calendarType = CalendarType.NONE
+    }
 }
