@@ -122,6 +122,7 @@ class NDTRCParserTest {
     @Test
     void testTRCItemRoot() {
         TRCItem trcItem = NDTRCParser.parseTRCItem(DocumentHelper.parseText(ndtrcItemInstance).getRootElement().element("trcitems").element("trcitem"))
+        Assert.assertFalse(trcItem.deleted)
 
         Element element = NDTRCSerializer.serializeTRCItem(trcItem)
 
