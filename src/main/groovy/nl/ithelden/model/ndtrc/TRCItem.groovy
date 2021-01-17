@@ -163,6 +163,4 @@ class TRCItem {
 
     // below are workflow related fields, they are not part of the XSD of TRItem
     @JsonProperty Boolean forceoverwrite
-    @JsonProperty String vvvPartnerApiAccessKeyId           // set if the converter want to provide the KEY
-    @JsonProperty String vvvPartnerApiSecretAccessKeyId     // set if the converter want to provide the KEY
 }
