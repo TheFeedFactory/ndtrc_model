@@ -150,7 +150,7 @@ class TRCItem {
     }
 
     enum WFStatus { draft, readyforvalidation, approved, rejected, deleted } // deprecated
-    enum EntityType { EVENEMENT, LOCATIE }
+    enum EntityType { EVENEMENT, LOCATIE, PLAATSREGIO }
 
     static class Category {
         String id
