@@ -7,12 +7,13 @@ import org.dom4j.DocumentHelper
 import org.dom4j.Element
 import org.dom4j.Namespace
 import org.dom4j.QName
+import org.joda.time.DateTimeZone
 import org.joda.time.format.DateTimeFormat
 import org.joda.time.format.DateTimeFormatter
 import org.joda.time.format.ISODateTimeFormat
 
 class NDTRCSerializer {
-    static DateTimeFormatter dayFormatter = DateTimeFormat.forPattern('dd/MM/YYYY')
+    static DateTimeFormatter dayFormatter = DateTimeFormat.forPattern('dd/MM/YYYY').withZone(DateTimeZone.forID("CET"))
     static DateTimeFormatter dateTimeFormatter = ISODateTimeFormat.dateTimeNoMillis()
 
     static Element serializeForNDTRC(List<TRCItem> trcItems) {
