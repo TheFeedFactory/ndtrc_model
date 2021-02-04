@@ -197,9 +197,13 @@ class NDTRCSerializer {
         }
 
         calendar.singleDates?.each { Calendar.SingleDate singleDate ->
+            if (!singleDate.date) return
+
             Element singleElement = mainElement.addElement('single')
             singleElement.addAttribute('date', dayFormatter.print(singleDate.date))
             singleDate.when.each { When when ->
+                if (!when.timestart && !when.timeend) return
+
                 singleElement.add(serializeWhen(when))
             }
         }
@@ -277,6 +281,8 @@ class NDTRCSerializer {
             }
 
             open.whens.each { When when ->
+                if (!when.timestart && ! when.timeend) return
+
                 openElement.add(serializeWhen(when))
             }
         }
