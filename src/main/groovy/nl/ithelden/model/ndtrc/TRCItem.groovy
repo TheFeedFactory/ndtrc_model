@@ -149,7 +149,7 @@ class TRCItem {
         List<String> availableLanguages = ["nl"]
     }
 
-    enum WFStatus { draft, readyforvalidation, approved, rejected, deleted } // deprecated
+    enum WFStatus { draft, readyforvalidation, approved, rejected, deleted, archived }
     enum EntityType { EVENEMENT, LOCATIE, PLAATSREGIO }
 
     static class Category {

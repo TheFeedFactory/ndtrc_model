@@ -2,19 +2,12 @@ package nl.ithelden
 
 import com.fasterxml.jackson.core.JsonFactory
 import com.fasterxml.jackson.core.JsonParser
-import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.datatype.joda.JodaMapper
 import nl.ithelden.model.ConvertedEntry
-import nl.ithelden.model.ndtrc.Calendar
-import nl.ithelden.model.ndtrc.Contactinfo
-import nl.ithelden.model.ndtrc.ExtraPriceInformation
-import nl.ithelden.model.ndtrc.GISCoordinate
-import nl.ithelden.model.ndtrc.TRCItem
-import nl.ithelden.model.ndtrc.TRCItemCategories
+import nl.ithelden.model.ndtrc.*
 import nl.ithelden.services.NDTRCSerializer
 import nl.ithelden.services.NDTRCValidator
 import org.joda.time.DateTime
-import org.joda.time.LocalTime
 import org.junit.Assert
 import org.junit.Test
 
