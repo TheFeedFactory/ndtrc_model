@@ -238,6 +238,8 @@ class NDTRCSerializer {
                 commentElement.addAttribute('label', calendar.comment.label)
             }
             calendar.comment.commentTranslations.each { Calendar.CommentTranslation commentTranslation ->
+                if (!commentTranslation) return
+
                 Element commentTranslationElement = commentElement.addElement('commenttranslation')
 
                 commentTranslationElement.addAttribute('lang', commentTranslation.lang)
