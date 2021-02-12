@@ -1,8 +1,10 @@
 package nl.ithelden.model
 
 import com.fasterxml.jackson.annotation.JsonProperty
+import groovy.transform.ToString
 import org.joda.time.DateTime
 
+@ToString
 class FetchedEntry {
     @JsonProperty String feed
     @JsonProperty String sourceId
@@ -14,6 +16,7 @@ class FetchedEntry {
     @JsonProperty Map<String, Object> data
     @JsonProperty ExternalLocationInfo externalLocationInfo
 
+    @ToString
     public static class ExternalLocationInfo {
         @JsonProperty String externalId // location id used in feeds
         @JsonProperty String locationName //name of location in original feed
