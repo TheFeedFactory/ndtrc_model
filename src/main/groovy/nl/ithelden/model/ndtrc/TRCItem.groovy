@@ -144,6 +144,7 @@ class TRCItem {
     @JsonProperty List<ExtraPriceInformation> extrapriceinformations = []
     @JsonProperty Translations translations = new Translations()
 
+    @ToString(includeNames = true)
     static class Translations {
         String primaryLanguage = "nl" // ISO name of language
         List<String> availableLanguages = ["nl"]
@@ -152,6 +153,7 @@ class TRCItem {
     enum WFStatus { draft, readyforvalidation, approved, rejected, deleted, archived }
     enum EntityType { EVENEMENT, LOCATIE, PLAATSREGIO }
 
+    @ToString(includeNames = true)
     static class Category {
         String id
         List<Translation> translations = []

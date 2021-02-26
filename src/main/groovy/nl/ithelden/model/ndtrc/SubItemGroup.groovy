@@ -6,6 +6,7 @@ import groovy.transform.ToString
 /**
  * used to define a way to map rooms and other types to a item
 */
+@ToString(includeNames = true)
 class SubItemGroup {
     @JsonProperty String trcid // ID of this type (random)
     @JsonProperty Type type
@@ -13,6 +14,7 @@ class SubItemGroup {
     @JsonProperty List<SubItemTranslation> subItemTranslations
     @JsonProperty List<File> media // media
 
+    @ToString(includeNames = true)
     static class SubItemTranslation {
         String lang, title
     }

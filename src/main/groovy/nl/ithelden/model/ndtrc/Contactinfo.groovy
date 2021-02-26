@@ -1,7 +1,9 @@
 package nl.ithelden.model.ndtrc
 
 import com.fasterxml.jackson.annotation.JsonProperty
+import groovy.transform.ToString
 
+@ToString(includeNames = true)
 class Contactinfo {
     @JsonProperty String label
     @JsonProperty List<Mail> mails = []
@@ -15,6 +17,7 @@ class Contactinfo {
     @JsonProperty Fax fax
     @JsonProperty Address address
 
+    @ToString(includeNames = true)
     static class Mail {
         @JsonProperty String email
         @JsonProperty String descriptioncode // Type defining the format and data structure for codes.
@@ -24,6 +27,7 @@ class Contactinfo {
         @JsonProperty List<DescriptionTranslation> descriptionTranslations = []
     }
 
+    @ToString(includeNames = true)
     static class Phone {
         @JsonProperty String number
         @JsonProperty String descriptioncode // Type defining the format and data structure for codes.
@@ -33,6 +37,7 @@ class Contactinfo {
         @JsonProperty List<DescriptionTranslation> descriptionTranslations = []
     }
 
+    @ToString(includeNames = true)
     static class Fax {
         @JsonProperty String number
         @JsonProperty String descriptioncode // Type defining the format and data structure for codes.
@@ -42,6 +47,7 @@ class Contactinfo {
         @JsonProperty List<DescriptionTranslation> descriptionTranslations = []
     }
 
+    @ToString(includeNames = true)
     static class Url {
         @JsonProperty URL url // max len = 1000
         @JsonProperty String descriptioncode // Type defining the format and data structure for codes.
@@ -56,6 +62,7 @@ class Contactinfo {
         @JsonProperty List<DescriptionTranslation> descriptionTranslations = []
     }
 
+    @ToString(includeNames = true)
     static class DescriptionTranslation {
         @JsonProperty String lang
         @JsonProperty String label
