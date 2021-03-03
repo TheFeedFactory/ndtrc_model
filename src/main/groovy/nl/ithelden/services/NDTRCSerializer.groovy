@@ -116,10 +116,10 @@ class NDTRCSerializer {
         }
 
         if (trcItem.availablefrom) {
-            mainElement.addAttribute('availablefrom', dateTimeFormatter.print(trcItem.availablefrom))
+            mainElement.addAttribute('availablefrom', dateTimeFormatter.print(trcItem.availablefrom.toLocalDateTime()))
         }
         if (trcItem.availableto != null) {
-            mainElement.addAttribute('availableto', dateTimeFormatter.print(trcItem.availableto))
+            mainElement.addAttribute('availableto', dateTimeFormatter.print(trcItem.availableto.toLocalDateTime()))
         }
         if (trcItem.trcid) {
             mainElement.addAttribute('trcid', trcItem.trcid)
@@ -128,13 +128,13 @@ class NDTRCSerializer {
             mainElement.addAttribute('createdby', trcItem.createdby)
         }
         if (trcItem.creationdate) {
-            mainElement.addAttribute('creationdate', dateTimeFormatter.print(trcItem.creationdate))
+            mainElement.addAttribute('creationdate', dateTimeFormatter.print(trcItem.creationdate.toLocalDateTime()))
         }
         if (trcItem.externalid) {
             mainElement.addAttribute('externalid', trcItem.externalid)
         }
         if (trcItem.lastupdatedby) {
-            mainElement.addAttribute('lastupdated', dateTimeFormatter.print(trcItem.lastupdated))
+            mainElement.addAttribute('lastupdated', dateTimeFormatter.print(trcItem.lastupdated.toLocalDateTime()))
         }
         if (trcItem.lastupdatedby) {
             mainElement.addAttribute('lastupdatedby', trcItem.lastupdatedby)
@@ -158,7 +158,7 @@ class NDTRCSerializer {
             mainElement.addAttribute('published', Boolean.toString(trcItem.published))
         }
         if (trcItem.lastimportedon) {
-            mainElement.addAttribute('lastimportedon', dateTimeFormatter.print(trcItem.lastimportedon))
+            mainElement.addAttribute('lastimportedon', dateTimeFormatter.print(trcItem.lastimportedon.toLocalDateTime()))
         }
         if (trcItem.legalowner) {
             mainElement.addAttribute('legalowner', trcItem.legalowner)
