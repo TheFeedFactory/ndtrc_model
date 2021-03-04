@@ -436,6 +436,9 @@ class NDTRCSerializer {
         if (locationItem.trcid) {
             mainElement.addAttribute('trcid', locationItem.trcid)
         }
+        if (locationItem.id) {
+            mainElement.addAttribute('id', locationItem.id)
+        }
         if (locationItem.text) {
             mainElement.addText(locationItem.text)
         }
