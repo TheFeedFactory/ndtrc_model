@@ -285,6 +285,7 @@ class NDTRCParser {
             Element locationItemElement = locationElement.element('locationitem')
 
             location.locationItem = new Location.LocationItem(
+                id: locationItemElement.attributeValue('id'),
                 trcid: locationItemElement.attributeValue('trcid'),
                 text: locationItemElement.getText()
             )
