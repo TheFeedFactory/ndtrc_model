@@ -71,38 +71,30 @@ class Contactinfo {
     void convertToV1() {
         if (this.mails && !this.mail) {
             this.mail = mails.first()
-            this.mails = []
         }
         if (this.addresses && !this.address) {
             this.address = addresses.first()
-            this.addresses = []
         }
         if (this.faxes && !this.fax) {
             this.fax = faxes.first()
-            this.faxes = []
         }
         if (this.phones && !this.phone) {
             this.phone = phones.first()
-            this.phones = []
         }
     }
 
     void convertToV2() {
         if (!this.mails && this.mail) {
             this.mails = [this.mail]
-            this.mail = null
         }
         if (!this.addresses && this.address) {
             this.addresses = [this.address]
-            this.address = null
         }
         if (!this.faxes && this.fax) {
             this.faxes = [this.fax]
-            this.fax = null
         }
         if (!this.phones && this.phone) {
             this.phones = [this.phone]
-            this.phone = null
         }
     }
 }
