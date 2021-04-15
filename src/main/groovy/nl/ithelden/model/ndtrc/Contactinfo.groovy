@@ -1,7 +1,11 @@
 package nl.ithelden.model.ndtrc
 
+import com.fasterxml.jackson.annotation.JsonIgnore
 import com.fasterxml.jackson.annotation.JsonProperty
+import groovy.transform.ToString
+import nl.ithelden.model.util.StringUtils
 
+@ToString(includeNames = true)
 class Contactinfo {
     @JsonProperty String label
     @JsonProperty List<Mail> mails = []
@@ -15,6 +19,7 @@ class Contactinfo {
     @JsonProperty Fax fax
     @JsonProperty Address address
 
+    @ToString(includeNames = true)
     static class Mail {
         @JsonProperty String email
         @JsonProperty String descriptioncode // Type defining the format and data structure for codes.
@@ -22,8 +27,14 @@ class Contactinfo {
         // XXX a 3-digit number
         @JsonProperty Boolean reservations
         @JsonProperty List<DescriptionTranslation> descriptionTranslations = []
+
+        @JsonIgnore
+        boolean isEmpty() {
+            return StringUtils.isEmpty(email)
+        }
     }
 
+    @ToString(includeNames = true)
     static class Phone {
         @JsonProperty String number
         @JsonProperty String descriptioncode // Type defining the format and data structure for codes.
@@ -31,8 +42,14 @@ class Contactinfo {
         // XXX a 3-digit number
         @JsonProperty Boolean reservations
         @JsonProperty List<DescriptionTranslation> descriptionTranslations = []
+
+        @JsonIgnore
+        boolean isEmpty() {
+            return StringUtils.isEmpty(number)
+        }
     }
 
+    @ToString(includeNames = true)
     static class Fax {
         @JsonProperty String number
         @JsonProperty String descriptioncode // Type defining the format and data structure for codes.
@@ -40,8 +57,14 @@ class Contactinfo {
         // XXX a 3-digit number
         @JsonProperty Boolean reservations
         @JsonProperty List<DescriptionTranslation> descriptionTranslations = []
+
+        @JsonIgnore
+        boolean isEmpty() {
+            return StringUtils.isEmpty(number)
+        }
     }
 
+    @ToString(includeNames = true)
     static class Url {
         @JsonProperty URL url // max len = 1000
         @JsonProperty String descriptioncode // Type defining the format and data structure for codes.
@@ -54,48 +77,46 @@ class Contactinfo {
         enum URLServiceType { general, booking, review, video, webshop, socialmedia, lastminute, virtualtour }
 
         @JsonProperty List<DescriptionTranslation> descriptionTranslations = []
+
+        @JsonIgnore
+        boolean isEmpty() {
+            return url == null
+        }
     }
 
+    @ToString(includeNames = true)
     static class DescriptionTranslation {
         @JsonProperty String lang
         @JsonProperty String label
     }
 
     void convertToV1() {
-        if (this.mails && !this.mail) {
+        if (this.mails && (!this.mail || this.mail.isEmpty())) {
             this.mail = mails.first()
-            this.mails = []
         }
-        if (this.addresses && !this.address) {
+        if (this.addresses && (!this.address || this.address.isEmpty())) {
             this.address = addresses.first()
-            this.addresses = []
         }
-        if (this.faxes && !this.fax) {
+        if (this.faxes && (!this.fax || this.fax.isEmpty())) {
             this.fax = faxes.first()
-            this.faxes = []
         }
-        if (this.phones && !this.phone) {
+        if (this.phones && (!this.phone || this.phone.isEmpty())) {
             this.phone = phones.first()
-            this.phones = []
         }
     }
 
     void convertToV2() {
-        if (!this.mails && this.mail) {
+        if (!this.mails && (this.mail && !this.mail.isEmpty())) {
             this.mails = [this.mail]
-            this.mail = null
         }
-        if (!this.addresses && this.address) {
+        if (!this.addresses && (this.address && !this.address.isEmpty())) {
             this.addresses = [this.address]
-            this.address = null
         }
-        if (!this.faxes && this.fax) {
+        if (!this.faxes && (this.fax && !this.fax.isEmpty())) {
             this.faxes = [this.fax]
-            this.fax = null
         }
-        if (!this.phones && this.phone) {
+        if (!this.phones && (this.phone && !this.phone.isEmpty())) {
             this.phones = [this.phone]
-            this.phone = null
         }
     }
 }

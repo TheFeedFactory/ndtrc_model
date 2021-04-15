@@ -116,10 +116,10 @@ class NDTRCSerializer {
         }
 
         if (trcItem.availablefrom) {
-            mainElement.addAttribute('availablefrom', dateTimeFormatter.print(trcItem.availablefrom))
+            mainElement.addAttribute('availablefrom', dateTimeFormatter.print(trcItem.availablefrom.toLocalDateTime()))
         }
         if (trcItem.availableto != null) {
-            mainElement.addAttribute('availableto', dateTimeFormatter.print(trcItem.availableto))
+            mainElement.addAttribute('availableto', dateTimeFormatter.print(trcItem.availableto.toLocalDateTime()))
         }
         if (trcItem.trcid) {
             mainElement.addAttribute('trcid', trcItem.trcid)
@@ -128,13 +128,13 @@ class NDTRCSerializer {
             mainElement.addAttribute('createdby', trcItem.createdby)
         }
         if (trcItem.creationdate) {
-            mainElement.addAttribute('creationdate', dateTimeFormatter.print(trcItem.creationdate))
+            mainElement.addAttribute('creationdate', dateTimeFormatter.print(trcItem.creationdate.toLocalDateTime()))
         }
         if (trcItem.externalid) {
             mainElement.addAttribute('externalid', trcItem.externalid)
         }
         if (trcItem.lastupdatedby) {
-            mainElement.addAttribute('lastupdated', dateTimeFormatter.print(trcItem.lastupdated))
+            mainElement.addAttribute('lastupdated', dateTimeFormatter.print(trcItem.lastupdated.toLocalDateTime()))
         }
         if (trcItem.lastupdatedby) {
             mainElement.addAttribute('lastupdatedby', trcItem.lastupdatedby)
@@ -158,7 +158,7 @@ class NDTRCSerializer {
             mainElement.addAttribute('published', Boolean.toString(trcItem.published))
         }
         if (trcItem.lastimportedon) {
-            mainElement.addAttribute('lastimportedon', dateTimeFormatter.print(trcItem.lastimportedon))
+            mainElement.addAttribute('lastimportedon', dateTimeFormatter.print(trcItem.lastimportedon.toLocalDateTime()))
         }
         if (trcItem.legalowner) {
             mainElement.addAttribute('legalowner', trcItem.legalowner)
@@ -436,6 +436,9 @@ class NDTRCSerializer {
         if (locationItem.trcid) {
             mainElement.addAttribute('trcid', locationItem.trcid)
         }
+        if (locationItem.id) {
+            mainElement.addAttribute('id', locationItem.id)
+        }
         if (locationItem.text) {
             mainElement.addText(locationItem.text)
         }
@@ -446,47 +449,60 @@ class NDTRCSerializer {
     static Element serializeContactinfo(Contactinfo contactinfo) {
         Element contactinfoElement = DocumentHelper.createElement(new QName('contactinfo', new Namespace(null, 'http://www.vvvnederland.nl/XMLSchema/TrcXml/2.0')))
 
-        if (contactinfo.address) {
+        if (contactinfo.address && !contactinfo.address?.isEmpty()) {
             contactinfoElement.add(serializeAddress(contactinfo.address))
-        }
-        if (contactinfo.addresses) {
-            contactinfo.addresses.each { Address address ->
-                contactinfoElement.add(serializeAddress(address))
+        } else {
+            if (contactinfo.addresses) {
+                contactinfo.addresses.each { Address address ->
+                    if (!address.isEmpty()) {
+                        contactinfoElement.add(serializeAddress(address))
+                    }
+                }
             }
         }
 
-        if (contactinfo.mail) {
+        if (contactinfo.mail && !contactinfo.mail?.isEmpty()) {
             contactinfoElement.add(serializeMail(contactinfo.mail))
-        }
-        if (contactinfo.mails) {
-            contactinfo.mails.each { Contactinfo.Mail mail ->
-                contactinfoElement.add(serializeMail(mail))
+        } else {
+            if (contactinfo.mails) {
+                contactinfo.mails.each { Contactinfo.Mail mail ->
+                    if (!mail.isEmpty()) {
+                        contactinfoElement.add(serializeMail(mail))
+                    }
+                }
             }
         }
 
-        if (contactinfo.phone) {
+        if (contactinfo.phone && !contactinfo.phone?.isEmpty()) {
             contactinfoElement.add(serializePhone(contactinfo.phone))
-        }
-        if (contactinfo.phones) {
-            contactinfo.phones.each { Contactinfo.Phone phone ->
-                contactinfoElement.add(serializePhone(phone))
+        } else {
+            if (contactinfo.phones) {
+                contactinfo.phones.each { Contactinfo.Phone phone ->
+                    if (!phone.isEmpty()) {
+                        contactinfoElement.add(serializePhone(phone))
+                    }
+                }
             }
         }
 
-        if (contactinfo.fax) {
+        if (contactinfo.fax && !contactinfo.fax.isEmpty()) {
             contactinfoElement.add(serializeFax(contactinfo.fax))
-        }
-        if (contactinfo.faxes) {
-            contactinfo.faxes.each { Contactinfo.Fax fax ->
-                contactinfoElement.add(serializeFax(fax))
+        } else {
+            if (contactinfo.faxes) {
+                contactinfo.faxes.each { Contactinfo.Fax fax ->
+                    contactinfoElement.add(serializeFax(fax))
+                }
             }
         }
 
         if (contactinfo.urls) {
             contactinfo.urls.each {Contactinfo.Url url ->
-                contactinfoElement.add(serializeUrl(url))
+                if (!url.isEmpty()) {
+                    contactinfoElement.add(serializeUrl(url))
+                }
             }
         }
+
         return contactinfoElement
     }
 

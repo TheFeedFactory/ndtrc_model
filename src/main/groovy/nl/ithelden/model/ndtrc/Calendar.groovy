@@ -1,8 +1,10 @@
 package nl.ithelden.model.ndtrc
 
 import com.fasterxml.jackson.annotation.JsonProperty
+import groovy.transform.ToString
 import org.joda.time.DateTime
 
+@ToString(includeNames = true)
 class Calendar {
     @JsonProperty List<SingleDate> singleDates = []
     @JsonProperty List<PatternDate> patternDates = []
@@ -24,11 +26,13 @@ class Calendar {
 
     static enum CalendarType { NONE, ALWAYSOPEN, ONREQUEST, OPENINGTIMES, PATTERNDATES, SINGLEDATES }
 
+    @ToString(includeNames = true)
     static class SingleDate {
         @JsonProperty DateTime date
         @JsonProperty List<When> when
     }
 
+    @ToString(includeNames = true)
     static class PatternDate {
         @JsonProperty DateTime startdate
         @JsonProperty DateTime enddate
@@ -46,6 +50,7 @@ class Calendar {
         enum RecurrencyType { daily, weekly, monthlySimple, monthlyComplex, yearly }
 
         /* Openingstime of the event */
+        @ToString(includeNames = true)
         static class Open {
             @JsonProperty Integer month // month number (n-th month
             @JsonProperty Integer weeknumber // weeknumber (n-th week of the month) [1..5]
@@ -63,6 +68,7 @@ class Calendar {
         }
     }
 
+    @ToString(includeNames = true)
     static class When {
         @JsonProperty String timestart
         @JsonProperty String timeend
@@ -73,27 +79,32 @@ class Calendar {
 
         enum Status { normal, cancelled, soldout, movedto, premiere, reprise }
     }
-    
+
+    @ToString(includeNames = true)
     static class StatusTranslation {
         @JsonProperty String lang
         @JsonProperty String text
     }
 
+    @ToString(includeNames = true)
     static class ExtraInformation {
         @JsonProperty String lang
         @JsonProperty String text
     }
 
+    @ToString(includeNames = true)
     static class ExceptionDate {
         @JsonProperty DateTime date
         @JsonProperty List<When> whens = []
     }
 
+    @ToString(includeNames = true)
     static class Comment {
         @JsonProperty String label
         @JsonProperty List<CommentTranslation> commentTranslations = []
     }
 
+    @ToString(includeNames = true)
     static class CommentTranslation {
         @JsonProperty String label
         @JsonProperty String lang

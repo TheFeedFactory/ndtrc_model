@@ -1,7 +1,11 @@
 package nl.ithelden.model.ndtrc
 
+import com.fasterxml.jackson.annotation.JsonIgnore
 import com.fasterxml.jackson.annotation.JsonProperty
+import groovy.transform.ToString
+import nl.ithelden.model.util.StringUtils
 
+@ToString(includeNames = true)
 class Address {
     @JsonProperty Boolean main
     @JsonProperty Boolean reservation
@@ -19,4 +23,12 @@ class Address {
     @JsonProperty String province
 
     @JsonProperty List<GISCoordinate> gisCoordinates = []
+
+    @JsonIgnore
+    boolean isEmpty() {
+        return StringUtils.isEmpty(title) && StringUtils.isEmpty(city) &&
+               StringUtils.isEmpty(housenr) && StringUtils.isEmpty(street) &&
+               StringUtils.isEmpty(zipcode) && StringUtils.isEmpty(province) &&
+               (gisCoordinates?.isEmpty() || gisCoordinates.every { it.isEmpty() })
+    }
 }

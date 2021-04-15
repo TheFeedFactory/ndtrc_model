@@ -4,7 +4,7 @@ package nl.ithelden.model
 import groovy.transform.ToString
 import org.joda.time.DateTime
 
-@ToString
+@ToString(includeNames = true)
 class FetchedEntry {
     String feed
     String sourceId
@@ -19,7 +19,7 @@ class FetchedEntry {
     Map<String, Object> data
     ExternalLocationInfo externalLocationInfo
 
-    @ToString
+    @ToString(includeNames = true)
     public static class ExternalLocationInfo {
         String externalId // location id used in feeds
         String locationName //name of location in original feed

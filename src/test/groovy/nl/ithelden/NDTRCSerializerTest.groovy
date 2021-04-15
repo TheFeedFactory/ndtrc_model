@@ -5,13 +5,29 @@ import com.fasterxml.jackson.core.JsonParser
 import com.fasterxml.jackson.datatype.joda.JodaMapper
 import nl.ithelden.model.ConvertedEntry
 import nl.ithelden.model.ndtrc.*
+import nl.ithelden.services.NDTRCParser
 import nl.ithelden.services.NDTRCSerializer
 import nl.ithelden.services.NDTRCValidator
+import org.dom4j.DocumentHelper
 import org.joda.time.DateTime
 import org.junit.Assert
 import org.junit.Test
 
 class NDTRCSerializerTest {
+    @Test
+    public void testTRCItemRoot() {
+        String source = '''<trcitem xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://api.ndtrc.nl/TrcXml/2.1/XSD.xsd" availablefrom="2014-02-19T00:00:00" trcid="0b6403aa-b54d-4c50-8c23-840b7865d70b" createdby="import_Leisure_Port@ndtrc.nl" creationdate="2014-12-06T04:07:03" externalid="LP_Webs_508" lastupdated="2017-07-02T04:02:46" lastupdatedby="taskexecutor@ndtrc.nl" owner="Leisure Port Invoerders" validator="Leisure Port Validatoren" wfstatus="approved" published="true" legalowner="info@liefdevoorlimburg.nl" lastimportedon="2017-07-02T04:02:45.037" deleted="false" offline="false" entitytype="LOCATIE" xmlns="http://www.vvvnederland.nl/XMLSchema/TrcXml/2.0"></trcitem>'''
+
+        /**
+         <trcitem xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://api.ndtrc.nl/TrcXml/2.1/XSD.xsd" availablefrom="2014-02-19T00:00:00" trcid="0b6403aa-b54d-4c50-8c23-840b7865d70b" createdby="import_Leisure_Port@ndtrc.nl" creationdate="2014-12-06T04:07:03" externalid="LP_Webs_508" lastupdated="2017-07-02T04:02:46" lastupdatedby="taskexecutor@ndtrc.nl" owner="Leisure Port Invoerders" validator="Leisure Port Validatoren" wfstatus="approved" published="true" legalowner="info@liefdevoorlimburg.nl" lastimportedon="2017-07-02T04:02:45.037" deleted="false" offline="false" entitytype="LOCATIE" xmlns="http://www.vvvnederland.nl/XMLSchema/TrcXml/2.0">
+
+         </trcitem>
+         */
+
+        TRCItem trcItem = NDTRCParser.parseTRCItem(DocumentHelper.parseText(source).rootElement)
+
+        Assert.assertEquals('<trcitem xmlns="http://www.vvvnederland.nl/XMLSchema/TrcXml/2.0" availablefrom="2014-02-19T00:00:00" trcid="0b6403aa-b54d-4c50-8c23-840b7865d70b" createdby="import_Leisure_Port@ndtrc.nl" creationdate="2014-12-06T04:07:03" externalid="LP_Webs_508" lastupdated="2017-07-02T04:02:46" lastupdatedby="taskexecutor@ndtrc.nl" owner="Leisure Port Invoerders" validator="Leisure Port Validatoren" wfstatus="approved" published="true" lastimportedon="2017-07-02T04:02:45" legalowner="info@liefdevoorlimburg.nl" deleted="false" offline="false" entitytype="LOCATIE"/>', NDTRCSerializer.serializeTRCItem(trcItem).asXML())
+    }
 
     @Test
     public void testCalendarSingleDate() {
