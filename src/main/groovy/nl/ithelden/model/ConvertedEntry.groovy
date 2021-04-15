@@ -10,6 +10,7 @@ class ConvertedEntry {
     String label
     DateTime created // http://purl.org/dc/terms/created
     DateTime modified // http://purl.org/dc/terms/modified
+    String errorMessage
 
     String externalId
     TRCItem trcItem
