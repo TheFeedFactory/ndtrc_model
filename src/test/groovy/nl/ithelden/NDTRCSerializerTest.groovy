@@ -47,6 +47,21 @@ class NDTRCSerializerTest {
         Assert.assertEquals('<calendar xmlns="http://www.vvvnederland.nl/XMLSchema/TrcXml/2.0" excludeholidays="false" cancelled="false" soldout="false" onrequest="false"><single date="20/05/2017"><when timestart="11:00:00" timeend="13:00:00"/></single></calendar>', NDTRCSerializer.serializeCalendar(calendar).asXML())
     }
 
+    @Test
+    public void testFile() {
+        /**
+         <calendar excludeholidays="false" onrequest="false">
+         <single date="20/05/2017">
+         <when timestart="11:00:00" timeend="13:00:00"/>
+         </single>
+         </calendar>
+     */
+
+        File file = new File(trcid: "7c549a73-03ff-44c7-885c-511359ee306d", main: true, filename: "addc3366-eb83-4fe3-ae47-5289cbde6dfe.jpg", filetype: File.FileType.jpg, hlink: "https://app.thefeedfactory.nl/api/assets/5ff8a0d6de7e8633a4ab7979/addc3366-eb83-4fe3-ae47-5289cbde6dfe.jpg", mediatype: File.MediaType.photo, title: new File.Title(label: "Restaurant Zeezout Rotterdam", titleTranslations: [new File.Title.TitleTranslation(lang: "nl", label: "Restaurant Zeezout Rotterdam")]))
+
+        Assert.assertEquals('<file xmlns="http://www.vvvnederland.nl/XMLSchema/TrcXml/2.0" trcid="7c549a73-03ff-44c7-885c-511359ee306d" main="true"><filename>addc3366-eb83-4fe3-ae47-5289cbde6dfe.jpg</filename><filetype>jpg</filetype><hlink>https://app.thefeedfactory.nl/api/assets/5ff8a0d6de7e8633a4ab7979/addc3366-eb83-4fe3-ae47-5289cbde6dfe.jpg</hlink><mediatype>photo</mediatype><title label="Restaurant Zeezout Rotterdam"><titletranslation lang="nl" label="Restaurant Zeezout Rotterdam"/></title></file>', NDTRCSerializer.serializeFile(file).asXML())
+    }
+
 
     @Test
     public void testCalendarPatternDate() {
