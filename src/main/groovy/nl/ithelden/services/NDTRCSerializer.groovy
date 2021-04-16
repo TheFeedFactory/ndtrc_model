@@ -449,47 +449,60 @@ class NDTRCSerializer {
     static Element serializeContactinfo(Contactinfo contactinfo) {
         Element contactinfoElement = DocumentHelper.createElement(new QName('contactinfo', new Namespace(null, 'http://www.vvvnederland.nl/XMLSchema/TrcXml/2.0')))
 
-        if (contactinfo.address) {
+        if (contactinfo.address && !contactinfo.address?.isEmpty()) {
             contactinfoElement.add(serializeAddress(contactinfo.address))
-        }
-        if (contactinfo.addresses) {
-            contactinfo.addresses.each { Address address ->
-                contactinfoElement.add(serializeAddress(address))
+        } else {
+            if (contactinfo.addresses) {
+                contactinfo.addresses.each { Address address ->
+                    if (!address.isEmpty()) {
+                        contactinfoElement.add(serializeAddress(address))
+                    }
+                }
             }
         }
 
-        if (contactinfo.mail) {
+        if (contactinfo.mail && !contactinfo.mail?.isEmpty()) {
             contactinfoElement.add(serializeMail(contactinfo.mail))
-        }
-        if (contactinfo.mails) {
-            contactinfo.mails.each { Contactinfo.Mail mail ->
-                contactinfoElement.add(serializeMail(mail))
+        } else {
+            if (contactinfo.mails) {
+                contactinfo.mails.each { Contactinfo.Mail mail ->
+                    if (!mail.isEmpty()) {
+                        contactinfoElement.add(serializeMail(mail))
+                    }
+                }
             }
         }
 
-        if (contactinfo.phone) {
+        if (contactinfo.phone && !contactinfo.phone?.isEmpty()) {
             contactinfoElement.add(serializePhone(contactinfo.phone))
-        }
-        if (contactinfo.phones) {
-            contactinfo.phones.each { Contactinfo.Phone phone ->
-                contactinfoElement.add(serializePhone(phone))
+        } else {
+            if (contactinfo.phones) {
+                contactinfo.phones.each { Contactinfo.Phone phone ->
+                    if (!phone.isEmpty()) {
+                        contactinfoElement.add(serializePhone(phone))
+                    }
+                }
             }
         }
 
-        if (contactinfo.fax) {
+        if (contactinfo.fax && !contactinfo.fax.isEmpty()) {
             contactinfoElement.add(serializeFax(contactinfo.fax))
-        }
-        if (contactinfo.faxes) {
-            contactinfo.faxes.each { Contactinfo.Fax fax ->
-                contactinfoElement.add(serializeFax(fax))
+        } else {
+            if (contactinfo.faxes) {
+                contactinfo.faxes.each { Contactinfo.Fax fax ->
+                    contactinfoElement.add(serializeFax(fax))
+                }
             }
         }
 
         if (contactinfo.urls) {
             contactinfo.urls.each {Contactinfo.Url url ->
-                contactinfoElement.add(serializeUrl(url))
+                if (!url.isEmpty()) {
+                    contactinfoElement.add(serializeUrl(url))
+                }
             }
         }
+
         return contactinfoElement
     }
 

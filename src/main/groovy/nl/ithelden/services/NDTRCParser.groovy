@@ -312,10 +312,14 @@ class NDTRCParser {
         }
 
         return new Contactinfo(
+            mail: mails?.size() > 0 ? mails[0] : null,
             mails: mails,
             phones: phones,
+            phone: phones?.size() > 0 ? phones[0] : null,
             faxes: faxes,
+            fax: faxes?.size() > 0 ? faxes[0] : null,
             addresses: addresses,
+            address: addresses?.size() > 0 ? addresses[0] : null,
             urls: urls
         )
     }
