@@ -2,6 +2,7 @@ package nl.ithelden.model.ndtrc
 
 import com.fasterxml.jackson.annotation.JsonProperty
 import groovy.transform.ToString
+import nl.ithelden.model.util.StringUtils
 import org.joda.time.DateTime
 
 @ToString(includeNames = true)
@@ -25,6 +26,29 @@ class Calendar {
     @JsonProperty CalendarType calendarType
 
     static enum CalendarType { NONE, ALWAYSOPEN, ONREQUEST, OPENINGTIMES, PATTERNDATES, SINGLEDATES }
+
+    void cleanupData() {
+        singleDates?.each {
+            it.when = it.when?.findAll { it.isValid() }
+        }
+        patternDates?.each {
+            it.opens?.each {
+                it.whens = it.whens?.findAll( {it.isValid() } )
+            }
+        }
+        opens?.each {
+            it.whens = it.whens?.findAll( {it.isValid() } )
+        }
+        closeds?.each {
+            it.whens = it.whens?.findAll( {it.isValid() } )
+        }
+        cancelleds?.each {
+            it.whens = it.whens?.findAll( {it.isValid() } )
+        }
+        soldouts?.each {
+            it.whens = it.whens?.findAll( {it.isValid() } )
+        }
+    }
 
     @ToString(includeNames = true)
     static class SingleDate {
@@ -76,6 +100,10 @@ class Calendar {
 
         @JsonProperty List<StatusTranslation> statustranslations = []
         @JsonProperty List<ExtraInformation> extrainformations = []
+
+        boolean isValid() {
+            return !StringUtils.isEmpty(timestart?.trim()) || !StringUtils.isEmpty(timeend?.trim())
+        }
 
         enum Status { normal, cancelled, soldout, movedto, premiere, reprise }
     }
