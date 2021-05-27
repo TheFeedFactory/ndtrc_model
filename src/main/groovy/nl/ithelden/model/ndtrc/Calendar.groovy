@@ -35,6 +35,10 @@ class Calendar {
             it.opens?.each {
                 it.whens = it.whens?.findAll( {it.isValid() } )
             }
+
+            if (it.opens && !it.recurrencyType) {
+                it.recurrencyType = PatternDate.RecurrencyType.weekly
+            }
         }
         opens?.each {
             it.whens = it.whens?.findAll( {it.isValid() } )
