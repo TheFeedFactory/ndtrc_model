@@ -9,7 +9,7 @@ import groovy.transform.ToString
  * cancelled (indication whether the items are cancelled).
  */
 @ToString(includeNames = true)
-class   TRCItemCategories {
+class TRCItemCategories {
 
     @JsonProperty List<Type> types = []  // Type indication of the item (Hotel, Camping Site, ...)
     @JsonProperty List<Category> categories = []  // Categories/properties of the item

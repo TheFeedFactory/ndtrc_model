@@ -101,7 +101,7 @@ class Calendar {
         @JsonProperty String timestart
         @JsonProperty String timeend
         @JsonProperty Status status
-
+        @JsonProperty Boolean valid
         @JsonProperty List<StatusTranslation> statustranslations = []
         @JsonProperty List<ExtraInformation> extrainformations = []
 
