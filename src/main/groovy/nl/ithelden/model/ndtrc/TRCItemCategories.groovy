@@ -34,7 +34,7 @@ class TRCItemCategories {
         @JsonProperty List<CategoryTranslation> parentCategoryTranslations = []  // translations
         @JsonProperty List<CategoryTranslation> valueCategoryTranslations = []  // translations
 
-        // enum DataType { yesno, nullableyesno, choice, multichoice, freetext, integer, decimal, date }
+        enum DataType { yesno, nullableyesno, choice, multichoice, freetext, integer, decimal, date }
     }
 
     @ToString(includeNames = true)
