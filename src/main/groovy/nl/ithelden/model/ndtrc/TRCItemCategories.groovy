@@ -9,7 +9,7 @@ import groovy.transform.ToString
  * cancelled (indication whether the items are cancelled).
  */
 @ToString(includeNames = true)
-class   TRCItemCategories {
+class TRCItemCategories {
 
     @JsonProperty List<Type> types = []  // Type indication of the item (Hotel, Camping Site, ...)
     @JsonProperty List<Category> categories = []  // Categories/properties of the item
@@ -34,7 +34,7 @@ class   TRCItemCategories {
         @JsonProperty List<CategoryTranslation> parentCategoryTranslations = []  // translations
         @JsonProperty List<CategoryTranslation> valueCategoryTranslations = []  // translations
 
-        // enum DataType { yesno, nullableyesno, choice, multichoice, freetext, integer, decimal, date }
+        enum DataType { yesno, nullableyesno, choice, multichoice, freetext, integer, decimal, date }
     }
 
     @ToString(includeNames = true)

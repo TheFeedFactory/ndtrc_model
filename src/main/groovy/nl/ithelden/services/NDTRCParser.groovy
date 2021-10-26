@@ -26,7 +26,7 @@ class NDTRCParser {
             owner: trcItemElement.attributeValue('owner'),
             isprivate: trcItemElement.attributeValue('private')  != null ? Boolean.parseBoolean(trcItemElement.attributeValue('private')) : null,
             validator: trcItemElement.attributeValue('validator'),
-            wfstatus: trcItemElement.attributeValue('wfstatus') ? TRCItem.WFStatus.valueOf(trcItemElement.attributeValue('wfstatus')) : null,
+            wfstatus: trcItemElement.attributeValue('wfstatus') ? TRCItem.WFStatus.valueOf(trcItemElement.attributeValue('wfstatus')) : TRCItem.WFStatus.readyforvalidation,
             cidn: trcItemElement.attributeValue('cidn'),
             published: trcItemElement.attributeValue('published')  != null ? Boolean.parseBoolean(trcItemElement.attributeValue('published')) : Boolean.TRUE,
             lastimportedon: trcItemElement.attributeValue('lastimportedon') ? parseDate(trcItemElement.attributeValue('lastimportedon')) : null,

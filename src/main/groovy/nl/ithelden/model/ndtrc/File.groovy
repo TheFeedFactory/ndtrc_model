@@ -30,6 +30,18 @@ class File {
         }
     }
 
+    void cleanupData() {
+        if (filetype && !mediatype) {
+            if (filetype == FileType.vimeo || filetype == FileType.youtube) {
+                mediatype = MediaType.video
+            }
+            if (filetype == FileType.jpg || filetype == FileType.jpeg || filetype == FileType.gif ||
+                    filetype == FileType.png || filetype == FileType.bmp || filetype == FileType.jfif ||
+                    filetype == FileType.tiff) {
+                mediatype = MediaType.photo
+            }
+        }
+    }
     enum FileType { jpeg, jpg, gif, png, mp3, pdf, gpx, kml, youtube, kmz, vimeo, tif, bmp, jfif, tiff}
     enum MediaType { poster, other, audio, brochure, photo, logo, video, roadmap, text, attachment, qr }
 }

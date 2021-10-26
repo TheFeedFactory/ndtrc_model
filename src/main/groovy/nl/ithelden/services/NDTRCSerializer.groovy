@@ -639,7 +639,9 @@ class NDTRCSerializer {
             }
         } else {
             Element virtualElement = addressElement.addElement('virtual')
-            virtualElement.addElement('title').addText(address.title?.trim() ?: label)
+            if (address.title?.trim() || label?.trim()) {
+                virtualElement.addElement('title').addText(address.title?.trim() ?: label)
+            }
 
             Element giscoordinatesElement = virtualElement.addElement('giscoordinates')
 
