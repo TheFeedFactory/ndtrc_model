@@ -170,6 +170,7 @@ class NDTRCSerializerTest {
                 '<types>' +
                 '<type catid="2.3.9"/>' +
                 '</types>' +
+                '<categories/>' +
                 '</trcitemcategories>', NDTRCSerializer.serializeTRCItemCategories(trcItemCategories).asXML())
     }
 
@@ -198,7 +199,7 @@ class NDTRCSerializerTest {
                 ]
         )
 
-        Assert.assertEquals('<trcitemcategories xmlns="http://www.vvvnederland.nl/XMLSchema/TrcXml/2.0"><categories><category catid="2.3.9"><categoryvalues><categoryvalue catid="2.3.9"/></categoryvalues></category></categories></trcitemcategories>', NDTRCSerializer.serializeTRCItemCategories(trcItemCategories).asXML())
+        Assert.assertEquals('<trcitemcategories xmlns="http://www.vvvnederland.nl/XMLSchema/TrcXml/2.0"><types/><categories><category catid="2.3.9"><categoryvalues><categoryvalue catid="2.3.9"/></categoryvalues></category></categories></trcitemcategories>', NDTRCSerializer.serializeTRCItemCategories(trcItemCategories).asXML())
     }
 
 
