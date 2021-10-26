@@ -44,6 +44,7 @@ class NDTRCParserTest {
                     <type catid="2.3.9"/>
 
                 </types>
+                <categories/>
             </trcitemcategories>
             <media>
                 <file main="true">
