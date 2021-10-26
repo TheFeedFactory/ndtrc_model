@@ -654,16 +654,16 @@ class NDTRCSerializer {
     static Element serializeTRCItemCategories(TRCItemCategories trcItemCategories) {
         Element mainElement = DocumentHelper.createElement(new QName('trcitemcategories', new Namespace(null, 'http://www.vvvnederland.nl/XMLSchema/TrcXml/2.0')))
 
+        Element typesElement = mainElement.addElement('types')
         if (trcItemCategories.types) {
-            Element typesElement = mainElement.addElement('types')
 
             trcItemCategories.types.each { TRCItemCategories.Type type ->
                 typesElement.add(serializeType(type))
             }
         }
 
+        Element categoriesElement = mainElement.addElement('categories')
         if (trcItemCategories.categories) {
-            Element categoriesElement = mainElement.addElement('categories')
 
             trcItemCategories.categories.each { TRCItemCategories.Category category ->
                 categoriesElement.add(serializeCategory(category))
