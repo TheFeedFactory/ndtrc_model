@@ -16,8 +16,8 @@ class Calendar {
     @JsonProperty List<ExceptionDate> cancelleds = []
 
     @JsonProperty boolean excludeholidays
-    @JsonProperty boolean cancelled
-    @JsonProperty boolean soldout
+    @JsonProperty boolean cancelled = false
+    @JsonProperty boolean soldout = false
 
     @JsonProperty Boolean onrequest
     @JsonProperty Boolean alwaysopen
