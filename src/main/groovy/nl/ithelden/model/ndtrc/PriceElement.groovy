@@ -5,7 +5,7 @@ import groovy.transform.ToString
 
 @ToString(includeNames = true)
 class PriceElement {
-    @JsonProperty Boolean freeentrance
+    @JsonProperty Boolean freeentrance = false
     @JsonProperty PriceValue priceValue
     @JsonProperty Description description
     @JsonProperty List<Comment> comments = []
