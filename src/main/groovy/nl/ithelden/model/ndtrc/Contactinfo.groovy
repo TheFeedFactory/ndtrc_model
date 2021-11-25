@@ -106,17 +106,26 @@ class Contactinfo {
     }
 
     void convertToV2() {
-        if (!this.mails && (this.mail && !this.mail.isEmpty())) {
+        // in V2 format we only support 1 phone and or email address
+        if (this.mail) {
             this.mails = [this.mail]
+        } else {
+            this.mails = []
         }
-        if (!this.addresses && (this.address && !this.address.isEmpty())) {
+        if (this.address) {
             this.addresses = [this.address]
+        } else {
+            this.addresses = []
         }
-        if (!this.faxes && (this.fax && !this.fax.isEmpty())) {
+        if (this.fax) {
             this.faxes = [this.fax]
+        } else {
+            this.faxes = []
         }
-        if (!this.phones && (this.phone && !this.phone.isEmpty())) {
+        if (this.phone) {
             this.phones = [this.phone]
+        } else {
+            this.phones = []
         }
     }
 }
