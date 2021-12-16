@@ -2,6 +2,7 @@ package nl.ithelden.model.ndtrc
 
 import com.fasterxml.jackson.annotation.JsonProperty
 import groovy.transform.ToString
+import nl.ithelden.model.util.StringUtils
 
 /**
  * Categorisation of the object. The categorisation cotnains 4 subelements: types (indicating the type of the item),
@@ -66,6 +67,10 @@ class TRCItemCategories {
             }
 
             return true
-        }
+        } ?: []
+
+        this.types = this.types?.findAll {
+            return !StringUtils.isEmpty(it.catid);
+        } ?: []
     }
 }
