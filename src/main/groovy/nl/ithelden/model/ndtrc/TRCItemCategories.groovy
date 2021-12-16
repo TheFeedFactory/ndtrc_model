@@ -56,6 +56,8 @@ class TRCItemCategories {
 
     void cleanEmptyItems() {
         this.categories = this.categories?.findAll { Category category ->
+            if (!category) return false
+
             if ("freetext".equalsIgnoreCase(category.datatype) && !category.value) {
                 return false
             }
@@ -69,8 +71,10 @@ class TRCItemCategories {
             return true
         } ?: []
 
-        this.types = this.types?.findAll {
-            return !StringUtils.isEmpty(it.catid);
+        this.types = this.types?.findAll {Type type ->
+            if (!type) return false
+
+            return !StringUtils.isEmpty(type.catid);
         } ?: []
     }
 }
