@@ -25,7 +25,7 @@ class Promotion {
 
     @ToString(includeNames = true)
     static class PromotionTranslation {
-        String lang, title
+        String lang, description
     }
 
     @ToString(includeNames = true)
