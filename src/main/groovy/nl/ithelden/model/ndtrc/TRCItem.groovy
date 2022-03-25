@@ -1,5 +1,6 @@
 package nl.ithelden.model.ndtrc
 
+import com.fasterxml.jackson.annotation.JsonInclude
 import com.fasterxml.jackson.annotation.JsonProperty
 import groovy.transform.ToString
 import org.joda.time.DateTime
@@ -143,6 +144,9 @@ class TRCItem {
     @JsonProperty List<PriceElement> priceElements = []
     @JsonProperty List<ExtraPriceInformation> extrapriceinformations = []
     @JsonProperty Translations translations = new Translations()
+
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    @JsonProperty List<Promotion> promotions
 
     @ToString(includeNames = true)
     static class Translations {
