@@ -61,7 +61,7 @@ class TRCItemCategories {
             if ("freetext".equalsIgnoreCase(category.datatype) && !category.value) {
                 return false
             }
-            if ("multichoice".equalsIgnoreCase(category.datatype) && !category.valueid) {
+            if ("multichoice".equalsIgnoreCase(category.datatype) && !category.categoryvalues) {
                 return false
             }
             if ("choice".equalsIgnoreCase(category.datatype) && !category.valueid) {
