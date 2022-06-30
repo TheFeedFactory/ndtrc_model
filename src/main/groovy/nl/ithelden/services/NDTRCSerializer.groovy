@@ -720,7 +720,7 @@ class NDTRCSerializer {
         if (type.isDefault != null) mainElement.addAttribute('default', Boolean.toString(type.isDefault).toLowerCase())
         if (type.categoryTranslations) {
             if (type.categoryTranslations.any  { it.lang == 'nl'}) {
-                mainElement.addText(type.categoryTranslations.find  { it.lang == 'nl'}.label)
+                mainElement.addText(type.categoryTranslations.find  { it.lang == 'nl'}.label ?: "")
             }
             type.categoryTranslations.each { TRCItemCategories.CategoryTranslation categoryTranslation ->
                 mainElement.add(serializeCategoryTranslation(categoryTranslation, 'categorytranslation'))
@@ -736,7 +736,7 @@ class NDTRCSerializer {
         if (type.isDefault != null) mainElement.addAttribute('default', Boolean.toString(type.isDefault).toLowerCase())
         if (type.categoryTranslations) {
             if (type.categoryTranslations.any  { it.lang == 'nl'}) {
-                mainElement.addText(type.categoryTranslations.find  { it.lang == 'nl'}.label)
+                mainElement.addText(type.categoryTranslations.find  { it.lang == 'nl'}.label ?: "")
             }
             type.categoryTranslations.each { SubItemGroup.CategoryTranslation categoryTranslation ->
                 mainElement.add(serializeSubItemGroupCategoryTranslation(categoryTranslation, 'categorytranslation'))
