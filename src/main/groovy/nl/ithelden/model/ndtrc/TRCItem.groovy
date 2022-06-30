@@ -118,7 +118,7 @@ class TRCItem {
 
     @JsonProperty String validator
     @JsonProperty String validatedby // deprecated
-    @JsonProperty WFStatus wfstatus // deprecated
+    @JsonProperty WFStatus wfstatus
 
     @JsonProperty String cidn
     @JsonProperty Boolean published
