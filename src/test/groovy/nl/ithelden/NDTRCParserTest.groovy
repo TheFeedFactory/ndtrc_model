@@ -61,7 +61,8 @@ class NDTRCParserTest {
             </media>
             <trcitemdetails>
                 <trcitemdetail lang="nl">
-                    <longdescription>In de zeventiende eeuw was Nederland één van de machtigste en
+                    <longdescription><![CDATA[
+                    In de zeventiende eeuw was Nederland één van de machtigste en
                         rijkste landen van Europa. Niet alleen de handel in goederen, maar ook de
                         handel in kunst was destijds enorm. Er zijn waarschijnlijk miljoenen
                         schilderijen gemaakt in die tijd! Daardoor was de prijs van kunst laag en
@@ -72,7 +73,9 @@ class NDTRCParserTest {
                         zijn kunst. Aan de hand van een beeldpresentatie word je meegenomen in de
                         tijd, de stroming, en het persoonlijke leven van de
                         kunstenaars.&lt;br&gt;&lt;br&gt;Meer weten of inschrijven? Kijk op
-                        www.curzusenzo.nl of bel met 010 - 251 89 88.</longdescription>
+                        www.curzusenzo.nl of bel met 010 - 251 89 88.
+                        ]]>
+                        </longdescription>
                     <shortdescription>Beroemde kunstenaars uit deze Gouden Eeuw als Rembrandt en
                         Frans Hals zijn nog altijd bekend over de</shortdescription>
                     <title>Kunstlezing over de Gouden Eeuw</title>
