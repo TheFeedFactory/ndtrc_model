@@ -880,7 +880,7 @@ class NDTRCSerializer {
         if (trcItemDetail.lang != null) mainElement.addAttribute('lang', trcItemDetail.lang)
 
         if (trcItemDetail.longdescription != null)
-            mainElement.addElement('longdescription').setText(trcItemDetail.longdescription)
+            mainElement.addElement('longdescription').addCDATA(trcItemDetail.longdescription)
         if (trcItemDetail.shortdescription != null)
             mainElement.addElement('shortdescription').setText(trcItemDetail.shortdescription)
         if (trcItemDetail.title != null)
