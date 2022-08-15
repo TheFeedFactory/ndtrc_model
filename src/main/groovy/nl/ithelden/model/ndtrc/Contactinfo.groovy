@@ -8,11 +8,11 @@ import nl.ithelden.model.util.StringUtils
 @ToString(includeNames = true)
 class Contactinfo {
     @JsonProperty String label
-    @JsonProperty List<Mail> mails = []
-    @JsonProperty List<Phone> phones = []
-    @JsonProperty List<Fax> faxes = []
+    @Deprecated @JsonProperty List<Mail> mails = []
+    @Deprecated @JsonProperty List<Phone> phones = []
+    @Deprecated @JsonProperty List<Fax> faxes = []
     @JsonProperty List<Url> urls = []
-    @JsonProperty List<Address> addresses = []
+    @Deprecated @JsonProperty List<Address> addresses = []
 
     @JsonProperty Mail mail
     @JsonProperty Phone phone
