@@ -37,7 +37,8 @@ class File {
             }
             if (filetype == FileType.jpg || filetype == FileType.jpeg || filetype == FileType.gif ||
                     filetype == FileType.png || filetype == FileType.bmp || filetype == FileType.jfif ||
-                    filetype == FileType.tiff) {
+
+                    filetype == FileType.tiff || filetype == FileType.webp) {
                 mediatype = MediaType.photo
             }
         }
