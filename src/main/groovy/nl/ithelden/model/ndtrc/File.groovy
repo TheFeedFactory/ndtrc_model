@@ -42,6 +42,6 @@ class File {
             }
         }
     }
-    enum FileType { jpeg, jpg, gif, png, mp3, pdf, gpx, kml, youtube, kmz, vimeo, tif, bmp, jfif, tiff}
+    enum FileType { jpeg, jpg, gif, png, mp3, pdf, gpx, kml, youtube, kmz, vimeo, tif, bmp, jfif, tiff, webp }
     enum MediaType { poster, other, audio, brochure, photo, logo, video, roadmap, text, attachment, qr }
 }
