@@ -21,6 +21,8 @@ class Address {
 
     @JsonProperty String zipcode
     @JsonProperty String province
+    @JsonProperty String neighbourhood
+    @JsonProperty String district
 
     @JsonProperty List<GISCoordinate> gisCoordinates = []
 
