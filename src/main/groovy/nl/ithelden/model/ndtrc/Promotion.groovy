@@ -6,7 +6,7 @@ import org.joda.time.DateTime
 
 @ToString(includeNames = true)
 class Promotion {
-    List<String> products
+    String product
     PromotionType promotionType
     Discount discount
     List<PromotionTranslation> translations
