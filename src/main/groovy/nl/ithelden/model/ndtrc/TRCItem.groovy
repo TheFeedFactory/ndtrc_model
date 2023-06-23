@@ -148,12 +148,6 @@ class TRCItem {
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     @JsonProperty List<Promotion> promotions
 
-    @ToString(includeNames = true)
-    static class Translations {
-        String primaryLanguage = "nl" // ISO name of language
-        List<String> availableLanguages = ["nl"]
-    }
-
     enum WFStatus { draft, readyforvalidation, approved, rejected, deleted, archived }
     enum EntityType { EVENEMENT, LOCATIE, PLAATSREGIO }
 
