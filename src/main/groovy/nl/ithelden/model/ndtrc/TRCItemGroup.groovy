@@ -7,7 +7,6 @@ import org.joda.time.DateTime
 
 @ToString(includeNames = true)
 class TRCItemGroup {
-    @JsonProperty String id
     @JsonProperty String trcid
     @JsonProperty DateTime creationdate
     @JsonProperty DateTime availablefrom
@@ -23,7 +22,7 @@ class TRCItemGroup {
     @JsonProperty String externalid
 
     @JsonProperty String validator
-    @JsonProperty WFStatus wfstatus
+    @JsonProperty TRCItem.WFStatus wfstatus
 
     @JsonProperty Calendar calendar
     @JsonProperty Contactinfo contactinfo
@@ -41,10 +40,9 @@ class TRCItemGroup {
     @JsonProperty List<Promotion> promotions
 
     List<EventLink> eventLinks = []
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     static class EventLink {
         String eventId
         String locationId // redundant, but convenient
     }
-
-    enum WFStatus { draft, readyforvalidation, approved, rejected, deleted, archived }
 }
