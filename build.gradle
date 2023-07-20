@@ -16,7 +16,7 @@ apply plugin: 'io.spring.dependency-management'
 
 jar {
     enabled = true
-    baseName = 'ndtrc_model'
+//    baseName = 'ndtrc_model'
     version = '1.0.0'
 }
 bootJar {
