@@ -149,7 +149,7 @@ class TRCItem {
     @JsonProperty List<Promotion> promotions
 
     enum WFStatus { draft, readyforvalidation, approved, rejected, deleted, archived }
-    enum EntityType { EVENEMENT, LOCATIE, PLAATSREGIO }
+    enum EntityType { EVENEMENT, LOCATIE, EVENEMENTGROEP, PLAATSREGIO }
 
     @ToString(includeNames = true)
     static class Category {
