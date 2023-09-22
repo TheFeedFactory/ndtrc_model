@@ -43,6 +43,5 @@ class TRCItemGroup {
     @JsonInclude(JsonInclude.Include.NON_NULL)
     static class EventLink {
         String eventId
-        String locationId // redundant, but convenient
     }
 }
