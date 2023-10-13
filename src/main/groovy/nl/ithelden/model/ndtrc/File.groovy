@@ -47,7 +47,7 @@ class File {
         // al link the the format of
         if (hlink && filetype == FileType.youtube) {
             hlink = normalizeYouTubeURL(hlink)
-            filename = hlink
+            filename = youtubeVideoID(hlink)
         }
     }
 
@@ -83,5 +83,35 @@ class File {
 
         // If none of the patterns match, return the original URL (or you could return null or throw an exception if you prefer)
         return url
+    }
+
+    static String youtubeVideoID(String url) {
+        if (!url?.trim()) return null
+
+        // Regular expression patterns for different YouTube URL formats
+        def standardPattern = ~/https:\/\/www\.youtube\.com\/watch\?v=([a-zA-Z0-9_-]+)/
+        def shortenedPattern = ~/https:\/\/youtu\.be\/([a-zA-Z0-9_-]+)/
+        def embedPattern = ~/https:\/\/www\.youtube\.com\/embed\/([a-zA-Z0-9_-]+)/
+
+        def matcher = standardPattern.matcher(url)
+
+        // Check if it's already in the desired format
+        if (matcher.find()) {
+            return matcher.group(1)
+        }
+
+        // Check if it's in the shortened format
+        matcher = shortenedPattern.matcher(url)
+        if (matcher.find()) {
+            return matcher.group(1)
+        }
+
+        // Check if it's in the embed format
+        matcher = embedPattern.matcher(url)
+        if (matcher.find()) {
+            return matcher.group(1)
+        }
+
+        return null
     }
 }
