@@ -47,6 +47,7 @@ class File {
         // al link the the format of
         if (hlink && filetype == FileType.youtube) {
             hlink = normalizeYouTubeURL(hlink)
+            filename = hlink
         }
     }
 

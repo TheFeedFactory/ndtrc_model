@@ -17,8 +17,12 @@ class FileTest {
         String url3 = "https://www.youtube.com/embed/hVlT0PN3y-k"
         String n3 = File.normalizeYouTubeURL(url3)
 
+        String url4 = "https://youtu.be/nMc6Kzy186s"
+        String n4 = File.normalizeYouTubeURL(url4)
+
         Assertions.assertEquals("https://www.youtube.com/watch?v=hVlT0PN3y-k", n1)
         Assertions.assertEquals("https://www.youtube.com/watch?v=hVlT0PN3y-k", n2)
         Assertions.assertEquals("https://www.youtube.com/watch?v=hVlT0PN3y-k", n3)
+        Assertions.assertEquals("https://www.youtube.com/watch?v=nMc6Kzy186s", n4)
     }
 }
