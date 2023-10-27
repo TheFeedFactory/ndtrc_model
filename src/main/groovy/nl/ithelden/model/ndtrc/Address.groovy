@@ -33,4 +33,27 @@ class Address {
                StringUtils.isEmpty(zipcode) && StringUtils.isEmpty(province) &&
                (gisCoordinates?.isEmpty() || gisCoordinates.every { it.isEmpty() })
     }
+
+    void normaliseAdresItems() {
+        // zipcodes should be uppercase and in the format of
+        // 1234 AB
+        // so convert 1234ab to 1234 AB and 1234AB to 1234 AB
+
+        if (zipcode) {
+            // test if zipcode matches /(\d{4})(\w{2})/
+            if (zipcode.matches(/(\d{4})\s*(\w{2})/)) {
+                // if so, convert to uppercase and add a space between the numbers and letters
+                zipcode = zipcode.toUpperCase().replaceAll(/(\d{4})\s*(\w{2})/, '$1 $2')
+            }
+        }
+
+        // cityname should start with a capital letter and the rest should be lowercase
+        // but prevent changing format for city names like "Den Haag" and "Nieuw-Lekkerland"
+        if (city) {
+            // only change if it is either all lowercase or all uppercase
+            if (city.matches(/^[a-z\s]+$/) || city.matches(/^[A-Z\s]+$/)) {
+                city = city.toLowerCase().replaceAll(/(\w)(\w*)/, { match, first, rest -> first.toUpperCase() + rest })
+            }
+        }
+    }
 }
