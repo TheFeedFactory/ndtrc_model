@@ -82,6 +82,15 @@ class Contactinfo {
         boolean isEmpty() {
             return url == null
         }
+
+        static URLServiceType getTypeFromString(String type) {
+            for (URLServiceType serviceType : URLServiceType.values()) {
+                if (serviceType.toString() == type) {
+                    return serviceType;
+                }
+            }
+            throw new IllegalArgumentException("No enum found with type: " + type);
+        }
     }
 
     @ToString(includeNames = true)
