@@ -115,6 +115,7 @@ class TRCItem {
     @JsonProperty String legalowner
 
     @JsonProperty String externalid
+    @JsonProperty String slug
 
     @JsonProperty String validator
     @JsonProperty String validatedby // deprecated
