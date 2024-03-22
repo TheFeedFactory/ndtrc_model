@@ -30,5 +30,6 @@ class FetchedEntry {
         String latitude
         String longitude
         String trcid // trcid as known in the TRC
+        String ffId // location id in FF
     }
 }
