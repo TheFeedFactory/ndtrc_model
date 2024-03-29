@@ -106,9 +106,16 @@ class Calendar {
         @JsonProperty List<ExtraInformation> extrainformations = []
 
         boolean isValid() {
-            return !StringUtils.isEmpty(timestart?.trim()) || !StringUtils.isEmpty(timeend?.trim())
+            return isTimeStartValid() && isTimeEndValid()
         }
 
+        boolean isTimeStartValid() {
+            return !StringUtils.isEmpty(timestart?.trim())
+        }
+
+        boolean isTimeEndValid() {
+            return !StringUtils.isEmpty(timeend?.trim())
+        }
         enum Status { normal, cancelled, soldout, movedto, premiere, reprise }
     }
 
