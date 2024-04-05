@@ -1,7 +1,6 @@
 package nl.ithelden.model.ndtrc
 
 import com.fasterxml.jackson.annotation.JsonProperty
-import groovy.transform.EqualsAndHashCode
 import groovy.transform.ToString
 import nl.ithelden.model.util.StringUtils
 import org.joda.time.DateTime
@@ -96,7 +95,6 @@ class Calendar {
         }
 /* Openingstime of the event */
         @ToString(includeNames = true)
-        @EqualsAndHashCode
         static class Open {
             @JsonProperty Integer month // month number (n-th month
             @JsonProperty Integer weeknumber // weeknumber (n-th week of the month) [1..5]
@@ -111,6 +109,14 @@ class Calendar {
 //                        7:	Saturday
 
             @JsonProperty List<When> whens = []
+
+            @Override
+            boolean equals(Object obj) {
+                if (this == obj) return true;
+                if (obj == null || getClass() != obj.getClass()) return false;
+                Open open = (Open) obj;
+                return this.month == open.month && this.weeknumber == open.weeknumber && this.daynumber == open.daynumber && this.day == open.day && this.whens == open.whens;
+            }
         }
     }
 
