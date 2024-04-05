@@ -61,10 +61,19 @@ class Calendar {
 
         @Override
         boolean equals(Object o) {
-            if (this == o) return true;
-            if (o == null || getClass() != o.getClass()) return false;
-            SingleDate singleDate = (SingleDate) o;
-            return this.date == singleDate.date && this.when == singleDate.when;
+            if (this.is(o)) return true // Use Groovy's `is` for identity check
+            if (o == null || getClass() != o.getClass()) return false
+            SingleDate singleDate = (SingleDate) o
+
+            if (this.date != singleDate.date) return false
+            // Instead of comparing the lists directly, compare their contents in a way that avoids recursion
+            if (this.when.size() != singleDate.when.size()) return false
+            for (int i = 0; i < this.when.size(); i++) {
+                if (!this.when.get(i).isValid() || !singleDate.when.get(i).isValid()) return false
+                // Implement further non-recursive element comparison logic here
+                if (this.when.get(i) != singleDate.when.get(i)) return false
+            }
+            return true
         }
     }
 
@@ -87,11 +96,25 @@ class Calendar {
 
         @Override
         boolean equals(Object obj) {
-            if (this == obj) return true;
-            if (obj == null || getClass() != obj.getClass()) return false;
-            PatternDate that = (PatternDate) obj;
-            return this.startdate == that.startdate && this.enddate == that.enddate && this.recurrencyType == that.recurrencyType && this.occurrence == that.occurrence && this.recurrence == that.recurrence && this.opens == that.opens;
+            if (this.is(obj)) return true
+            if (obj == null || getClass() != obj.getClass()) return false
+            PatternDate that = (PatternDate) obj
 
+            return this.startdate == that.startdate &&
+                    this.enddate == that.enddate &&
+                    this.recurrencyType == that.recurrencyType &&
+                    this.occurrence == that.occurrence &&
+                    this.recurrence == that.recurrence &&
+                    // Compare the 'opens' list carefully to avoid recursion
+                    opensEquals(this.opens, that.opens)
+        }
+
+        private boolean opensEquals(List<Open> opens1, List<Open> opens2) {
+            if (opens1.size() != opens2.size()) return false
+            for (int i = 0; i < opens1.size(); i++) {
+                if (opens1.get(i) != opens2.get(i)) return false
+            }
+            return true
         }
 /* Openingstime of the event */
         @ToString(includeNames = true)
@@ -112,10 +135,25 @@ class Calendar {
 
             @Override
             boolean equals(Object obj) {
-                if (this == obj) return true;
-                if (obj == null || getClass() != obj.getClass()) return false;
-                Open open = (Open) obj;
-                return this.month == open.month && this.weeknumber == open.weeknumber && this.daynumber == open.daynumber && this.day == open.day && this.whens == open.whens;
+                if (this.is(obj)) return true
+                if (obj == null || getClass() != obj.getClass()) return false
+                Open open = (Open) obj
+
+                return this.month == open.month &&
+                        this.weeknumber == open.weeknumber &&
+                        this.daynumber == open.daynumber &&
+                        this.day == open.day &&
+                        whensEquals(this.whens, open.whens)
+            }
+
+            private boolean whensEquals(List<When> whens1, List<When> whens2) {
+                if (whens1.size() != whens2.size()) return false
+                for (int i = 0; i < whens1.size(); i++) {
+                    if (!whens1.get(i).isValid() || !whens2.get(i).isValid()) return false
+
+                    if (whens1.get(i) != whens2.get(i)) return false
+                }
+                return true
             }
         }
     }
