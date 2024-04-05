@@ -1,6 +1,7 @@
 package nl.ithelden.model.ndtrc
 
 import com.fasterxml.jackson.annotation.JsonProperty
+import groovy.transform.EqualsAndHashCode
 import groovy.transform.ToString
 import nl.ithelden.model.util.StringUtils
 import org.joda.time.DateTime
@@ -58,6 +59,14 @@ class Calendar {
     static class SingleDate {
         @JsonProperty DateTime date
         @JsonProperty List<When> when
+
+        @Override
+        boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+            SingleDate singleDate = (SingleDate) o;
+            return this.date == singleDate.date && this.when == singleDate.when;
+        }
     }
 
     @ToString(includeNames = true)
@@ -77,8 +86,17 @@ class Calendar {
 
         enum RecurrencyType { daily, weekly, monthlySimple, monthlyComplex, yearly }
 
-        /* Openingstime of the event */
+        @Override
+        boolean equals(Object obj) {
+            if (this == obj) return true;
+            if (obj == null || getClass() != obj.getClass()) return false;
+            PatternDate that = (PatternDate) obj;
+            return this.startdate == that.startdate && this.enddate == that.enddate && this.recurrencyType == that.recurrencyType && this.occurrence == that.occurrence && this.recurrence == that.recurrence && this.opens == that.opens;
+
+        }
+/* Openingstime of the event */
         @ToString(includeNames = true)
+        @EqualsAndHashCode
         static class Open {
             @JsonProperty Integer month // month number (n-th month
             @JsonProperty Integer weeknumber // weeknumber (n-th week of the month) [1..5]
@@ -104,6 +122,14 @@ class Calendar {
         @JsonProperty Boolean valid
         @JsonProperty List<StatusTranslation> statustranslations = []
         @JsonProperty List<ExtraInformation> extrainformations = []
+
+        @Override
+        boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+            When when = (When) o;
+            return this.timestart == when.timestart && this.timeend == when.timeend;
+        }
 
         boolean isValid() {
             return isTimeStartValid() && isTimeEndValid()
