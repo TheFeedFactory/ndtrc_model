@@ -149,9 +149,7 @@ class Calendar {
             private boolean whensEquals(List<When> whens1, List<When> whens2) {
                 if (whens1.size() != whens2.size()) return false
                 for (int i = 0; i < whens1.size(); i++) {
-                    if (!whens1.get(i).isValid() || !whens2.get(i).isValid()) return false
-
-                    if (whens1.get(i) != whens2.get(i)) return false
+                    if (whens1.get(i).timestart != whens2.get(i).timestart) return false
                 }
                 return true
             }
