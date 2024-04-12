@@ -174,7 +174,7 @@ class Calendar {
         }
 
         boolean isValid() {
-            return isTimeStartValid() && isTimeEndValid()
+            return isTimeStartValid() || isTimeEndValid()
         }
 
         boolean isTimeStartValid() {
