@@ -1,5 +1,6 @@
 package nl.ithelden.model.ndtrc
 
+import com.fasterxml.jackson.annotation.JsonIgnore
 import com.fasterxml.jackson.annotation.JsonProperty
 import groovy.transform.ToString
 import nl.ithelden.model.util.StringUtils
@@ -173,17 +174,21 @@ class Calendar {
             return this.timestart == when.timestart && this.timeend == when.timeend;
         }
 
+        @JsonIgnore
         boolean isValid() {
             return isTimeStartValid() || isTimeEndValid()
         }
 
+        @JsonIgnore
         boolean isTimeStartValid() {
             return !StringUtils.isEmpty(timestart?.trim())
         }
 
+        @JsonIgnore
         boolean isTimeEndValid() {
             return !StringUtils.isEmpty(timeend?.trim())
         }
+        
         enum Status { normal, cancelled, soldout, movedto, premiere, reprise }
     }
 
