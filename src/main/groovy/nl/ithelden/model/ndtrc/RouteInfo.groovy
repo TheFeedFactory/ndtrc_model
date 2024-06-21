@@ -4,10 +4,11 @@ import groovy.transform.ToString
 
 @ToString(includeNames = true)
  class RouteInfo {
-    RouteInfo.Type type
+    Type type
     String url
     Double distanceInKilometers
     Integer durationInMinutes
+    Address start, end
 
     static enum Type {
         route_maker
