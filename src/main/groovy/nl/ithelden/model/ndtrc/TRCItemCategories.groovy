@@ -1,5 +1,6 @@
 package nl.ithelden.model.ndtrc
 
+import com.fasterxml.jackson.annotation.JsonInclude
 import com.fasterxml.jackson.annotation.JsonProperty
 import groovy.transform.ToString
 import nl.ithelden.model.util.StringUtils
@@ -25,6 +26,7 @@ class TRCItemCategories {
     }
 
     @ToString(includeNames = true)
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     static class Category {
         @JsonProperty String catid   // ID of the category
         @JsonProperty String valueid  // ValueID of the category (when applicable). Used e.g. with categories of type choice or multichoice.
@@ -39,12 +41,14 @@ class TRCItemCategories {
     }
 
     @ToString(includeNames = true)
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     static class CategoryValue {
         @JsonProperty String catid // ID of the category
         @JsonProperty List<CategoryTranslation> categorytranslations = []  // translations
     }
 
     @ToString(includeNames = true)
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     static class CategoryTranslation {
         @JsonProperty String catid
         @JsonProperty String lang
