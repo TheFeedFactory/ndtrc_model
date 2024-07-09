@@ -17,13 +17,13 @@ class SubItemGroup {
     @JsonProperty List<File> media // media
 
     @ToString(includeNames = true)
-    @JsonInclude(JsonInclude.Include.NON_NULL)
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     static class SubItemTranslation {
         String lang, title
     }
 
     @ToString(includeNames = true)
-    @JsonInclude(JsonInclude.Include.NON_NULL)
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     static class Type {
         @JsonProperty String catid // ID of the category
         @JsonProperty Boolean isDefault // Boolean flag indicating this is the "default" (or main) type
@@ -31,7 +31,7 @@ class SubItemGroup {
     }
 
     @ToString(includeNames = true)
-    @JsonInclude(JsonInclude.Include.NON_NULL)
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     static class Category {
         @JsonProperty String catid   // ID of the category
         @JsonProperty String valueid  // ValueID of the category (when applicable). Used e.g. with categories of type choice or multichoice.
@@ -46,14 +46,14 @@ class SubItemGroup {
     }
 
     @ToString(includeNames = true)
-    @JsonInclude(JsonInclude.Include.NON_NULL)
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     static class CategoryValue {
         @JsonProperty String catid // ID of the category
         @JsonProperty List<CategoryTranslation> categorytranslations = []  // translations
     }
 
     @ToString(includeNames = true)
-    @JsonInclude(JsonInclude.Include.NON_NULL)
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     static class CategoryTranslation {
         @JsonProperty String catid
         @JsonProperty String lang
