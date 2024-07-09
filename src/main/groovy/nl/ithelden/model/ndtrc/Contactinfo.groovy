@@ -1,11 +1,13 @@
 package nl.ithelden.model.ndtrc
 
 import com.fasterxml.jackson.annotation.JsonIgnore
+import com.fasterxml.jackson.annotation.JsonInclude
 import com.fasterxml.jackson.annotation.JsonProperty
 import groovy.transform.ToString
 import nl.ithelden.model.util.StringUtils
 
 @ToString(includeNames = true)
+@JsonInclude(JsonInclude.Include.NON_NULL)
 class Contactinfo {
     @JsonProperty String label
     @Deprecated @JsonProperty List<Mail> mails = []
@@ -20,6 +22,7 @@ class Contactinfo {
     @JsonProperty Address address
 
     @ToString(includeNames = true)
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     static class Mail {
         @JsonProperty String email
         @JsonProperty String descriptioncode // Type defining the format and data structure for codes.
@@ -35,6 +38,7 @@ class Contactinfo {
     }
 
     @ToString(includeNames = true)
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     static class Phone {
         @JsonProperty String number
         @JsonProperty String descriptioncode // Type defining the format and data structure for codes.
@@ -50,6 +54,7 @@ class Contactinfo {
     }
 
     @ToString(includeNames = true)
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     static class Fax {
         @JsonProperty String number
         @JsonProperty String descriptioncode // Type defining the format and data structure for codes.
@@ -65,6 +70,7 @@ class Contactinfo {
     }
 
     @ToString(includeNames = true)
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     static class Url {
         @JsonProperty URL url // max len = 1000
         @JsonProperty String descriptioncode // Type defining the format and data structure for codes.
@@ -94,6 +100,7 @@ class Contactinfo {
     }
 
     @ToString(includeNames = true)
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     static class DescriptionTranslation {
         @JsonProperty String lang
         @JsonProperty String label

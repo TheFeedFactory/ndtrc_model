@@ -1,12 +1,14 @@
 package nl.ithelden.model.ndtrc
 
 import com.fasterxml.jackson.annotation.JsonIgnore
+import com.fasterxml.jackson.annotation.JsonInclude
 import com.fasterxml.jackson.annotation.JsonProperty
 import groovy.transform.ToString
 import nl.ithelden.model.util.StringUtils
 import org.joda.time.DateTime
 
 @ToString(includeNames = true)
+@JsonInclude(JsonInclude.Include.NON_NULL)
 class Calendar {
     @JsonProperty List<SingleDate> singleDates = []
     @JsonProperty List<PatternDate> patternDates = []
@@ -56,6 +58,7 @@ class Calendar {
     }
 
     @ToString(includeNames = true)
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     static class SingleDate {
         @JsonProperty DateTime date
         @JsonProperty List<When> when
@@ -79,6 +82,7 @@ class Calendar {
     }
 
     @ToString(includeNames = true)
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     static class PatternDate {
         @JsonProperty DateTime startdate
         @JsonProperty DateTime enddate
@@ -117,8 +121,9 @@ class Calendar {
             }
             return true
         }
-/* Openingstime of the event */
+        /* Openingstime of the event */
         @ToString(includeNames = true)
+        @JsonInclude(JsonInclude.Include.NON_NULL)
         static class Open {
             @JsonProperty Integer month // month number (n-th month
             @JsonProperty Integer weeknumber // weeknumber (n-th week of the month) [1..5]
@@ -158,6 +163,7 @@ class Calendar {
     }
 
     @ToString(includeNames = true)
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     static class When {
         @JsonProperty String timestart
         @JsonProperty String timeend
@@ -193,30 +199,35 @@ class Calendar {
     }
 
     @ToString(includeNames = true)
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     static class StatusTranslation {
         @JsonProperty String lang
         @JsonProperty String text
     }
 
     @ToString(includeNames = true)
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     static class ExtraInformation {
         @JsonProperty String lang
         @JsonProperty String text
     }
 
     @ToString(includeNames = true)
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     static class ExceptionDate {
         @JsonProperty DateTime date
         @JsonProperty List<When> whens = []
     }
 
     @ToString(includeNames = true)
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     static class Comment {
         @JsonProperty String label
         @JsonProperty List<CommentTranslation> commentTranslations = []
     }
 
     @ToString(includeNames = true)
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     static class CommentTranslation {
         @JsonProperty String label
         @JsonProperty String lang

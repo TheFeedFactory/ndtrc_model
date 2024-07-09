@@ -11,6 +11,7 @@ import nl.ithelden.model.util.StringUtils
  * cancelled (indication whether the items are cancelled).
  */
 @ToString(includeNames = true)
+@JsonInclude(JsonInclude.Include.NON_NULL)
 class TRCItemCategories {
 
     @JsonProperty List<Type> types = []  // Type indication of the item (Hotel, Camping Site, ...)
@@ -19,6 +20,7 @@ class TRCItemCategories {
     @JsonProperty Boolean canceled // Boolean flag indicating the item is cancelled
 
     @ToString(includeNames = true)
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     static class Type {
        @JsonProperty String catid // ID of the category
        @JsonProperty Boolean isDefault // Boolean flag indicating this is the "default" (or main) type
@@ -26,7 +28,7 @@ class TRCItemCategories {
     }
 
     @ToString(includeNames = true)
-    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     static class Category {
         @JsonProperty String catid   // ID of the category
         @JsonProperty String valueid  // ValueID of the category (when applicable). Used e.g. with categories of type choice or multichoice.

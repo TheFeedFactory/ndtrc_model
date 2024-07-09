@@ -1,5 +1,6 @@
 package nl.ithelden.model.ndtrc
 
+import com.fasterxml.jackson.annotation.JsonInclude
 import com.fasterxml.jackson.annotation.JsonProperty
 import groovy.transform.ToString
 
@@ -7,6 +8,7 @@ import groovy.transform.ToString
  * used to define a way to map rooms and other types to a item
 */
 @ToString(includeNames = true)
+@JsonInclude(JsonInclude.Include.NON_NULL)
 class SubItemGroup {
     @JsonProperty String trcid // ID of this type (random)
     @JsonProperty Type type
@@ -15,11 +17,13 @@ class SubItemGroup {
     @JsonProperty List<File> media // media
 
     @ToString(includeNames = true)
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     static class SubItemTranslation {
         String lang, title
     }
 
     @ToString(includeNames = true)
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     static class Type {
         @JsonProperty String catid // ID of the category
         @JsonProperty Boolean isDefault // Boolean flag indicating this is the "default" (or main) type
@@ -27,6 +31,7 @@ class SubItemGroup {
     }
 
     @ToString(includeNames = true)
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     static class Category {
         @JsonProperty String catid   // ID of the category
         @JsonProperty String valueid  // ValueID of the category (when applicable). Used e.g. with categories of type choice or multichoice.
@@ -41,12 +46,14 @@ class SubItemGroup {
     }
 
     @ToString(includeNames = true)
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     static class CategoryValue {
         @JsonProperty String catid // ID of the category
         @JsonProperty List<CategoryTranslation> categorytranslations = []  // translations
     }
 
     @ToString(includeNames = true)
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     static class CategoryTranslation {
         @JsonProperty String catid
         @JsonProperty String lang
