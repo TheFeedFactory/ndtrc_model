@@ -52,12 +52,12 @@ class TRCItemCategories {
     @ToString(includeNames = true)
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     static class CategoryTranslation {
-        @JsonProperty String catid
-        @JsonProperty String lang
-        @JsonProperty String label
-        @JsonProperty String unit
-        @JsonProperty String value
-        @JsonProperty String explanation
+        String catid
+        String lang
+        String label
+        String unit
+        String value
+        String explanation
     }
 
     void cleanEmptyItems() {
