@@ -11,6 +11,12 @@ import groovy.transform.ToString
     Address start, end
 
     static enum Type {
-        route_maker
+        route_maker,
+        route_iq,
+        odp_routes
+
+        static Type fromString(String type) {
+            return valueOf(type)
+        }
     }
 }
