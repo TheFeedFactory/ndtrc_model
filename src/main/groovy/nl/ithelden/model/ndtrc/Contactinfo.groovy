@@ -80,7 +80,8 @@ class Contactinfo {
         @JsonProperty Boolean reservations
         @JsonProperty URLServiceType urlServiceType
 
-        enum URLServiceType { general, booking, review, video, webshop, socialmedia, lastminute, virtualtour, dmo, sustainability }
+        enum URLServiceType { general, booking, review, video, webshop, socialmedia, lastminute, virtualtour, dmo,
+                              sustainability, venuefinder }
 
         @JsonProperty List<DescriptionTranslation> descriptionTranslations = []
 
