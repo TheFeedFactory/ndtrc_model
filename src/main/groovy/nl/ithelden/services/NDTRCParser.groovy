@@ -448,16 +448,16 @@ class NDTRCParser {
         )
 
         subItemGroup.categories = subitemElement.selectNodes('*[local-name()="categories"]/*[local-name()="category"]').collect { Element categoryElement ->
-            return new SubItemGroup.Category(
+            return new TRCItemCategories.Category(
                     catid: categoryElement.attributeValue('catid'),
                     valueid: categoryElement.attributeValue('valueid'),
                     value: categoryElement.attributeValue('value'),
                     datatype: categoryElement.attributeValue('datatype') ? categoryElement.attributeValue('datatype') : null,
                     categoryvalues: categoryElement.selectNodes('*[local-name()="categoryvalues"]/*[local-name()="categoryvalue"]').collect { Element categoryValueElement ->
-                        return new SubItemGroup.CategoryValue(
+                        return new TRCItemCategories.CategoryValue(
                                 catid: categoryValueElement.attributeValue('catid'),
                                 categorytranslations: categoryValueElement.selectNodes('*[local-name()="categorytranslation"]').collect { Element categoryTranslationElement ->
-                                    return new SubItemGroup.CategoryTranslation(
+                                    return new TRCItemCategories.CategoryTranslation(
                                             lang: categoryTranslationElement.attributeValue('lang'),
                                             label: categoryTranslationElement.attributeValue('label'),
                                             unit: categoryTranslationElement.attributeValue('unit'),
@@ -469,7 +469,7 @@ class NDTRCParser {
                         )
                     },
                     categoryTranslations: categoryElement.selectNodes('*[local-name()="categorytranslation"]').collect { Element categoryTranslationElement ->
-                        return new SubItemGroup.CategoryTranslation(
+                        return new TRCItemCategories.CategoryTranslation(
                                 lang: categoryTranslationElement.attributeValue('lang'),
                                 label: categoryTranslationElement.attributeValue('label'),
                                 unit: categoryTranslationElement.attributeValue('unit'),
@@ -479,7 +479,7 @@ class NDTRCParser {
                         )
                     },
                     parentCategoryTranslations: categoryElement.selectNodes('*[local-name()="parentcategorytranslation"]').collect { Element categoryTranslationElement ->
-                        return new SubItemGroup.CategoryTranslation(
+                        return new TRCItemCategories.CategoryTranslation(
                                 lang: categoryTranslationElement.attributeValue('lang'),
                                 label: categoryTranslationElement.attributeValue('label'),
                                 unit: categoryTranslationElement.attributeValue('unit'),
@@ -489,7 +489,7 @@ class NDTRCParser {
                         )
                     },
                     valueCategoryTranslations: categoryElement.selectNodes('*[local-name()="valuecategorytranslation"]').collect { Element categoryTranslationElement ->
-                        return new SubItemGroup.CategoryTranslation(
+                        return new TRCItemCategories.CategoryTranslation(
                                 lang: categoryTranslationElement.attributeValue('lang'),
                                 label: categoryTranslationElement.attributeValue('label'),
                                 unit: categoryTranslationElement.attributeValue('unit'),
@@ -503,11 +503,11 @@ class NDTRCParser {
 
         Element typeElement = (Element) subitemElement.selectSingleNode('*[local-name()="type"]')
 
-        subItemGroup.type = new SubItemGroup.Type(
+        subItemGroup.type = new TRCItemCategories.Type(
             catid: typeElement.attributeValue('catid'),
             isDefault: typeElement.attributeValue('default') ? Boolean.parseBoolean(typeElement.attributeValue('isDefault')) : null,
             categoryTranslations: typeElement.selectNodes('*[local-name()="categorytranslation"]').collect { Element categoryTranslationElement ->
-                return new SubItemGroup.CategoryTranslation(
+                return new TRCItemCategories.CategoryTranslation(
                         lang: categoryTranslationElement.attributeValue('lang'),
                         label: categoryTranslationElement.attributeValue('label'),
                         unit: categoryTranslationElement.attributeValue('unit'),

@@ -698,7 +698,7 @@ class NDTRCSerializer {
         if (subItemGroup.categories) {
             Element categoriesElement = subItemElement.addElement('categories')
 
-            subItemGroup.categories.each { SubItemGroup.Category category ->
+            subItemGroup.categories.each { TRCItemCategories.Category category ->
                 categoriesElement.add(serializeSubItemGroupCategory(category))
             }
         }
@@ -730,7 +730,7 @@ class NDTRCSerializer {
         return mainElement
     }
 
-    static Element serializeSubItemType(SubItemGroup.Type type) {
+    static Element serializeSubItemType(TRCItemCategories.Type type) {
         Element mainElement = DocumentHelper.createElement(new QName('type', new Namespace(null, 'http://www.vvvnederland.nl/XMLSchema/TrcXml/2.0')))
 
         if (type.catid) mainElement.addAttribute('catid', type.catid)
@@ -739,7 +739,7 @@ class NDTRCSerializer {
             if (type.categoryTranslations.any  { it.lang == 'nl'}) {
                 mainElement.addText(type.categoryTranslations.find  { it.lang == 'nl'}.label ?: "")
             }
-            type.categoryTranslations.each { SubItemGroup.CategoryTranslation categoryTranslation ->
+            type.categoryTranslations.each { TRCItemCategories.CategoryTranslation categoryTranslation ->
                 mainElement.add(serializeSubItemGroupCategoryTranslation(categoryTranslation, 'categorytranslation'))
             }
         }
@@ -790,7 +790,7 @@ class NDTRCSerializer {
         return mainElement
     }
 
-    static Element serializeSubItemGroupCategory(SubItemGroup.Category category) {
+    static Element serializeSubItemGroupCategory(TRCItemCategories.Category category) {
         Element mainElement = DocumentHelper.createElement(new QName('category', new Namespace(null, 'http://www.vvvnederland.nl/XMLSchema/TrcXml/2.0')))
 
         if (category.catid != null) mainElement.addAttribute('catid', category.catid)
@@ -800,23 +800,23 @@ class NDTRCSerializer {
 
         if (category.categoryvalues) {
             Element categoriesElement = mainElement.addElement('categoryvalues')
-            category.categoryvalues.each { SubItemGroup.CategoryValue categoryvalue ->
+            category.categoryvalues.each { CategoryValue categoryvalue ->
                 categoriesElement.add(serializeSubItemGroupCategoryValue(categoryvalue))
             }
         }
 
         if (category.categoryTranslations) {
-            category.categoryTranslations.each { SubItemGroup.CategoryTranslation categoryTranslation ->
+            category.categoryTranslations.each { TRCItemCategories.CategoryTranslation categoryTranslation ->
                 mainElement.add(serializeSubItemGroupCategoryTranslation(categoryTranslation, 'categorytranslation'))
             }
         }
         if (category.parentCategoryTranslations) {
-            category.parentCategoryTranslations.each { SubItemGroup.CategoryTranslation categoryTranslation ->
+            category.parentCategoryTranslations.each { TRCItemCategories.CategoryTranslation categoryTranslation ->
                 mainElement.add(serializeSubItemGroupCategoryTranslation(categoryTranslation, 'parentcategorytranslation'))
             }
         }
         if (category.valueCategoryTranslations) {
-            category.valueCategoryTranslations.each { SubItemGroup.CategoryTranslation categoryTranslation ->
+            category.valueCategoryTranslations.each { TRCItemCategories.CategoryTranslation categoryTranslation ->
                 mainElement.add(serializeSubItemGroupCategoryTranslation(categoryTranslation, 'valuecategorytranslation'))
             }
         }
@@ -836,12 +836,12 @@ class NDTRCSerializer {
         return mainElement
     }
 
-    static Element serializeSubItemGroupCategoryValue(SubItemGroup.CategoryValue categoryValue) {
+    static Element serializeSubItemGroupCategoryValue(CategoryValue categoryValue) {
         Element mainElement = DocumentHelper.createElement(new QName('categoryvalue', new Namespace(null, 'http://www.vvvnederland.nl/XMLSchema/TrcXml/2.0')))
 
         if (categoryValue.catid != null) mainElement.addAttribute('catid', categoryValue.catid)
         if (categoryValue.categorytranslations) {
-            categoryValue.categorytranslations.each { SubItemGroup.CategoryTranslation categoryTranslation ->
+            categoryValue.categorytranslations.each { TRCItemCategories.CategoryTranslation categoryTranslation ->
                 mainElement.add(serializeSubItemGroupCategoryTranslation(categoryTranslation, 'categorytranslation'))
             }
         }
@@ -862,7 +862,7 @@ class NDTRCSerializer {
         return mainElement
     }
 
-    static Element serializeSubItemGroupCategoryTranslation(SubItemGroup.CategoryTranslation categoryTranslation, String elementName = 'categorytranslation') {
+    static Element serializeSubItemGroupCategoryTranslation(TRCItemCategories.CategoryTranslation categoryTranslation, String elementName = 'categorytranslation') {
         Element mainElement = DocumentHelper.createElement(new QName(elementName, new Namespace(null, 'http://www.vvvnederland.nl/XMLSchema/TrcXml/2.0')))
 
         if (categoryTranslation.lang) mainElement.addAttribute('lang', categoryTranslation.lang)
