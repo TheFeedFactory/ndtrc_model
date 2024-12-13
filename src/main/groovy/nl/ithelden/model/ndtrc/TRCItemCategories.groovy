@@ -14,39 +14,41 @@ import nl.ithelden.model.util.StringUtils
 @JsonInclude(JsonInclude.Include.NON_NULL)
 class TRCItemCategories {
 
-    @JsonProperty List<Type> types = []  // Type indication of the item (Hotel, Camping Site, ...)
-    @JsonProperty List<Category> categories = []  // Categories/properties of the item
-    @JsonProperty Boolean soldout  // Boolean flag indicating the item is soldout
-    @JsonProperty Boolean canceled // Boolean flag indicating the item is cancelled
+    List<Type> types = []  // Type indication of the item (Hotel, Camping Site, ...)
+    List<Category> categories = []  // Categories/properties of the item
+    Boolean soldout  // Boolean flag indicating the item is soldout
+    Boolean canceled // Boolean flag indicating the item is cancelled
 
     @ToString(includeNames = true)
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     static class Type {
-       @JsonProperty String catid // ID of the category
-       @JsonProperty Boolean isDefault // Boolean flag indicating this is the "default" (or main) type
-       @JsonProperty List<CategoryTranslation> categoryTranslations= []
+       String catid // ID of the category
+       Boolean isDefault // Boolean flag indicating this is the "default" (or main) type
+       List<CategoryTranslation> categoryTranslations= []
     }
 
     @ToString(includeNames = true)
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     static class Category {
-        @JsonProperty String catid   // ID of the category
-        @JsonProperty String valueid  // ValueID of the category (when applicable). Used e.g. with categories of type choice or multichoice.
-        @JsonProperty String value  // Value of the category (when applicable)
-        @JsonProperty String datatype // Datatype of the category
-        @JsonProperty List<CategoryValue> categoryvalues = []  // Categories/properties of the item
-        @JsonProperty List<CategoryTranslation> categoryTranslations = []  // translations
-        @JsonProperty List<CategoryTranslation> parentCategoryTranslations = []  // translations
-        @JsonProperty List<CategoryTranslation> valueCategoryTranslations = []  // translations
+        String catid   // ID of the category
+        String valueid  // ValueID of the category (when applicable). Used e.g. with categories of type choice or multichoice.
+        String value  // Value of the category (when applicable)
+        String defaultValue  // Default value if no value is set
+        DataType datatype // Datatype of the category
+        List<CategoryValue> categoryvalues = []  // Categories/properties of the item
+        List<CategoryTranslation> categoryTranslations = []  // translations
+        List<CategoryTranslation> parentCategoryTranslations = []  // translations
+        List<CategoryTranslation> valueCategoryTranslations = []  // translations
 
-        enum DataType { yesno, nullableyesno, choice, multichoice, freetext, integer, decimal, date }
+        enum DataType { yes, yesno, nullableyesno, choice, multichoice, freetext, integer, decimal, date }
     }
 
     @ToString(includeNames = true)
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     static class CategoryValue {
-        @JsonProperty String catid // ID of the category
-        @JsonProperty List<CategoryTranslation> categorytranslations = []  // translations
+        String catid // ID of the category
+        String value
+        List<CategoryTranslation> categorytranslations = []  // translations
     }
 
     @ToString(includeNames = true)
@@ -64,13 +66,13 @@ class TRCItemCategories {
         this.categories = this.categories?.findAll { Category category ->
             if (!category || StringUtils.isEmpty(category.catid)) return false
 
-            if ("freetext".equalsIgnoreCase(category.datatype) && !category.value) {
+            if ("freetext".equalsIgnoreCase(category.datatype?.toString()) && !category.value) {
                 return false
             }
-            if ("multichoice".equalsIgnoreCase(category.datatype) && !category.categoryvalues) {
+            if ("multichoice".equalsIgnoreCase(category.datatype?.toString()) && !category.categoryvalues) {
                 return false
             }
-            if ("choice".equalsIgnoreCase(category.datatype) && !category.valueid) {
+            if ("choice".equalsIgnoreCase(category.datatype?.toString()) && !category.valueid) {
                 return false
             }
 
