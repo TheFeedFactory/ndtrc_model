@@ -24,13 +24,13 @@ class SubItemGroup {
 
     void cleanEmptyItems() {
         this.categories = this.categories?.findAll { TRCItemCategories.Category category ->
-            if ("freetext".equalsIgnoreCase(category.datatype) && !category.value) {
+            if (TRCItemCategories.Category.DataType.freetext == category.datatype && !category.value) {
                 return false
             }
-            if ("multichoice".equalsIgnoreCase(category.datatype) && !category.valueid) {
+            if (TRCItemCategories.Category.DataType.multichoice == category.datatype && !category.valueid) {
                 return false
             }
-            if ("choice".equalsIgnoreCase(category.datatype) && !category.valueid) {
+            if (TRCItemCategories.Category.DataType.choice == category.datatype && !category.valueid) {
                 return false
             }
 
