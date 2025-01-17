@@ -103,6 +103,7 @@ class NDTRCSerializer {
             Element priceinformationElement = mainElement.addElement('priceinformation')
 
             trcItem.priceElements.each { PriceElement priceElement ->
+                if (!priceElement) return
                 priceinformationElement.add(serializePriceElement(priceElement))
             }
 
@@ -333,6 +334,9 @@ class NDTRCSerializer {
 
     static Element serializePriceElement(PriceElement priceElement) {
         Element mainElement = DocumentHelper.createElement(new QName('priceelement', new Namespace(null, 'http://www.vvvnederland.nl/XMLSchema/TrcXml/2.0')))
+        if (!priceElement) {
+            return mainElement
+        }
 
         if (priceElement.freeentrance != null) {
             mainElement.addElement('freeentrance').setText(Boolean.toString(priceElement.freeentrance).toLowerCase())
