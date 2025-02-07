@@ -14,9 +14,5 @@ import groovy.transform.ToString
         route_maker,
         route_iq,
         odp_routes
-
-        static Type fromString(String type) {
-            return valueOf(type)
-        }
     }
 }
