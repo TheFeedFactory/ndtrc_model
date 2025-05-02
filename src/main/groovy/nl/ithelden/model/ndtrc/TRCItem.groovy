@@ -5,7 +5,10 @@ import groovy.transform.ToString
 import org.joda.time.DateTime
 
 /**
- * Represents a TRC item.
+ * Represents a core TRC (Tourist Registration Core) item, such as an event, location, or route.
+ * Contains extensive metadata including identifiers, dates, ownership, status, type,
+ * calendar, contact info, categories, performers, files, details, relations, pricing,
+ * location, translations, promotions, and route information.
  */
 @ToString(includeNames = true)
 class TRCItem {
@@ -63,11 +66,17 @@ class TRCItem {
     enum WFStatus { draft, readyforvalidation, approved, rejected, deleted, archived }
     enum EntityType { EVENEMENT, LOCATIE, EVENEMENTGROEP, PLAATSREGIO , ROUTE }
 
+    /**
+     * Represents a category associated with the TRC item, including an ID and translations.
+     */
     @ToString(includeNames = true)
     static class Category {
         String id
         List<Translation> translations = []
 
+        /**
+         * Represents a translation for a category name in a specific language.
+         */
         static class Translation {
             String lang, text
         }

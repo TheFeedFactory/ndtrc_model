@@ -6,6 +6,11 @@ import com.fasterxml.jackson.annotation.JsonProperty
 import groovy.transform.ToString
 import nl.ithelden.model.util.StringUtils
 
+/**
+ * Represents a postal address, including street, house number, city, zip code, country, province,
+ * neighborhood, district, GIS coordinates, and associated TRC IDs. Includes flags for main/reservation
+ * addresses and methods for checking emptiness and normalizing formats (zip code, city name).
+ */
 @ToString(includeNames = true)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 class Address {

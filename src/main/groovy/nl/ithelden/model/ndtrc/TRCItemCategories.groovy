@@ -6,9 +6,9 @@ import groovy.transform.ToString
 import nl.ithelden.model.util.StringUtils
 
 /**
- * Categorisation of the object. The categorisation cotnains 4 subelements: types (indicating the type of the item),
- * categories (indicating the properties of the item) soldout (indicating whether the items are soldout) and
- * cancelled (indication whether the items are cancelled).
+ * Represents the categorization of a TRC item. Contains lists of item types (e.g., Hotel, Event)
+ * and categories (properties/attributes), along with boolean flags indicating if the item
+ * is sold out or cancelled. Includes a method to clean up empty or invalid category entries.
  */
 @ToString(includeNames = true)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -19,6 +19,10 @@ class TRCItemCategories {
     Boolean soldout  // Boolean flag indicating the item is soldout
     Boolean canceled // Boolean flag indicating the item is cancelled
 
+    /**
+     * Represents the type of the TRC item (e.g., Hotel, Museum).
+     * Includes the category ID, a flag for the default type, and translations.
+     */
     @ToString(includeNames = true)
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     static class Type {
@@ -27,6 +31,11 @@ class TRCItemCategories {
        List<CategoryTranslation> categoryTranslations= []
     }
 
+    /**
+     * Represents a specific category or property of the TRC item (e.g., Wi-Fi, Accessibility).
+     * Includes category ID, value ID (for choice types), value, default value, data type,
+     * potential sub-values (`CategoryValue`), and various translations.
+     */
     @ToString(includeNames = true)
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     static class Category {
@@ -43,6 +52,10 @@ class TRCItemCategories {
         enum DataType { yes, yesno, nullableyesno, choice, multichoice, freetext, integer, decimal, date }
     }
 
+    /**
+     * Represents a specific value within a category, often used for multi-choice categories.
+     * Includes the category ID, the value itself, and translations.
+     */
     @ToString(includeNames = true)
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     static class CategoryValue {
@@ -51,6 +64,10 @@ class TRCItemCategories {
         List<CategoryTranslation> categorytranslations = []  // translations
     }
 
+    /**
+     * Represents a translation related to a category, type, or category value.
+     * Includes the category ID, language, label, unit, value, and explanation.
+     */
     @ToString(includeNames = true)
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     static class CategoryTranslation {

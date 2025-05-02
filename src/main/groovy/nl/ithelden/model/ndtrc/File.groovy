@@ -4,6 +4,11 @@ import com.fasterxml.jackson.annotation.JsonInclude
 import com.fasterxml.jackson.annotation.JsonProperty
 import groovy.transform.ToString
 
+/**
+ * Represents a file associated with a TRC item, containing metadata like TRC ID, copyright,
+ * filename, hyperlink, type, media type, and title information.
+ * Includes logic to normalize YouTube URLs and infer media types.
+ */
 @ToString(includeNames = true)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 class File {
@@ -20,12 +25,18 @@ class File {
     @JsonProperty String targetLanguage
     @JsonProperty Title title
 
+    /**
+     * Represents the title of a file, including the main label and translations.
+     */
     @ToString(includeNames = true)
     @JsonInclude(JsonInclude.Include.NON_NULL)
     static class Title {
         @JsonProperty String label
         @JsonProperty List<TitleTranslation> titleTranslations = []
 
+        /**
+         * Represents a translation of a file title in a specific language.
+         */
         @ToString(includeNames = true)
         @JsonInclude(JsonInclude.Include.NON_NULL)
         static class TitleTranslation {

@@ -7,6 +7,12 @@ import groovy.transform.ToString
 import nl.ithelden.model.util.StringUtils
 import org.joda.time.DateTime
 
+/**
+ * Represents the scheduling information for a TRC item, including single dates,
+ * recurring patterns, exceptions (open, closed, sold out, cancelled), comments,
+ * and overall status (e.g., always open, on request). Provides methods to clean up
+ * invalid date/time entries and determine the primary calendar type.
+ */
 @ToString(includeNames = true)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 class Calendar {
@@ -57,6 +63,9 @@ class Calendar {
         }
     }
 
+    /**
+     * Represents a single date entry in the calendar, including the date and specific time slots (`When`).
+     */
     @ToString(includeNames = true)
     @JsonInclude(JsonInclude.Include.NON_NULL)
     static class SingleDate {
@@ -81,6 +90,10 @@ class Calendar {
         }
     }
 
+    /**
+     * Represents a recurring date pattern in the calendar, defined by start/end dates,
+     * recurrence type (daily, weekly, etc.), frequency, and specific opening details (`Open`).
+     */
     @ToString(includeNames = true)
     @JsonInclude(JsonInclude.Include.NON_NULL)
     static class PatternDate {
@@ -121,6 +134,10 @@ class Calendar {
             }
             return true
         }
+        /**
+         * Represents the specific opening details within a recurring pattern or exception,
+         * defined by month, week number, day number, day of the week, and time slots (`When`).
+         */
         /* Openingstime of the event */
         @ToString(includeNames = true)
         @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -162,6 +179,10 @@ class Calendar {
         }
     }
 
+    /**
+     * Represents a specific time slot with a start and end time, status (normal, cancelled, etc.),
+     * status translations, and extra information.
+     */
     @ToString(includeNames = true)
     @JsonInclude(JsonInclude.Include.NON_NULL)
     static class When {
@@ -198,6 +219,9 @@ class Calendar {
         enum Status { normal, cancelled, soldout, movedto, premiere, reprise }
     }
 
+    /**
+     * Represents a translation for the status of a time slot (`When`) in a specific language.
+     */
     @ToString(includeNames = true)
     @JsonInclude(JsonInclude.Include.NON_NULL)
     static class StatusTranslation {
@@ -205,6 +229,9 @@ class Calendar {
         @JsonProperty String text
     }
 
+    /**
+     * Provides extra information associated with a time slot (`When`) in a specific language.
+     */
     @ToString(includeNames = true)
     @JsonInclude(JsonInclude.Include.NON_NULL)
     static class ExtraInformation {
@@ -212,6 +239,10 @@ class Calendar {
         @JsonProperty String text
     }
 
+    /**
+     * Represents an exception date (e.g., special opening, closing, cancellation) with its date
+     * and associated time slots (`When`).
+     */
     @ToString(includeNames = true)
     @JsonInclude(JsonInclude.Include.NON_NULL)
     static class ExceptionDate {
@@ -219,6 +250,9 @@ class Calendar {
         @JsonProperty List<When> whens = []
     }
 
+    /**
+     * Represents a comment associated with the calendar, including the main label and translations.
+     */
     @ToString(includeNames = true)
     @JsonInclude(JsonInclude.Include.NON_NULL)
     static class Comment {
@@ -226,6 +260,9 @@ class Calendar {
         @JsonProperty List<CommentTranslation> commentTranslations = []
     }
 
+    /**
+     * Represents a translation for a calendar comment in a specific language.
+     */
     @ToString(includeNames = true)
     @JsonInclude(JsonInclude.Include.NON_NULL)
     static class CommentTranslation {

@@ -6,6 +6,11 @@ import com.fasterxml.jackson.annotation.JsonProperty
 import groovy.transform.ToString
 import nl.ithelden.model.util.StringUtils
 
+/**
+ * Represents contact information for a TRC item, including label, email, phone, fax,
+ * URLs, and address details. Contains methods to convert between V1 (single contact)
+ * and V2 (multiple contacts - deprecated fields) formats.
+ */
 @ToString(includeNames = true)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 class Contactinfo {
@@ -21,6 +26,9 @@ class Contactinfo {
     @JsonProperty Fax fax
     @JsonProperty Address address
 
+    /**
+     * Represents an email address with an optional description code and translations.
+     */
     @ToString(includeNames = true)
     @JsonInclude(JsonInclude.Include.NON_NULL)
     static class Mail {
@@ -37,6 +45,9 @@ class Contactinfo {
         }
     }
 
+    /**
+     * Represents a phone number with an optional description code and translations.
+     */
     @ToString(includeNames = true)
     @JsonInclude(JsonInclude.Include.NON_NULL)
     static class Phone {
@@ -53,6 +64,9 @@ class Contactinfo {
         }
     }
 
+    /**
+     * Represents a fax number with an optional description code and translations.
+     */
     @ToString(includeNames = true)
     @JsonInclude(JsonInclude.Include.NON_NULL)
     static class Fax {
@@ -69,6 +83,10 @@ class Contactinfo {
         }
     }
 
+    /**
+     * Represents a URL associated with the contact information, including type, language,
+     * and description.
+     */
     @ToString(includeNames = true)
     @JsonInclude(JsonInclude.Include.NON_NULL)
     static class Url {
@@ -100,6 +118,10 @@ class Contactinfo {
         }
     }
 
+    /**
+     * Represents a translation for a description field (e.g., for email, phone, fax, URL)
+     * in a specific language.
+     */
     @ToString(includeNames = true)
     @JsonInclude(JsonInclude.Include.NON_NULL)
     static class DescriptionTranslation {

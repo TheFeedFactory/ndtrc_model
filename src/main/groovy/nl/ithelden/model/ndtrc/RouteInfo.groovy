@@ -2,6 +2,10 @@ package nl.ithelden.model.ndtrc
 
 import groovy.transform.ToString
 
+/**
+ * Contains information about a route, including its type, URL, distance,
+ * duration, and start/end addresses.
+ */
 @ToString(includeNames = true)
  class RouteInfo {
     Type type

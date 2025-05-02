@@ -5,6 +5,12 @@ import com.fasterxml.jackson.annotation.JsonProperty
 import groovy.transform.ToString
 import org.joda.time.DateTime
 
+/**
+ * Represents a group of TRC items, containing metadata common to the group,
+ * such as TRC ID, creation/update/availability dates, ownership information,
+ * workflow status, associated calendar, contact info, categories, files, details,
+ * pricing, translations, promotions, and event links.
+ */
 @ToString(includeNames = true)
 class TRCItemGroup {
     @JsonProperty String trcid
@@ -40,6 +46,9 @@ class TRCItemGroup {
     @JsonProperty List<Promotion> promotions
 
     List<EventLink> eventLinks = []
+    /**
+     * Represents a link to an event associated with the TRC item group.
+     */
     @JsonInclude(JsonInclude.Include.NON_NULL)
     static class EventLink {
         String eventId
