@@ -7,3 +7,4 @@ build
 /.gradle
 /target
 /.idea
+/.vscode
