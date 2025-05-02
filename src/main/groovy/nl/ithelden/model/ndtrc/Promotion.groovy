@@ -1,6 +1,5 @@
 package nl.ithelden.model.ndtrc
 
-
 import groovy.transform.ToString
 import org.joda.time.DateTime
 
