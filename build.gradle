@@ -1,9 +1,6 @@
-apply plugin: 'groovy'
-apply plugin: 'java'
-
-jar {
-    enabled = true
-    version = '1.0.0'
+plugins {
+    id 'groovy'
+    id 'java-library'
 }
 
 java {
