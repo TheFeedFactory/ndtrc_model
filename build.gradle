@@ -14,11 +14,10 @@ repositories {
 }
 
 dependencies {
-    implementation('org.codehaus.groovy:groovy:2.5.+')
-    implementation("org.slf4j:slf4j-api:2.+")
-    implementation group: 'joda-time', name: 'joda-time', version: '2.+'
-    implementation 'com.fasterxml.jackson.datatype:jackson-datatype-joda:2.+'
-
-    testImplementation("org.junit.jupiter:junit-jupiter-api:5.+")
+    implementation('org.codehaus.groovy:groovy:2.5.23')
+    implementation("org.slf4j:slf4j-api:2.0.17")
+    implementation('joda-time:joda-time:2.14.0')
+    implementation('com.fasterxml.jackson.datatype:jackson-datatype-joda:2.19.0')
+    testImplementation("org.junit.jupiter:junit-jupiter-api:5.12.2")
 }
 
