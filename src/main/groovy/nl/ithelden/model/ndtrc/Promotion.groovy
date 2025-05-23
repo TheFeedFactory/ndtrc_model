@@ -23,7 +23,7 @@ class Promotion {
         always, dateRange, earlyBird, lastMinute
     }
 
-    Duration eventRelativeDuration;
+    String eventRelativeDuration; // e.g. "PT1H" for 1 hour, P3Y6M4DT12H30M5S for 3 years, 6 months, 4 days, 12 hours, 30 minutes and 5 seconds
     DateTime startDate
     DateTime endDate
 
