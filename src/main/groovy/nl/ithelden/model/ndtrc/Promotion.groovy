@@ -17,10 +17,10 @@ class Promotion {
     List<Contactinfo.Url> detailsUrls
     boolean enabled = true
     Boolean restrictedToRegisteredUsers
-    ValidityStrategy validityStrategy
+    ValidityStrategy validityStrategy = ValidityStrategy.always
 
     static enum ValidityStrategy {
-        dateRange, earlyBird, lastMinute
+        always, dateRange, earlyBird, lastMinute
     }
 
     Duration eventRelativeDuration;
