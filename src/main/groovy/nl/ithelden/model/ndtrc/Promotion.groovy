@@ -2,6 +2,7 @@ package nl.ithelden.model.ndtrc
 
 import groovy.transform.ToString
 import org.joda.time.DateTime
+import org.joda.time.Duration
 
 /**
  * Represents a promotion associated with a TRC item, detailing the product, type,
@@ -14,9 +15,18 @@ class Promotion {
     Discount discount
     List<PromotionTranslation> translations
     List<Contactinfo.Url> detailsUrls
+    boolean enabled = true
+    Boolean restrictedToRegisteredUsers
+    ValidityStrategy validityStrategy
+
+    static enum ValidityStrategy {
+        dateRange, earlyBird, lastMinute
+    }
+
+    Duration eventRelativeDuration;
     DateTime startDate
     DateTime endDate
-    boolean enabled = true
+
     List<Calendar.PatternDate.Open> opens
 
     /**
