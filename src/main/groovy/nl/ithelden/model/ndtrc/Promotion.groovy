@@ -48,5 +48,5 @@ class Promotion {
         String lang, description
     }
 
-    static enum PromotionType { free, discount, gift, allowance }
+    static enum PromotionType { none, free, discount, gift, allowance }
 }
