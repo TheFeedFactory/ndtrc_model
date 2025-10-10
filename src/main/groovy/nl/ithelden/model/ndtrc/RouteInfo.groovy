@@ -24,17 +24,8 @@ class RouteInfo {
     List<LatLng> calculatedCoordinates = [] // Routing from mapbox
 
     // Route metadata
-    Double elevationGainMeters           // Total ascent
-    Double elevationLossMeters           // Total descent
-    Double maxAltitudeMeters             // Highest point
-    Double minAltitudeMeters             // Lowest point
     RouteDifficulty difficulty           // Route difficulty level
     SurfaceType primarySurface           // Main surface type
-
-    // Caching and versioning
-    Long calculatedAt                    // Timestamp of route calculation
-    String mapboxApiVersion              // API version used
-    Map<String, Object> routeOptions = [:] // Mapbox routing options used
 
     static enum RouteType {
         // Mapbox API routing profiles
@@ -45,9 +36,11 @@ class RouteInfo {
     }
 
     static enum Type {
+        eventConnectors,
         route_maker,
         route_iq,
-        odp_routes
+        odp_routes,
+        other
     }
 
     static enum RouteDifficulty {
@@ -89,8 +82,7 @@ class RouteInfo {
         List<File> files
 
         // Additional metadata
-        String openingHours      // Free text or structured format
-        Boolean accessible       // Wheelchair/accessibility info
+        Calendar calendar  // object describing opening hours
     }
 
     static enum PoiCategory {
@@ -137,42 +129,5 @@ class RouteInfo {
             double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a))
             return R * c
         }
-    }
-
-    // Validation methods
-    boolean hasValidCoordinates() {
-        return routeCoordinates?.every { it?.isValid() } &&
-               calculatedCoordinates?.every { it?.isValid() }
-    }
-
-    boolean hasValidDistance() {
-        return distanceInKilometers != null &&
-               distanceInKilometers > 0 &&
-               distanceInKilometers < 10000 // Max 10,000 km seems reasonable
-    }
-
-    boolean hasValidDuration() {
-        return durationInMinutes != null &&
-               durationInMinutes > 0 &&
-               durationInMinutes < 10080 // Max 1 week
-    }
-
-    Double calculateTotalDistance() {
-        if (!calculatedCoordinates || calculatedCoordinates.size() < 2) {
-            return null
-        }
-
-        double total = 0
-        for (int i = 0; i < calculatedCoordinates.size() - 1; i++) {
-            Double dist = calculatedCoordinates[i]?.distanceTo(calculatedCoordinates[i + 1])
-            if (dist != null) total += dist
-        }
-        return total
-    }
-
-    // Helper method to check if route needs recalculation
-    boolean needsRecalculation(long maxAgeMillis = 86400000L) { // Default 24 hours
-        return calculatedAt == null ||
-               (System.currentTimeMillis() - calculatedAt) > maxAgeMillis
     }
 }
