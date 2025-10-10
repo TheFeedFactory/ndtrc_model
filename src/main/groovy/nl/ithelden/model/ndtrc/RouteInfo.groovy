@@ -114,6 +114,7 @@ class RouteInfo {
     static class LatLng {
         Double lat, lng
         Double altitude  // Elevation in meters (optional)
+        String label
 
         // Validation method
         boolean isValid() {
