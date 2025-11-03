@@ -8,33 +8,103 @@ import nl.ithelden.model.util.StringUtils
 import org.joda.time.DateTime
 
 /**
- * Represents the scheduling information for a TRC item, including single dates,
- * recurring patterns, exceptions (open, closed, sold out, cancelled), comments,
- * and overall status (e.g., always open, on request). Provides methods to clean up
- * invalid date/time entries and determine the primary calendar type.
+ * Represents the opening times and scheduling information for events or locations.
+ *
+ * <h3>Overview</h3>
+ * <p>The Calendar object describes when an event or location is open/available. It supports
+ * multiple patterns ranging from simple to complex scheduling scenarios.</p>
+ *
+ * <h3>Calendar Patterns</h3>
+ * <p>There are several ways to define opening times, each with different levels of complexity:</p>
+ *
+ * <h4>1. Simple Special Cases</h4>
+ * <ul>
+ *   <li><strong>ALWAYS OPEN</strong> - Set <code>alwaysopen = true</code>. Used for locations
+ *       that are accessible 24/7 (e.g., public parks, outdoor monuments)</li>
+ *   <li><strong>ON REQUEST</strong> - Set <code>onrequest = true</code>. Used when opening times
+ *       are flexible and require advance booking or arrangement</li>
+ * </ul>
+ *
+ * <h4>2. Simple Date/Time Combinations</h4>
+ * <p>Use <strong>singleDates</strong> for specific individual dates with times:</p>
+ * <ul>
+ *   <li>Example: "Friday 2 Jan 10:00-13:00"</li>
+ *   <li>Example: "Saturday 15 Mar 14:00-17:00, 19:00-22:00"</li>
+ *   <li>Best for: Events with specific dates, temporary exhibitions, special occasions</li>
+ * </ul>
+ *
+ * <h4>3. Recurring Patterns</h4>
+ * <p>Use <strong>patternDates</strong> for regular, repeating schedules:</p>
+ * <ul>
+ *   <li>Example: "Every Monday, Thursday, Friday from 11:00-13:00"</li>
+ *   <li>Example: "Every day from 09:00-17:00 (weekdays) and 10:00-16:00 (weekends)"</li>
+ *   <li>Example: "First Monday of each month from 14:00-16:00"</li>
+ *   <li>Best for: Regular opening hours, weekly events, seasonal schedules</li>
+ *   <li>Supports various recurrency types:
+ *     <ul>
+ *       <li><strong>daily</strong> - Every day or every N days</li>
+ *       <li><strong>weekly</strong> - Specific days of the week (most common for opening hours)</li>
+ *       <li><strong>monthlySimple</strong> - Same day each month (e.g., 15th of every month)</li>
+ *       <li><strong>monthlyComplex</strong> - Relative day in month (e.g., "first Monday", "last Friday")</li>
+ *       <li><strong>yearly</strong> - Annual events</li>
+ *     </ul>
+ *   </li>
+ * </ul>
+ *
+ * <h3>Exception Dates</h3>
+ * <p>Override regular schedules for specific dates using exception lists:</p>
+ * <ul>
+ *   <li><strong>opens</strong> - Special opening dates (e.g., usually closed on Sundays but open this Sunday)</li>
+ *   <li><strong>closeds</strong> - Special closure dates (e.g., holidays, maintenance days)</li>
+ *   <li><strong>soldouts</strong> - Dates when tickets/capacity is sold out</li>
+ *   <li><strong>cancelleds</strong> - Dates when scheduled events are cancelled</li>
+ * </ul>
+ *
+ * <h3>Calendar Type Determination</h3>
+ * <p>The system automatically determines the <code>calendarType</code> based on the data provided,
+ * in the following priority order:</p>
+ * <ol>
+ *   <li><strong>ALWAYSOPEN</strong> - When alwaysopen flag is true</li>
+ *   <li><strong>ONREQUEST</strong> - When onrequest flag is true</li>
+ *   <li><strong>SINGLEDATES</strong> - When singleDates list has entries</li>
+ *   <li><strong>OPENINGTIMES</strong> - When patternDates exist without start/end dates (ongoing hours)</li>
+ *   <li><strong>PATTERNDATES</strong> - When patternDates exist with start/end dates (time-limited patterns)</li>
+ *   <li><strong>NONE</strong> - When no scheduling information is provided</li>
+ * </ol>
  */
 @ToString(includeNames = true)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 class Calendar {
-    @JsonProperty List<SingleDate> singleDates = []
-    @JsonProperty List<PatternDate> patternDates = []
+    @JsonProperty List<SingleDate> singleDates = []      // Specific individual dates with times
+    @JsonProperty List<PatternDate> patternDates = []    // Recurring patterns (e.g., "every Monday from 10:00-17:00")
 
-    @JsonProperty List<ExceptionDate> opens = []
-    @JsonProperty List<ExceptionDate> closeds = []
-    @JsonProperty List<ExceptionDate> soldouts = []
-    @JsonProperty List<ExceptionDate> cancelleds = []
+    @JsonProperty List<ExceptionDate> opens = []         // Special opening dates that override regular schedule
+    @JsonProperty List<ExceptionDate> closeds = []       // Special closure dates (e.g., holidays)
+    @JsonProperty List<ExceptionDate> soldouts = []      // Dates when sold out
+    @JsonProperty List<ExceptionDate> cancelleds = []    // Dates when cancelled
 
-    @JsonProperty boolean excludeholidays
-    @JsonProperty boolean cancelled = false
-    @JsonProperty boolean soldout = false
+    @JsonProperty boolean excludeholidays                // Exclude public holidays from the schedule
+    @JsonProperty boolean cancelled = false              // Event/location is cancelled
+    @JsonProperty boolean soldout = false                // Event/location is sold out
 
-    @JsonProperty Boolean onrequest
-    @JsonProperty Boolean alwaysopen
+    @JsonProperty Boolean onrequest                      // Opening times available on request only
+    @JsonProperty Boolean alwaysopen                     // Location is always accessible (24/7)
 
-    @JsonProperty Comment comment
-    @JsonProperty CalendarType calendarType
+    @JsonProperty Comment comment                        // Additional comments about the schedule
+    @JsonProperty CalendarType calendarType              // Type of calendar pattern used
 
-    static enum CalendarType { NONE, ALWAYSOPEN, ONREQUEST, OPENINGTIMES, PATTERNDATES, SINGLEDATES }
+    /**
+     * Defines the primary calendar pattern type.
+     * The type is automatically determined based on the data provided, following a priority order.
+     */
+    static enum CalendarType {
+        NONE,           // No scheduling information provided
+        ALWAYSOPEN,     // Always accessible (24/7)
+        ONREQUEST,      // Available by appointment/request
+        OPENINGTIMES,   // Recurring pattern without date limits (ongoing hours)
+        PATTERNDATES,   // Recurring pattern with start/end dates (time-limited)
+        SINGLEDATES     // Specific individual dates
+    }
 
     void cleanupData() {
         singleDates?.each {
@@ -64,13 +134,23 @@ class Calendar {
     }
 
     /**
-     * Represents a single date entry in the calendar, including the date and specific time slots (`When`).
+     * Represents a single, specific date entry in the calendar with associated time slots.
+     *
+     * <p>Use this for events or special dates that occur on specific days, such as:</p>
+     * <ul>
+     *   <li>One-time events: "Friday 2 Jan 2025"</li>
+     *   <li>Special opening days: "Christmas Day 25 Dec - 10:00-14:00"</li>
+     *   <li>Event series with irregular dates</li>
+     * </ul>
+     *
+     * <p>Each SingleDate can have multiple time slots (When objects) for different
+     * opening periods on the same day (e.g., 10:00-13:00 and 15:00-18:00).</p>
      */
     @ToString(includeNames = true)
     @JsonInclude(JsonInclude.Include.NON_NULL)
     static class SingleDate {
-        @JsonProperty DateTime date
-        @JsonProperty List<When> when
+        @JsonProperty DateTime date                  // The specific date
+        @JsonProperty List<When> when                // Time slots for this date (e.g., 10:00-13:00, 15:00-18:00)
 
         @Override
         boolean equals(Object o) {
@@ -91,26 +171,49 @@ class Calendar {
     }
 
     /**
-     * Represents a recurring date pattern in the calendar, defined by start/end dates,
-     * recurrence type (daily, weekly, etc.), frequency, and specific opening details (`Open`).
+     * Represents a recurring pattern in the calendar for regular, repeating schedules.
+     *
+     * <p>Use this for regular opening hours and repeating events:</p>
+     * <ul>
+     *   <li><strong>Weekly patterns</strong> - "Every Monday, Thursday, Friday from 11:00-13:00"</li>
+     *   <li><strong>Daily patterns</strong> - "Every day from 09:00-17:00"</li>
+     *   <li><strong>Monthly patterns</strong> - "First Monday of each month" or "15th of every month"</li>
+     *   <li><strong>Ongoing hours</strong> - Leave startdate/enddate empty for permanent opening hours</li>
+     *   <li><strong>Seasonal hours</strong> - Set startdate/enddate for time-limited patterns</li>
+     * </ul>
+     *
+     * <h4>Pattern Examples:</h4>
+     * <ul>
+     *   <li>Museum open Tue-Sun 10:00-17:00: weekly pattern with opens for days 3-7, 2</li>
+     *   <li>Weekly market every Friday 08:00-14:00: weekly pattern with opens for day 6</li>
+     *   <li>Bi-weekly event: weekly pattern with recurrence=2</li>
+     *   <li>First Saturday of month: monthlyComplex with weeknumber=1, day=7</li>
+     * </ul>
      */
     @ToString(includeNames = true)
     @JsonInclude(JsonInclude.Include.NON_NULL)
     static class PatternDate {
-        @JsonProperty DateTime startdate
-        @JsonProperty DateTime enddate
-        @JsonProperty RecurrencyType recurrencyType
+        @JsonProperty DateTime startdate             // Start date of pattern (null for ongoing)
+        @JsonProperty DateTime enddate               // End date of pattern (null for ongoing)
+        @JsonProperty RecurrencyType recurrencyType  // Type of recurrence (daily, weekly, monthly, yearly)
 
-        @JsonProperty Integer occurrence // Optional parameter (int) indicating how many times the pattern is repeated.
-                                        // (e.g. a value of 2 in combination with a weekly pattern indicates a pattern
-                                        // that is valid for 2 weeks)
+        @JsonProperty Integer occurrence // How many times the pattern repeats
+                                        // (e.g., 2 with weekly = valid for 2 weeks)
 
-        @JsonProperty Integer recurrence // Optional parameter (int) indicating after how many times the pattern is
-                                        // repeated. (e.g a value of 2 in combination with a weekly pattern indicates
-                                        // a bi-weekly pattern)
-        @JsonProperty List<Open> opens = []
+        @JsonProperty Integer recurrence // Interval between repetitions
+                                        // (e.g., 2 with weekly = bi-weekly pattern)
+        @JsonProperty List<Open> opens = []          // Opening details (days, times)
 
-        enum RecurrencyType { daily, weekly, monthlySimple, monthlyComplex, yearly }
+        /**
+         * Defines how the pattern repeats over time.
+         */
+        enum RecurrencyType {
+            daily,           // Every day or every N days
+            weekly,          // Specific days of the week (most common for regular hours)
+            monthlySimple,   // Same day each month (e.g., 15th of every month)
+            monthlyComplex,  // Relative day in month (e.g., "first Monday", "last Friday")
+            yearly           // Annual events
+        }
 
         @Override
         boolean equals(Object obj) {
@@ -135,26 +238,58 @@ class Calendar {
             return true
         }
         /**
-         * Represents the specific opening details within a recurring pattern or exception,
-         * defined by month, week number, day number, day of the week, and time slots (`When`).
+         * Represents the specific opening details within a recurring pattern.
+         *
+         * <p>This class defines which days and times are included in a PatternDate. It supports
+         * various levels of specificity from simple day-of-week to complex month/week combinations.</p>
+         *
+         * <h4>Common Usage Patterns:</h4>
+         * <ul>
+         *   <li><strong>Weekly schedule</strong> - Set only <code>day</code> field:
+         *     <ul>
+         *       <li>Every Monday: day=2, whens=[{10:00-17:00}]</li>
+         *       <li>Every Friday: day=6, whens=[{11:00-13:00}]</li>
+         *     </ul>
+         *   </li>
+         *   <li><strong>Monthly by date</strong> - Set <code>daynumber</code>:
+         *     <ul>
+         *       <li>15th of each month: daynumber=15</li>
+         *     </ul>
+         *   </li>
+         *   <li><strong>Monthly by week</strong> - Set <code>weeknumber</code> and <code>day</code>:
+         *     <ul>
+         *       <li>First Monday: weeknumber=1, day=2</li>
+         *       <li>Last Friday: weeknumber=5, day=6</li>
+         *     </ul>
+         *   </li>
+         *   <li><strong>Yearly patterns</strong> - Set <code>month</code>, <code>daynumber</code> or <code>day</code>:
+         *     <ul>
+         *       <li>Every Christmas: month=12, daynumber=25</li>
+         *       <li>First Monday in September: month=9, weeknumber=1, day=2</li>
+         *     </ul>
+         *   </li>
+         * </ul>
+         *
+         * <h4>Day of Week Mapping:</h4>
+         * <pre>
+         * 1 = Sunday
+         * 2 = Monday
+         * 3 = Tuesday
+         * 4 = Wednesday
+         * 5 = Thursday
+         * 6 = Friday
+         * 7 = Saturday
+         * </pre>
          */
-        /* Openingstime of the event */
         @ToString(includeNames = true)
         @JsonInclude(JsonInclude.Include.NON_NULL)
         static class Open {
-            @JsonProperty Integer month // month number (n-th month
-            @JsonProperty Integer weeknumber // weeknumber (n-th week of the month) [1..5]
-            @JsonProperty Integer daynumber   // Daynumber (the n-th day of the month)
-            @JsonProperty Integer day // Day in the week. Following mapping is applicable:
-//                        1:	Sunday
-//                        2:	Monday
-//                        3:	Tuesday
-//                        4:    Wednesday
-//                        5:	Thursday
-//                        6:	Friday
-//                        7:	Saturday
+            @JsonProperty Integer month       // Month number (1-12) for yearly patterns
+            @JsonProperty Integer weeknumber  // Week of the month (1-5, where 5 = last week)
+            @JsonProperty Integer daynumber   // Day of the month (1-31) for monthly patterns
+            @JsonProperty Integer day         // Day of the week (1=Sun, 2=Mon, 3=Tue, 4=Wed, 5=Thu, 6=Fri, 7=Sat)
 
-            @JsonProperty List<When> whens = []
+            @JsonProperty List<When> whens = []  // Time slots for this opening (e.g., 10:00-13:00, 15:00-18:00)
 
             @Override
             boolean equals(Object obj) {
@@ -180,18 +315,29 @@ class Calendar {
     }
 
     /**
-     * Represents a specific time slot with a start and end time, status (normal, cancelled, etc.),
-     * status translations, and extra information.
+     * Represents a specific time slot within a date or pattern.
+     *
+     * <p>Defines the actual opening hours for a day, such as:</p>
+     * <ul>
+     *   <li>10:00-13:00 (morning hours)</li>
+     *   <li>15:00-18:00 (afternoon hours)</li>
+     *   <li>19:00-22:00 (evening hours)</li>
+     * </ul>
+     *
+     * <p>A single date can have multiple When objects to represent split opening times
+     * (e.g., closed for lunch break).</p>
+     *
+     * <p>Time format is typically "HH:mm" (24-hour format).</p>
      */
     @ToString(includeNames = true)
     @JsonInclude(JsonInclude.Include.NON_NULL)
     static class When {
-        @JsonProperty String timestart
-        @JsonProperty String timeend
-        @JsonProperty Status status
-        @JsonProperty Boolean valid
-        @JsonProperty List<StatusTranslation> statustranslations = []
-        @JsonProperty List<ExtraInformation> extrainformations = []
+        @JsonProperty String timestart                          // Start time (e.g., "10:00")
+        @JsonProperty String timeend                            // End time (e.g., "17:00")
+        @JsonProperty Status status                             // Status of this time slot
+        @JsonProperty Boolean valid                             // Whether this time slot is valid
+        @JsonProperty List<StatusTranslation> statustranslations = []  // Translated status messages
+        @JsonProperty List<ExtraInformation> extrainformations = []    // Additional information
 
         @Override
         boolean equals(Object o) {
@@ -216,7 +362,17 @@ class Calendar {
             return !StringUtils.isEmpty(timeend?.trim())
         }
         
-        enum Status { normal, cancelled, soldout, movedto, premiere, reprise }
+        /**
+         * Status of a time slot, indicating special conditions.
+         */
+        enum Status {
+            normal,      // Regular opening
+            cancelled,   // This time slot is cancelled
+            soldout,     // Tickets/capacity sold out
+            movedto,     // Event moved to different time/location
+            premiere,    // First showing/performance
+            reprise      // Repeat showing/performance
+        }
     }
 
     /**
@@ -240,24 +396,47 @@ class Calendar {
     }
 
     /**
-     * Represents an exception date (e.g., special opening, closing, cancellation) with its date
-     * and associated time slots (`When`).
+     * Represents an exception to the regular schedule for a specific date.
+     *
+     * <p>Exception dates override the normal schedule defined in singleDates or patternDates.
+     * Use them to handle special circumstances:</p>
+     * <ul>
+     *   <li><strong>opens</strong> - Unusually open (e.g., normally closed on Sundays but open this Sunday)</li>
+     *   <li><strong>closeds</strong> - Exceptionally closed (e.g., public holiday, maintenance day)</li>
+     *   <li><strong>soldouts</strong> - Dates when tickets/capacity is sold out</li>
+     *   <li><strong>cancelleds</strong> - Cancelled events/dates</li>
+     * </ul>
+     *
+     * <p>Examples:</p>
+     * <ul>
+     *   <li>Museum closed on Christmas Day: add to closeds with date=2025-12-25</li>
+     *   <li>Special opening on Sunday: add to opens with date and whens</li>
+     *   <li>Event sold out on Saturday evening: add to soldouts with date and specific whens</li>
+     * </ul>
      */
     @ToString(includeNames = true)
     @JsonInclude(JsonInclude.Include.NON_NULL)
     static class ExceptionDate {
-        @JsonProperty DateTime date
-        @JsonProperty List<When> whens = []
+        @JsonProperty DateTime date                  // The exception date
+        @JsonProperty List<When> whens = []          // Time slots for this exception (if applicable)
     }
 
     /**
-     * Represents a comment associated with the calendar, including the main label and translations.
+     * Represents an additional comment or note about the calendar/opening times.
+     *
+     * <p>Use this to provide extra context or important information, such as:</p>
+     * <ul>
+     *   <li>"Closed during public holidays"</li>
+     *   <li>"Last entry 30 minutes before closing"</li>
+     *   <li>"Extended hours during summer season"</li>
+     *   <li>"Reservation recommended"</li>
+     * </ul>
      */
     @ToString(includeNames = true)
     @JsonInclude(JsonInclude.Include.NON_NULL)
     static class Comment {
-        @JsonProperty String label
-        @JsonProperty List<CommentTranslation> commentTranslations = []
+        @JsonProperty String label                          // Main comment text
+        @JsonProperty List<CommentTranslation> commentTranslations = []  // Translated versions
     }
 
     /**
@@ -266,10 +445,27 @@ class Calendar {
     @ToString(includeNames = true)
     @JsonInclude(JsonInclude.Include.NON_NULL)
     static class CommentTranslation {
-        @JsonProperty String label
-        @JsonProperty String lang
+        @JsonProperty String label                          // Translated comment text
+        @JsonProperty String lang                           // Language code (e.g., "en", "nl", "de")
     }
 
+    /**
+     * Automatically determines and sets the calendar type based on the data provided.
+     *
+     * <p>The determination follows a priority order:</p>
+     * <ol>
+     *   <li>If calendarType is already set, it is never changed</li>
+     *   <li>ALWAYSOPEN - if alwaysopen flag is true</li>
+     *   <li>ONREQUEST - if onrequest flag is true</li>
+     *   <li>SINGLEDATES - if singleDates list has entries</li>
+     *   <li>OPENINGTIMES - if patternDates exist without start/end dates (ongoing hours)</li>
+     *   <li>PATTERNDATES - if patternDates exist with start/end dates (time-limited)</li>
+     *   <li>NONE - if no scheduling information is provided</li>
+     * </ol>
+     *
+     * <p>This method is typically called after populating the calendar data to ensure
+     * the correct type is set for proper display and processing.</p>
+     */
     void determineCalendarType() {
         if (calendarType != null) {
             // never change it whenever it is set
