@@ -64,7 +64,7 @@ class TRCItem {
     List<Promotion> promotions
 
     enum WFStatus { draft, readyforvalidation, approved, rejected, deleted, archived }
-    enum EntityType { EVENEMENT, LOCATIE, EVENEMENTGROEP, PLAATSREGIO , ROUTE }
+    enum EntityType { EVENEMENT, LOCATIE, EVENEMENTGROEP, PLAATSREGIO , ROUTE, VENUE }
 
     /**
      * Represents a category associated with the TRC item, including an ID and translations.
