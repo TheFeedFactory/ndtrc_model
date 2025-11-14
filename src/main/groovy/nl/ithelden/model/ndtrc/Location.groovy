@@ -14,6 +14,7 @@ class Location {
     @JsonProperty Address address
     @JsonProperty String label
     @JsonProperty LocationItem locationItem
+    @JsonProperty LocationItem venueItem
 
     /**
      * Represents a specific item within a location, holding its ID, TRC ID, and text label.
