@@ -338,6 +338,7 @@ class Calendar {
         @JsonProperty Boolean valid                             // Whether this time slot is valid
         @JsonProperty List<StatusTranslation> statustranslations = []  // Translated status messages
         @JsonProperty List<ExtraInformation> extrainformations = []    // Additional information
+        @JsonProperty List<Contactinfo.Url> urls = []
 
         @Override
         boolean equals(Object o) {
