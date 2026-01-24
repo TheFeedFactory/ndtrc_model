@@ -183,11 +183,13 @@ class Calendar {
      * </ul>
      *
      * <h4>Pattern Examples:</h4>
+     * <p>Day numbers follow this mapping: 1=Sunday, 2=Monday, 3=Tuesday, 4=Wednesday, 5=Thursday, 6=Friday, 7=Saturday
+     * (see {@link Open} class for full documentation).</p>
      * <ul>
-     *   <li>Museum open Tue-Sun 10:00-17:00: weekly pattern with opens for days 3-7, 2</li>
-     *   <li>Weekly market every Friday 08:00-14:00: weekly pattern with opens for day 6</li>
+     *   <li>Museum open Tue-Sun 10:00-17:00: weekly pattern with opens for days 3-7 (Tue-Sat) and 1 (Sun)</li>
+     *   <li>Weekly market every Friday 08:00-14:00: weekly pattern with opens for day 6 (Friday)</li>
      *   <li>Bi-weekly event: weekly pattern with recurrence=2</li>
-     *   <li>First Saturday of month: monthlyComplex with weeknumber=1, day=7</li>
+     *   <li>First Saturday of month: monthlyComplex with weeknumber=1, day=7 (Saturday)</li>
      * </ul>
      */
     @ToString(includeNames = true)
@@ -243,6 +245,18 @@ class Calendar {
          * <p>This class defines which days and times are included in a PatternDate. It supports
          * various levels of specificity from simple day-of-week to complex month/week combinations.</p>
          *
+         * <h4>Day of Week Mapping:</h4>
+         * <p>The <code>day</code> field uses the following numbering (based on Java Calendar constants):</p>
+         * <pre>
+         * 1 = Sunday
+         * 2 = Monday
+         * 3 = Tuesday
+         * 4 = Wednesday
+         * 5 = Thursday
+         * 6 = Friday
+         * 7 = Saturday
+         * </pre>
+         *
          * <h4>Common Usage Patterns:</h4>
          * <ul>
          *   <li><strong>Weekly schedule</strong> - Set only <code>day</code> field:
@@ -269,17 +283,6 @@ class Calendar {
          *     </ul>
          *   </li>
          * </ul>
-         *
-         * <h4>Day of Week Mapping:</h4>
-         * <pre>
-         * 1 = Sunday
-         * 2 = Monday
-         * 3 = Tuesday
-         * 4 = Wednesday
-         * 5 = Thursday
-         * 6 = Friday
-         * 7 = Saturday
-         * </pre>
          */
         @ToString(includeNames = true)
         @JsonInclude(JsonInclude.Include.NON_NULL)
