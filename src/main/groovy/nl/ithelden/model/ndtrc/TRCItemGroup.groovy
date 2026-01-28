@@ -29,6 +29,7 @@ class TRCItemGroup {
 
     @JsonProperty String validator
     @JsonProperty TRCItem.WFStatus wfstatus
+    @JsonProperty TRCItem.EntityType entitytype
 
     @JsonProperty Calendar calendar
     @JsonProperty Contactinfo contactinfo
