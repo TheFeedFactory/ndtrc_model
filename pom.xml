@@ -6,7 +6,7 @@
 
     <groupId>nl.eventconnectors.ff</groupId>
     <artifactId>ff-model</artifactId>
-    <version>1.1.8</version>
+    <version>1.1.9</version>
     <name>Feed Factory Model</name>
     <description>A model library for the Feed Factory project</description>
     <url>https://eventconnectors.nl</url>
