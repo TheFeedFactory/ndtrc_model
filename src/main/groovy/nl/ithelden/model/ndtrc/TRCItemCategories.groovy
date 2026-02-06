@@ -48,7 +48,7 @@ class TRCItemCategories {
         List<CategoryTranslation> parentCategoryTranslations = []  // translations
         List<CategoryTranslation> valueCategoryTranslations = []  // translations
 
-        enum DataType { yes, yesno, nullableyesno, choice, multichoice, freetext, integer, decimal, date }
+        enum DataType { yes, yesno, nullableyesno, choice, multichoice, freetext, integer, decimal, date, data }
     }
 
     /**
