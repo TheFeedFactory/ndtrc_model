@@ -48,7 +48,7 @@ class TRCItemCategories {
         List<CategoryTranslation> parentCategoryTranslations = []  // translations
         List<CategoryTranslation> valueCategoryTranslations = []  // translations
 
-        enum DataType { yes, yesno, nullableyesno, choice, multichoice, freetext, integer, decimal, date, data }
+        enum DataType { yes, yesno, nullableyesno, choice, multichoice, freetext, integer, decimal, date, data, url, email, phone }
     }
 
     /**
@@ -83,6 +83,15 @@ class TRCItemCategories {
             if (!category || StringUtils.isEmpty(category.catid)) return false
 
             if ("freetext".equalsIgnoreCase(category.datatype?.toString()) && !category.value) {
+                return false
+            }
+            if ("url".equalsIgnoreCase(category.datatype?.toString()) && !category.value) {
+                return false
+            }
+            if ("email".equalsIgnoreCase(category.datatype?.toString()) && !category.value) {
+                return false
+            }
+            if ("phone".equalsIgnoreCase(category.datatype?.toString()) && !category.value) {
                 return false
             }
             if ("multichoice".equalsIgnoreCase(category.datatype?.toString()) && !category.categoryvalues) {
