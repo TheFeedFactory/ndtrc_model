@@ -63,6 +63,9 @@ class TRCItem {
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     List<Promotion> promotions
 
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    SeoMetadata seoMetadata
+
     enum WFStatus { draft, readyforvalidation, approved, rejected, deleted, archived }
     enum EntityType { EVENEMENT, LOCATIE, EVENTGROUP, ROUTE, VENUE }
 
