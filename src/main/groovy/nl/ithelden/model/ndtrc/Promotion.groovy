@@ -11,6 +11,7 @@ import org.joda.time.Duration
 @ToString(includeNames = true)
 class Promotion {
     String product
+    String externalReference
     PromotionType promotionType
     Discount discount
     List<PromotionTranslation> translations
