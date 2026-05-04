@@ -5,6 +5,7 @@ import { zodKeys } from "../src/internal/zod-keys.js";
 import {
   AddressSchema,
   GISCoordinateSchema,
+  PerformerSchema,
   TranslationsSchema,
 } from "../src/index.js";
 import type { ZodTypeAny } from "zod";
@@ -29,6 +30,7 @@ const GROOVY_DIR = join(
 const entityMap: Record<string, ZodTypeAny> = {
   Address: AddressSchema,
   GISCoordinate: GISCoordinateSchema,
+  Performer: PerformerSchema,
   Translations: TranslationsSchema,
 };
 
