@@ -27,9 +27,29 @@ export {
   TitleTranslationSchema,
   type TitleTranslation,
 } from "./file.js";
+export {
+  ExtraPriceInformationSchema,
+  type ExtraPriceInformation,
+} from "./extra-price-information.js";
 export { GISCoordinateSchema, type GISCoordinate } from "./gis-coordinate.js";
 export { LangCodeSchema, type LangCode } from "./internal/lang-code.js";
 export { PerformerSchema, type Performer } from "./performer.js";
+export {
+  PriceDescriptionValueSchema,
+  type PriceDescriptionValue,
+  PriceElementCommentSchema,
+  type PriceElementComment,
+  PriceElementDescriptionSchema,
+  type PriceElementDescription,
+  PriceElementDescriptionTranslationSchema,
+  type PriceElementDescriptionTranslation,
+  PriceElementExtraPriceInformationSchema,
+  type PriceElementExtraPriceInformation,
+  PriceElementSchema,
+  type PriceElement,
+  PriceValueSchema,
+  type PriceValue,
+} from "./price-element.js";
 export {
   TranslationsSchema,
   type Translations,
