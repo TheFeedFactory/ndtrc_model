@@ -1,0 +1,33 @@
+name: TypeScript CI
+
+on:
+  push:
+    paths:
+      - "ts/**"
+      - ".github/workflows/ts-ci.yml"
+  pull_request:
+    paths:
+      - "ts/**"
+      - ".github/workflows/ts-ci.yml"
+
+defaults:
+  run:
+    working-directory: ts
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [18, 20, 22]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: npm
+          cache-dependency-path: ts/package-lock.json
+      - run: npm ci
+      - run: npm run typecheck
+      - run: npm test
+      - run: npm run build
