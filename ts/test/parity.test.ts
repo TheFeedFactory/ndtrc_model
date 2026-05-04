@@ -4,9 +4,15 @@ import { extractGroovyFields } from "../src/internal/groovy-fields.js";
 import { zodKeys } from "../src/internal/zod-keys.js";
 import {
   AddressSchema,
+  ContactinfoSchema,
+  DescriptionTranslationSchema,
+  FaxSchema,
   GISCoordinateSchema,
+  MailSchema,
   PerformerSchema,
+  PhoneSchema,
   TranslationsSchema,
+  UrlSchema,
 } from "../src/index.js";
 import type { ZodTypeAny } from "zod";
 
@@ -29,6 +35,12 @@ const GROOVY_DIR = join(
  */
 const entityMap: Record<string, ZodTypeAny> = {
   Address: AddressSchema,
+  Contactinfo: ContactinfoSchema,
+  "Contactinfo.DescriptionTranslation": DescriptionTranslationSchema,
+  "Contactinfo.Fax": FaxSchema,
+  "Contactinfo.Mail": MailSchema,
+  "Contactinfo.Phone": PhoneSchema,
+  "Contactinfo.Url": UrlSchema,
   GISCoordinate: GISCoordinateSchema,
   Performer: PerformerSchema,
   Translations: TranslationsSchema,
