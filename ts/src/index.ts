@@ -1,5 +1,9 @@
 export { AddressSchema, type Address } from "./address.js";
 export {
+  ConvertedEntrySchema,
+  type ConvertedEntry,
+} from "./converted-entry.js";
+export {
   CalendarSchema,
   CalendarResponseSchema,
   type Calendar,
@@ -61,6 +65,12 @@ export {
   TitleTranslationSchema,
   type TitleTranslation,
 } from "./file.js";
+export {
+  FetchedEntrySchema,
+  type FetchedEntry,
+  ExternalLocationInfoSchema,
+  type ExternalLocationInfo,
+} from "./fetched-entry.js";
 export { GISCoordinateSchema, type GISCoordinate } from "./gis-coordinate.js";
 export { LangCodeSchema, type LangCode } from "./internal/lang-code.js";
 export {
@@ -148,6 +158,12 @@ export {
   TypeSchema,
   type Type,
 } from "./trc-item-categories.js";
+export {
+  TRCItemGroupSchema,
+  type TRCItemGroup,
+  EventLinkSchema,
+  type EventLink,
+} from "./trc-item-group.js";
 export {
   EntityTypeSchema,
   type EntityType,
