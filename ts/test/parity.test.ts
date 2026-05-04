@@ -4,15 +4,23 @@ import { extractGroovyFields } from "../src/internal/groovy-fields.js";
 import { zodKeys } from "../src/internal/zod-keys.js";
 import {
   AddressSchema,
+  CanonicalConfigSchema,
+  CategorySchema,
+  CategoryTranslationSchema,
+  CategoryValueSchema,
   ContactinfoSchema,
   DescriptionTranslationSchema,
   ExtraPriceInformationSchema,
   FaxSchema,
   FileSchema,
   GISCoordinateSchema,
+  LatLngSchema,
+  LocationSchema,
+  LocationItemSchema,
   MailSchema,
   PerformerSchema,
   PhoneSchema,
+  PoiSchema,
   PriceElementCommentSchema,
   PriceElementDescriptionSchema,
   PriceElementDescriptionTranslationSchema,
@@ -22,9 +30,18 @@ import {
   PromotionSchema,
   DiscountSchema,
   PromotionTranslationSchema,
+  RouteInfoSchema,
+  SeoDetailSchema,
+  SeoMetadataSchema,
+  SubItemGroupSchema,
+  SubItemTranslationSchema,
   TitleSchema,
   TitleTranslationSchema,
+  TRCItemCategoriesSchema,
+  TRCItemDetailSchema,
+  TrcitemRelationSchema,
   TranslationsSchema,
+  TypeSchema,
   UrlSchema,
 } from "../src/index.js";
 import type { ZodTypeAny } from "zod";
@@ -42,10 +59,6 @@ const GROOVY_DIR = join(
   "ndtrc",
 );
 
-/**
- * Maps Groovy class names to their corresponding Zod schemas.
- * Add new entries here as entity schemas are implemented.
- */
 const entityMap: Record<string, ZodTypeAny> = {
   Address: AddressSchema,
   Contactinfo: ContactinfoSchema,
@@ -54,11 +67,13 @@ const entityMap: Record<string, ZodTypeAny> = {
   "Contactinfo.Mail": MailSchema,
   "Contactinfo.Phone": PhoneSchema,
   "Contactinfo.Url": UrlSchema,
+  ExtraPriceInformation: ExtraPriceInformationSchema,
   File: FileSchema,
   "File.Title": TitleSchema,
   "File.Title.TitleTranslation": TitleTranslationSchema,
-  ExtraPriceInformation: ExtraPriceInformationSchema,
   GISCoordinate: GISCoordinateSchema,
+  Location: LocationSchema,
+  "Location.LocationItem": LocationItemSchema,
   Performer: PerformerSchema,
   PriceElement: PriceElementSchema,
   "PriceElement.Comment": PriceElementCommentSchema,
@@ -69,12 +84,26 @@ const entityMap: Record<string, ZodTypeAny> = {
   Promotion: PromotionSchema,
   "Promotion.Discount": DiscountSchema,
   "Promotion.PromotionTranslation": PromotionTranslationSchema,
+  RouteInfo: RouteInfoSchema,
+  "RouteInfo.LatLng": LatLngSchema,
+  "RouteInfo.Poi": PoiSchema,
+  SeoMetadata: SeoMetadataSchema,
+  "SeoMetadata.CanonicalConfig": CanonicalConfigSchema,
+  "SeoMetadata.SeoDetail": SeoDetailSchema,
+  SubItemGroup: SubItemGroupSchema,
+  "SubItemGroup.SubItemTranslation": SubItemTranslationSchema,
+  TRCItemCategories: TRCItemCategoriesSchema,
+  "TRCItemCategories.Category": CategorySchema,
+  "TRCItemCategories.CategoryTranslation": CategoryTranslationSchema,
+  "TRCItemCategories.CategoryValue": CategoryValueSchema,
+  "TRCItemCategories.Type": TypeSchema,
+  TRCItemDetail: TRCItemDetailSchema,
+  TrcitemRelation: TrcitemRelationSchema,
   Translations: TranslationsSchema,
 };
 
 /**
  * Fields present in Groovy but intentionally excluded from the Zod schema.
- * Each entry documents why the field is excluded.
  *
  * - TRCItem.forceoverwrite: workflow field, not part of the wire format
  */
