@@ -4,6 +4,16 @@ import { extractGroovyFields } from "../src/internal/groovy-fields.js";
 import { zodKeys } from "../src/internal/zod-keys.js";
 import {
   AddressSchema,
+  CalendarSchema,
+  CalendarCommentSchema,
+  CommentTranslationSchema,
+  ExceptionDateSchema,
+  ExtraInformationSchema,
+  OpenSchema,
+  PatternDateSchema,
+  SingleDateSchema,
+  StatusTranslationSchema,
+  WhenSchema,
   CanonicalConfigSchema,
   CategorySchema,
   CategoryTranslationSchema,
@@ -61,6 +71,16 @@ const GROOVY_DIR = join(
 
 const entityMap: Record<string, ZodTypeAny> = {
   Address: AddressSchema,
+  Calendar: CalendarSchema,
+  "Calendar.Comment": CalendarCommentSchema,
+  "Calendar.CommentTranslation": CommentTranslationSchema,
+  "Calendar.ExceptionDate": ExceptionDateSchema,
+  "Calendar.ExtraInformation": ExtraInformationSchema,
+  "Calendar.PatternDate": PatternDateSchema,
+  "Calendar.PatternDate.Open": OpenSchema,
+  "Calendar.SingleDate": SingleDateSchema,
+  "Calendar.StatusTranslation": StatusTranslationSchema,
+  "Calendar.When": WhenSchema,
   Contactinfo: ContactinfoSchema,
   "Contactinfo.DescriptionTranslation": DescriptionTranslationSchema,
   "Contactinfo.Fax": FaxSchema,
