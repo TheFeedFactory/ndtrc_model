@@ -15,6 +15,18 @@ export {
   URLServiceTypeSchema,
   type URLServiceType,
 } from "./contactinfo.js";
+export {
+  FileSchema,
+  type File,
+  FileTypeSchema,
+  type FileType,
+  MediaTypeSchema,
+  type MediaType,
+  TitleSchema,
+  type Title,
+  TitleTranslationSchema,
+  type TitleTranslation,
+} from "./file.js";
 export { GISCoordinateSchema, type GISCoordinate } from "./gis-coordinate.js";
 export { LangCodeSchema, type LangCode } from "./internal/lang-code.js";
 export { PerformerSchema, type Performer } from "./performer.js";
