@@ -1,6 +1,24 @@
 {
   "name": "@eventconnectors/ndtrc-model",
   "version": "1.2.1",
+  "description": "Zod schemas for the NDTRC tourism data model — TypeScript port of the Groovy ndtrc_model library",
+  "keywords": [
+    "ndtrc",
+    "eventconnectors",
+    "feed-factory",
+    "zod",
+    "tourism"
+  ],
+  "license": "Apache-2.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/TheFeedFactory/ndtrc_model.git",
+    "directory": "ts"
+  },
+  "bugs": {
+    "url": "https://github.com/TheFeedFactory/ndtrc_model/issues"
+  },
+  "homepage": "https://github.com/TheFeedFactory/ndtrc_model/tree/master/ts#readme",
   "type": "module",
   "main": "./dist/index.cjs",
   "module": "./dist/index.js",
