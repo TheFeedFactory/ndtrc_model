@@ -148,6 +148,21 @@ export {
   TypeSchema,
   type Type,
 } from "./trc-item-categories.js";
+export {
+  EntityTypeSchema,
+  type EntityType,
+  TRCItemSchema,
+  TRCItemResponseSchema,
+  type TRCItem,
+  type TRCItemResponse,
+  type Event,
+  type EventGroup,
+  type LocationItemEntity,
+  type Route,
+  type Venue,
+  WFStatusSchema,
+  type WFStatus,
+} from "./trc-item.js";
 export { TRCItemDetailSchema, type TRCItemDetail } from "./trc-item-detail.js";
 export {
   TrcitemRelationSchema,
