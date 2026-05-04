@@ -19,6 +19,9 @@ import {
   PriceElementExtraPriceInformationSchema,
   PriceElementSchema,
   PriceValueSchema,
+  PromotionSchema,
+  DiscountSchema,
+  PromotionTranslationSchema,
   TitleSchema,
   TitleTranslationSchema,
   TranslationsSchema,
@@ -63,6 +66,9 @@ const entityMap: Record<string, ZodTypeAny> = {
   "PriceElement.DescriptionTranslation": PriceElementDescriptionTranslationSchema,
   "PriceElement.ExtraPriceInformation": PriceElementExtraPriceInformationSchema,
   "PriceElement.PriceValue": PriceValueSchema,
+  Promotion: PromotionSchema,
+  "Promotion.Discount": DiscountSchema,
+  "Promotion.PromotionTranslation": PromotionTranslationSchema,
   Translations: TranslationsSchema,
 };
 

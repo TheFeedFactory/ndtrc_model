@@ -35,6 +35,18 @@ export { GISCoordinateSchema, type GISCoordinate } from "./gis-coordinate.js";
 export { LangCodeSchema, type LangCode } from "./internal/lang-code.js";
 export { PerformerSchema, type Performer } from "./performer.js";
 export {
+  DiscountSchema,
+  type Discount,
+  PromotionSchema,
+  type Promotion,
+  PromotionTranslationSchema,
+  type PromotionTranslation,
+  PromotionTypeSchema,
+  type PromotionType,
+  ValidityStrategySchema,
+  type ValidityStrategy,
+} from "./promotion.js";
+export {
   PriceDescriptionValueSchema,
   type PriceDescriptionValue,
   PriceElementCommentSchema,
