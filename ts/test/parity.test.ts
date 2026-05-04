@@ -2,7 +2,11 @@ import { describe, it, expect } from "vitest";
 import { join } from "node:path";
 import { extractGroovyFields } from "../src/internal/groovy-fields.js";
 import { zodKeys } from "../src/internal/zod-keys.js";
-import { GISCoordinateSchema, TranslationsSchema } from "../src/index.js";
+import {
+  AddressSchema,
+  GISCoordinateSchema,
+  TranslationsSchema,
+} from "../src/index.js";
 import type { ZodTypeAny } from "zod";
 
 const GROOVY_DIR = join(
@@ -23,6 +27,7 @@ const GROOVY_DIR = join(
  * Add new entries here as entity schemas are implemented.
  */
 const entityMap: Record<string, ZodTypeAny> = {
+  Address: AddressSchema,
   GISCoordinate: GISCoordinateSchema,
   Translations: TranslationsSchema,
 };
