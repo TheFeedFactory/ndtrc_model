@@ -1,5 +1,5 @@
 {
-  "name": "@eventconnectors/ndtrc-model",
+  "name": "@eventcon/ndtrc-model",
   "version": "1.2.1",
   "description": "Zod schemas for the NDTRC tourism data model — TypeScript port of the Groovy ndtrc_model library",
   "keywords": [

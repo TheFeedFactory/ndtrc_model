@@ -1,11 +1,11 @@
-# @eventconnectors/ndtrc-model
+# @eventcon/ndtrc-model
 
 Zod schemas for the **NDTRC tourism data model** — a TypeScript port of the Groovy [ndtrc_model](https://github.com/TheFeedFactory/ndtrc_model) library. Every entity, enum, and nested type from the Groovy source has a matching Zod schema with field-for-field parity, enforced by automated tests.
 
 ## Installation
 
 ```bash
-npm install @eventconnectors/ndtrc-model
+npm install @eventcon/ndtrc-model
 ```
 
 Requires `zod` as a peer dependency (v3.x).
@@ -17,7 +17,7 @@ Requires `zod` as a peer dependency (v3.x).
 Use the `*Response` schema variants for data coming back from the FeedFactory API. These require server-guaranteed fields (`trcid`, `entitytype`, `creationdate`, etc.) to be present:
 
 ```ts
-import { TRCItemResponseSchema } from "@eventconnectors/ndtrc-model";
+import { TRCItemResponseSchema } from "@eventcon/ndtrc-model";
 
 const response = await fetch("https://api.feedfactory.nl/...");
 const json = await response.json();
@@ -31,7 +31,7 @@ const item = TRCItemResponseSchema.parse(json);
 Use the primary schema for constructing outbound payloads. All fields are optional — you only set what you need:
 
 ```ts
-import { TRCItemSchema } from "@eventconnectors/ndtrc-model";
+import { TRCItemSchema } from "@eventcon/ndtrc-model";
 
 const draft = TRCItemSchema.parse({
   entitytype: "EVENEMENT",
@@ -44,7 +44,7 @@ const draft = TRCItemSchema.parse({
 Convenience types narrow `entitytype` to a specific literal:
 
 ```ts
-import type { Event, LocationItemEntity, Venue, Route, EventGroup } from "@eventconnectors/ndtrc-model";
+import type { Event, LocationItemEntity, Venue, Route, EventGroup } from "@eventcon/ndtrc-model";
 ```
 
 These are intersection types (`TRCItem & { entitytype: "EVENEMENT" }`, etc.) and work with any Zod-parsed `TRCItem`.
@@ -56,7 +56,7 @@ All schemas use `.passthrough()` by default — unknown keys in the input are pr
 To opt into strict validation (reject unknown keys), call `.strict()` on any schema:
 
 ```ts
-import { GISCoordinateSchema } from "@eventconnectors/ndtrc-model";
+import { GISCoordinateSchema } from "@eventcon/ndtrc-model";
 
 const strict = GISCoordinateSchema.strict();
 strict.parse({ xcoordinate: "5.12", unknownField: true }); // throws ZodError
@@ -67,7 +67,7 @@ strict.parse({ xcoordinate: "5.12", unknownField: true }); // throws ZodError
 Use Zod's `.extend()` to add fields that exist in the wire format but aren't in the Groovy model:
 
 ```ts
-import { TRCItemSchema } from "@eventconnectors/ndtrc-model";
+import { TRCItemSchema } from "@eventcon/ndtrc-model";
 import { z } from "zod";
 
 const MyTRCItemSchema = TRCItemSchema.extend({

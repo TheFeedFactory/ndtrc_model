@@ -16,3 +16,6 @@ build
 /.agents
 /.DS_Store
 /skills-lock.json
+.env
+.env.*
+!.env.example
