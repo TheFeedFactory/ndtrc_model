@@ -1,4 +1,4 @@
-# `@eventcon/ndtrc-model` is version-lockstepped to the Maven artifact
+# `@eventconnectors/ndtrc_model` is version-lockstepped to the Maven artifact
 
 `pom.xml` and `ts/package.json` always carry the same version string. They
 bump together in the same commit; a single git tag (`vX.Y.Z`) triggers

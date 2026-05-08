@@ -28,7 +28,7 @@ fails.
 ## Solution
 
 Add a hand-maintained TypeScript port of the NDTRC domain model, shipped
-as the npm package `@eventconnectors/ndtrc-model`. The package exposes
+as the npm package `@eventconnectors/ndtrc_model`. The package exposes
 **Zod v4 schemas** that validate the JSON wire format, plus the
 **inferred TypeScript types**, with the Groovy classes remaining the
 source of truth.
@@ -166,7 +166,7 @@ server-guaranteed fields (`trcid`, `entitytype`, `creationdate`,
   TypeScript port is a hand-maintained mirror, not generated.
 - **Colocation.** The TypeScript package lives under `ts/` in this
   repository. Releases ship from a single commit and a single git tag.
-- **Distribution.** Published as `@eventconnectors/ndtrc-model` to
+- **Distribution.** Published as `@eventconnectors/ndtrc_model` to
   public npm. Built with **tsup** as dual ESM + CJS plus declarations,
   targeting Node 18 / ES2022.
 - **Zod v4** runtime. Existing FF consumers on Zod v3 are expected to

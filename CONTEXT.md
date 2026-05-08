@@ -27,7 +27,7 @@ in the TypeScript port — see "TypeScript port → Schema variants" below.
 ## TypeScript port
 
 - Lives at `ts/` inside this repository (colocated, not a separate repo).
-- Published as **`@eventcon/ndtrc-model`** to public npm.
+- Published as **`@eventconnectors/ndtrc_model`** to public npm.
 - Field names are **verbatim wire format** — the Zod schemas validate the
   JSON exactly as Jackson emits it from the Groovy classes. No
   camelCase/snake_case translation, no transform layer. `creationdate` stays
@@ -105,7 +105,7 @@ Empty string, uppercase, locale-tagged forms (`nl-BE`), and three-letter
 
 ### Versioning
 
-`@eventcon/ndtrc-model` is **lockstepped to the Maven version**.
+`@eventconnectors/ndtrc_model` is **lockstepped to the Maven version**.
 `pom.xml` and `ts/package.json` always carry the same version string;
 they bump together in the same commit, with a single git tag releasing
 both. The first npm release is `1.2.x` (matching the current Maven
