@@ -19,14 +19,16 @@ class PriceElement {
     /**
      * Describes the target audience or condition for the price element (e.g., Adults, Children),
      * including translations.
+     *
+     * {@code value} is a free-form string so it can hold per-account price-type values.
+     * The standard defaults (Adults, Children, Groups, CJP, Pasholders, Lastminute) are
+     * shipped as fallback; accounts may define their own values.
      */
     @ToString(includeNames = true)
     @JsonInclude(JsonInclude.Include.NON_NULL)
     static class Description {
-        PriceDescriptionValue value
+        String value
         List<DescriptionTranslation> descriptionTranslations = []
-
-        public static enum PriceDescriptionValue { Adults, Children, Groups, CJP, Pasholders, Lastminute }
     }
 
     /**

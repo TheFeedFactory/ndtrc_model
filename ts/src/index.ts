@@ -81,6 +81,7 @@ export {
 } from "./location.js";
 export { PerformerSchema, type Performer } from "./performer.js";
 export {
+  StandardPriceDescriptionValues,
   PriceDescriptionValueSchema,
   type PriceDescriptionValue,
   PriceElementCommentSchema,
