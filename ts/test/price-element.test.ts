@@ -3,17 +3,23 @@ import {
   ExtraPriceInformationSchema,
   PriceDescriptionValueSchema,
   PriceElementSchema,
+  StandardPriceDescriptionValues,
 } from "../src/index.js";
 
 describe("PriceDescriptionValueSchema", () => {
-  it("accepts all valid values with correct capitalisation", () => {
-    for (const v of ["Adults", "Children", "Groups", "CJP", "Pasholders", "Lastminute"]) {
+  it("accepts the standard default values", () => {
+    for (const v of StandardPriceDescriptionValues) {
       expect(PriceDescriptionValueSchema.parse(v)).toBe(v);
     }
   });
 
-  it("rejects lowercase variants", () => {
-    expect(() => PriceDescriptionValueSchema.parse("adults")).toThrow();
+  it("accepts free-form, account-defined values (price types are configurable per account)", () => {
+    expect(PriceDescriptionValueSchema.parse("adults")).toBe("adults");
+    expect(PriceDescriptionValueSchema.parse("RotterdamCityCard")).toBe("RotterdamCityCard");
+  });
+
+  it("rejects non-string values", () => {
+    expect(() => PriceDescriptionValueSchema.parse(123)).toThrow();
   });
 });
 

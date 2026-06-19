@@ -1,9 +1,15 @@
 import { z } from "zod";
 import { LangCodeSchema } from "./internal/lang-code.js";
 
-export const PriceDescriptionValueSchema = z.enum([
+/**
+ * Standard NDTRC-derived price-type values shipped as defaults/fallback.
+ * Accounts may define their own values, so `value` is a free-form string.
+ */
+export const StandardPriceDescriptionValues = [
   "Adults", "Children", "Groups", "CJP", "Pasholders", "Lastminute",
-]);
+] as const;
+
+export const PriceDescriptionValueSchema = z.string();
 
 export type PriceDescriptionValue = z.infer<typeof PriceDescriptionValueSchema>;
 
