@@ -15,6 +15,10 @@ import groovy.transform.ToString
  *   <li><strong>calculatedCoordinates</strong> - Detailed routing path calculated by a mapping
  *       service (e.g., Mapbox) based on the routeCoordinates. These form the actual turn-by-turn
  *       path that should be followed.</li>
+ *   <li><strong>waterPoints</strong> - A separate, independent list of points marking water
+ *       crossings (e.g., ferries) along or near the route. Connected to each other by a straight
+ *       line, never passed to a routing/Directions service, and never mixed into routeCoordinates
+ *       or calculatedCoordinates.</li>
  * </ul>
  * The routeCoordinates should contain enough information to recreate the calculatedCoordinates
  * using a mapping/routing service.
@@ -55,6 +59,8 @@ class RouteInfo {
     List<Poi> pois = []
     List<LatLng> routeCoordinates = []     // Points plotted by route editor - waypoints defining the intended path
     List<LatLng> calculatedCoordinates = [] // Detailed routing path calculated from routeCoordinates by mapping service (e.g., Mapbox)
+    List<LatLng> waterPoints = []          // Points marking water crossings/ferries along the route - a separate list from
+                                            // routeCoordinates, connected by a straight line and never sent to a routing/Directions service
 
     // Route metadata
     RouteDifficulty difficulty           // Route difficulty level

@@ -100,6 +100,7 @@ export const RouteInfoSchema = z
     pois: z.array(PoiSchema).optional(),
     routeCoordinates: z.array(LatLngSchema).optional(),
     calculatedCoordinates: z.array(LatLngSchema).optional(),
+    waterPoints: z.array(LatLngSchema).optional(),
     difficulty: RouteDifficultySchema.optional(),
     primarySurface: SurfaceTypeSchema.optional(),
   })
