@@ -99,9 +99,17 @@ Empty string, uppercase, locale-tagged forms (`nl-BE`), and three-letter
   migration of this package itself.
 - Build via **`tsup`**, emitting **dual ESM + CJS** plus declarations.
   Target **Node 18+ / ES2022**.
-- Published from **GitHub Actions** triggered on `v*` tag push, using a
-  repo `NPM_TOKEN` secret. Migrate to npm trusted-publishing / OIDC
-  provenance once the workflow is stable.
+- Published from **GitHub Actions** triggered on `v*` tag push, using **npm
+  trusted publishing (OIDC)**. There is no `NPM_TOKEN` secret: the runner
+  exchanges its GitHub OIDC token for a short-lived npm credential, and
+  provenance is attached without the `--provenance` flag. The job needs
+  `id-token: write` and npm >= 11.5.1 (node 22 ships npm 10, so the workflow
+  upgrades npm first).
+- Do **not** add `registry-url` to `actions/setup-node` in the publish job. It
+  writes an `.npmrc` with `_authToken=${NODE_AUTH_TOKEN}` and exports a
+  placeholder token; a configured authToken outranks OIDC, so npm publishes with
+  junk credentials and fails as `E404 ... PUT`, which reads like a permissions
+  problem. `ts-publish.yml` has a preflight step that fails loudly on this.
 
 ### Versioning
 
@@ -110,6 +118,29 @@ Empty string, uppercase, locale-tagged forms (`nl-BE`), and three-letter
 they bump together in the same commit, with a single git tag releasing
 both. The first npm release is `1.2.x` (matching the current Maven
 version), not `0.x` — the underlying contract is mature.
+
+### Releasing
+
+Bump `pom.xml` and `ts/package.json` in the same commit, then push a `vX.Y.Z`
+tag. That one tag fires both publish workflows — no manual `mvn deploy` or
+`npm publish`:
+
+- **`.github/workflows/maven-publish.yml`** → Maven Central as
+  `nl.eventconnectors.ff:ff-model`. Signed with a dedicated CI key
+  (`F010998B21DEAAE59D7C33E9D219960022074EFC`, expires 2028-08-12) whose public
+  half is on `keyserver.ubuntu.com` — Central validates signatures against
+  public keyservers, so a key it cannot fetch fails the release. The passphrase
+  travels as `MAVEN_GPG_PASSPHRASE` (`gpg.passphraseEnvName`), which reaches gpg
+  over a loopback pinentry and therefore needs no tty; an interactive pinentry
+  fails in CI with `gpg: signing failed: Inappropriate ioctl for device`.
+- **`.github/workflows/ts-publish.yml`** → npm as
+  `@eventconnectors/ndtrc_model`.
+
+`pom.xml`'s version, not the tag, decides what gets released, so the Maven
+workflow fails the build when the two disagree. Central rejects re-uploading an
+existing version and `autoPublish=true` leaves no undo. Both workflows also
+accept `workflow_dispatch`, which is how a version whose tag predates them gets
+published.
 
 ### Public API surface
 
