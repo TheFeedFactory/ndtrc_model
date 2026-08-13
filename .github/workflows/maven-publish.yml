@@ -9,6 +9,14 @@ name: Publish to Maven Central
 #   GPG_PRIVATE_KEY         - ASCII-armoured private key (gpg --armor --export-secret-keys <keyid>)
 #   GPG_PASSPHRASE          - passphrase for that key
 #
+# Signing uses a dedicated CI release key rather than anyone's personal key, so it
+# can be rotated or revoked on its own:
+#
+#   key    F010998B21DEAAE59D7C33E9D219960022074EFC  (ed25519, expires 2028-08-12)
+#   uid    Event Connectors Release Signing (ff-model CI) <info@eventconnectors.nl>
+#   public half published to keyserver.ubuntu.com, which is how Central validates
+#   the signatures - a key it cannot fetch fails the release.
+#
 # central-publishing-maven-plugin runs with autoPublish=true: a successful upload
 # goes live without a portal approval step, and there is no undo. Central also
 # rejects re-uploading an existing version, hence the version guard below.
@@ -36,7 +44,6 @@ jobs:
           server-username: MAVEN_CENTRAL_USERNAME
           server-password: MAVEN_CENTRAL_PASSWORD
           gpg-private-key: ${{ secrets.GPG_PRIVATE_KEY }}
-          gpg-passphrase: GPG_PASSPHRASE
 
       # pom.xml <version> is what actually gets released; the tag is only a label.
       # Fail loudly on drift rather than publishing an unexpected version.
@@ -51,9 +58,13 @@ jobs:
             exit 1
           fi
 
+      # MAVEN_GPG_PASSPHRASE is maven-gpg-plugin's documented env var
+      # (gpg.passphraseEnvName): the passphrase reaches gpg over a loopback
+      # pinentry, so signing needs no tty and -B is safe. Do not switch this to
+      # -Dgpg.passphrase=, which is deprecated for leaking the value into argv.
       - name: Deploy to Maven Central
-        run: mvn -B deploy
+        run: mvn -B deploy -Dgpg.keyname=F010998B21DEAAE59D7C33E9D219960022074EFC
         env:
           MAVEN_CENTRAL_USERNAME: ${{ secrets.MAVEN_CENTRAL_USERNAME }}
           MAVEN_CENTRAL_PASSWORD: ${{ secrets.MAVEN_CENTRAL_PASSWORD }}
-          GPG_PASSPHRASE: ${{ secrets.GPG_PASSPHRASE }}
+          MAVEN_GPG_PASSPHRASE: ${{ secrets.GPG_PASSPHRASE }}
