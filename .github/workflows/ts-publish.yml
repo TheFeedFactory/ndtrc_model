@@ -1,18 +1,30 @@
 name: Publish to npm
 
-# Runs on version tag pushes (e.g. v1.2.1, v2.0.0-beta.1)
+# Runs on version tag pushes (e.g. v1.2.1, v2.0.0-beta.1). workflow_dispatch
+# exists to publish a version whose tag predates this workflow, such as v1.4.0.
 on:
   push:
     tags:
       - "v*"
+  workflow_dispatch:
 
 defaults:
   run:
     working-directory: ts
 
-# Setup: add NPM_TOKEN as a repository secret (Settings → Secrets → Actions)
-# The token needs publish access to the @eventconnectors scope on npm.
-
+# Authentication is npm trusted publishing (OIDC), the migration CONTEXT.md calls
+# for - there is no NPM_TOKEN. The runner exchanges its GitHub OIDC token for a
+# short-lived npm credential, so nothing long-lived is stored in this repo.
+#
+# Setup, once, on npmjs.com: @eventconnectors/ndtrc_model -> Settings ->
+# Trusted publisher -> GitHub Actions, with
+#   organization/repository  TheFeedFactory/ndtrc_model
+#   workflow filename        ts-publish.yml
+# Leave the environment field empty unless this job gains an `environment:` key -
+# npm matches it exactly and rejects the publish on a mismatch.
+#
+# id-token: write is what lets the runner mint that OIDC token; without it the
+# publish falls back to looking for a token and fails.
 permissions:
   contents: read
   id-token: write
@@ -30,11 +42,18 @@ jobs:
           cache: npm
           cache-dependency-path: ts/package-lock.json
 
+      # Trusted publishing needs npm >= 11.5.1; node 22 ships npm 10, which has no
+      # OIDC support and would fail looking for a token instead.
+      - name: Install an npm that can do OIDC
+        run: |
+          npm install -g npm@latest
+          npm --version
+
       - run: npm ci
       - run: npm run typecheck
       - run: npm test
       - run: npm run build
 
-      - run: npm publish --access public --provenance
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+      # No --provenance flag and no NODE_AUTH_TOKEN: trusted publishing attaches a
+      # provenance statement by itself.
+      - run: npm publish --access public
