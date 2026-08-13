@@ -35,10 +35,15 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      # Deliberately no registry-url: it makes setup-node write an .npmrc holding
+      # _authToken=${NODE_AUTH_TOKEN} and always-auth=true, and export
+      # NODE_AUTH_TOKEN as the placeholder XXXXX-XXXXX-XXXXX-XXXXX. npm then
+      # authenticates with that junk token and never tries OIDC, failing with a
+      # misleading "E404 ... PUT" from the registry. The default registry is
+      # registry.npmjs.org anyway.
       - uses: actions/setup-node@v4
         with:
           node-version: 22
-          registry-url: https://registry.npmjs.org
           cache: npm
           cache-dependency-path: ts/package-lock.json
 
@@ -53,6 +58,17 @@ jobs:
       - run: npm run typecheck
       - run: npm test
       - run: npm run build
+
+      # A configured authToken silently wins over OIDC, and the resulting failure
+      # looks like a permissions problem rather than a config problem. Catch it here.
+      - name: Check no registry token shadows OIDC
+        run: |
+          token="$(npm config get //registry.npmjs.org/:_authToken 2>/dev/null || true)"
+          case "$token" in
+            ""|undefined|null) echo "No authToken configured - OIDC can proceed." ;;
+            *) echo "::error::An npm authToken is configured, so npm will skip OIDC. Remove registry-url / NODE_AUTH_TOKEN."; exit 1 ;;
+          esac
+          echo "NODE_AUTH_TOKEN is ${NODE_AUTH_TOKEN:-<unset>}"
 
       # No --provenance flag and no NODE_AUTH_TOKEN: trusted publishing attaches a
       # provenance statement by itself.
