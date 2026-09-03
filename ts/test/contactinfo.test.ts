@@ -13,6 +13,7 @@ describe("URLServiceTypeSchema", () => {
       "general", "booking", "review", "video", "webshop",
       "socialmedia", "lastminute", "virtualtour", "dmo",
       "sustainability", "venuefinder", "travelbase", "homepage",
+      "ticket", "reservation",
     ]) {
       expect(URLServiceTypeSchema.parse(v)).toBe(v);
     }

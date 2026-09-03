@@ -98,8 +98,10 @@ class Contactinfo {
         @JsonProperty Boolean reservations
         @JsonProperty URLServiceType urlServiceType
 
+        // `booking` predates the ticket/reservation split below and is kept for existing data;
+        // new URLs should use `ticket` (buy tickets) or `reservation` (reserve a table/slot/visit).
         enum URLServiceType { general, booking, review, video, webshop, socialmedia, lastminute, virtualtour, dmo,
-                              sustainability, venuefinder, travelbase, homepage }
+                              sustainability, venuefinder, travelbase, homepage, ticket, reservation }
 
         @JsonProperty List<DescriptionTranslation> descriptionTranslations = []
 

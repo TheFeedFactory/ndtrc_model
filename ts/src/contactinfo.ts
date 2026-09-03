@@ -2,6 +2,8 @@ import { z } from "zod";
 import { LangCodeSchema } from "./internal/lang-code.js";
 import { AddressSchema } from "./address.js";
 
+// `booking` predates the ticket/reservation split below and is kept for existing data;
+// new URLs should use `ticket` (buy tickets) or `reservation` (reserve a table/slot/visit).
 export const URLServiceTypeSchema = z.enum([
   "general",
   "booking",
@@ -16,6 +18,8 @@ export const URLServiceTypeSchema = z.enum([
   "venuefinder",
   "travelbase",
   "homepage",
+  "ticket",
+  "reservation",
 ]);
 
 export type URLServiceType = z.infer<typeof URLServiceTypeSchema>;
