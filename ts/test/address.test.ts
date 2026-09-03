@@ -10,13 +10,28 @@ describe("AddressSchema", () => {
       housenr: "1",
       zipcode: "3512 JC",
       country: "NL",
+      continent: "EU",
       province: "Utrecht",
       gisCoordinates: [
         { xcoordinate: "5.1214", ycoordinate: "52.0907", label: "Dom" },
       ],
     });
     expect(result.city).toBe("Utrecht");
+    expect(result.continent).toBe("EU");
     expect(result.gisCoordinates?.[0]?.xcoordinate).toBe("5.1214");
+  });
+
+  it("accepts a non-European continent code", () => {
+    const result = AddressSchema.parse({
+      city: "Dubai",
+      country: "AE",
+      continent: "AS",
+    });
+    expect(result.continent).toBe("AS");
+  });
+
+  it("rejects non-string continent", () => {
+    expect(() => AddressSchema.parse({ continent: 3 })).toThrow();
   });
 
   it("accepts an empty object (all fields optional)", () => {

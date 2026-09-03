@@ -231,6 +231,7 @@ describe("extractGroovyFields (from real Groovy sources)", () => {
         "city",
         "citytrcid",
         "country",
+        "continent",
         "housenr",
         "street",
         "streettrcid",

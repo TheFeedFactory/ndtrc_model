@@ -9,6 +9,8 @@ export const AddressSchema = z
     city: z.string().optional(),
     citytrcid: z.string().optional(),
     country: z.string().optional(),
+    /** Two-letter continent code: AF, AS, EU, NA, OC or SA. */
+    continent: z.string().optional(),
     housenr: z.string().optional(),
     street: z.string().optional(),
     streettrcid: z.string().optional(),

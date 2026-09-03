@@ -7,9 +7,10 @@ import groovy.transform.ToString
 import nl.ithelden.model.util.StringUtils
 
 /**
- * Represents a postal address, including street, house number, city, zip code, country, province,
- * neighborhood, district, GIS coordinates, and associated TRC IDs. Includes flags for main/reservation
- * addresses and methods for checking emptiness and normalizing formats (zip code, city name).
+ * Represents a postal address, including street, house number, city, zip code, country, continent,
+ * province, neighborhood, district, GIS coordinates, and associated TRC IDs. Includes flags for
+ * main/reservation addresses and methods for checking emptiness and normalizing formats
+ * (zip code, city name).
  */
 @ToString(includeNames = true)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -22,6 +23,19 @@ class Address {
     @JsonProperty String citytrcid
 
     @JsonProperty String country = 'NL'
+
+    /**
+     * Continent the address is on, as a two-letter code: AF, AS, EU, NA, OC or SA.
+     * Antarctica has no code here because no country in the picker sits on it — ff-gui's
+     * continentHelper (ContinentCode) derives this value from country and emits these six.
+     *
+     * Deliberately a free-form String rather than an enum so unexpected values in an incoming
+     * feed cannot break deserialisation, and so consumers can curate their own option list.
+     * Null means unknown — it is not defaulted from {@link #country}, because a wrong continent
+     * is worse than a missing one for the country/continent filters that consume this.
+     */
+    @JsonProperty String continent
+
     @JsonProperty String housenr
     @JsonProperty String street
     @JsonProperty String streettrcid
