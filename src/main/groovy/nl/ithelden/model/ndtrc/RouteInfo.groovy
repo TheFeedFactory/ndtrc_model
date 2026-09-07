@@ -12,16 +12,13 @@ import groovy.transform.ToString
  *   <li><strong>routeCoordinates</strong> - Points manually plotted by the route editor on the map.
  *       These are the waypoints that define the intended path of the route. Each coordinate can
  *       have an optional label (e.g., "01", "14") meant to be displayed on the map as markers.</li>
- *   <li><strong>calculatedCoordinates</strong> - Detailed routing path calculated by a mapping
- *       service (e.g., Mapbox) based on the routeCoordinates. These form the actual turn-by-turn
- *       path that should be followed.</li>
- *   <li><strong>waterPoints</strong> - A separate, independent list of points marking water
- *       crossings (e.g., ferries) along or near the route. Connected to each other by a straight
- *       line, never passed to a routing/Directions service, and never mixed into routeCoordinates
- *       or calculatedCoordinates.</li>
+ *   <li><strong>calculatedCoordinates</strong> - Detailed routing path calculated from the
+ *       routeCoordinates. For every RouteType except {@code boating} this is a turn-by-turn path
+ *       from a mapping service (e.g., Mapbox); for {@code boating} it is simply routeCoordinates
+ *       joined by straight lines, since no routing service can route across open water.</li>
  * </ul>
  * The routeCoordinates should contain enough information to recreate the calculatedCoordinates
- * using a mapping/routing service.
+ * using a mapping/routing service (or, for {@code boating}, by connecting them directly).
  *
  * <h3>Points of Interest (POIs)</h3>
  * POIs are locations worth visiting along or near the route. Key characteristics:
@@ -58,9 +55,8 @@ class RouteInfo {
     // Route points
     List<Poi> pois = []
     List<LatLng> routeCoordinates = []     // Points plotted by route editor - waypoints defining the intended path
-    List<LatLng> calculatedCoordinates = [] // Detailed routing path calculated from routeCoordinates by mapping service (e.g., Mapbox)
-    List<LatLng> waterPoints = []          // Points marking water crossings/ferries along the route - a separate list from
-                                            // routeCoordinates, connected by a straight line and never sent to a routing/Directions service
+    List<LatLng> calculatedCoordinates = [] // Detailed routing path: from a mapping service (e.g., Mapbox) for every
+                                             // RouteType except boating, where it's routeCoordinates joined by straight lines
 
     // Route metadata
     RouteDifficulty difficulty           // Route difficulty level
@@ -72,6 +68,8 @@ class RouteInfo {
         driving,          // Driving without traffic data
         walking,          // Pedestrian navigation
         cycling,          // Bicycle navigation
+        boating,          // Water navigation - not a Mapbox profile; calculatedCoordinates is a
+                          // straight line between routeCoordinates instead of a Directions API call
     }
 
     static enum Type {

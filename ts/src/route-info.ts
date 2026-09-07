@@ -4,7 +4,7 @@ import { FileSchema } from "./file.js";
 import { TRCItemDetailSchema } from "./trc-item-detail.js";
 
 export const RouteTypeSchema = z.enum([
-  "driving_traffic", "driving", "walking", "cycling",
+  "driving_traffic", "driving", "walking", "cycling", "boating",
 ]);
 
 export type RouteType = z.infer<typeof RouteTypeSchema>;
@@ -100,7 +100,6 @@ export const RouteInfoSchema = z
     pois: z.array(PoiSchema).optional(),
     routeCoordinates: z.array(LatLngSchema).optional(),
     calculatedCoordinates: z.array(LatLngSchema).optional(),
-    waterPoints: z.array(LatLngSchema).optional(),
     difficulty: RouteDifficultySchema.optional(),
     primarySurface: SurfaceTypeSchema.optional(),
   })

@@ -9,7 +9,7 @@ import {
 
 describe("RouteTypeSchema", () => {
   it("accepts all values", () => {
-    for (const v of ["driving_traffic", "driving", "walking", "cycling"]) {
+    for (const v of ["driving_traffic", "driving", "walking", "cycling", "boating"]) {
       expect(RouteTypeSchema.parse(v)).toBe(v);
     }
   });
@@ -56,17 +56,10 @@ describe("RouteInfoSchema", () => {
       difficulty: "moderate",
       primarySurface: "paved",
       routeCoordinates: [{ lat: 52.09, lng: 5.12 }],
-      waterPoints: [{ lat: 52.1, lng: 5.13, label: "01" }],
       pois: [{ label: "Museum", category: "museum" }],
     });
     expect(result.distanceInKilometers).toBe(42.5);
     expect(result.pois).toHaveLength(1);
-    expect(result.waterPoints).toHaveLength(1);
-  });
-
-  it("defaults waterPoints to undefined when omitted", () => {
-    const result = RouteInfoSchema.parse({ routeCoordinates: [] });
-    expect(result.waterPoints).toBeUndefined();
   });
 
   it("accepts an empty object", () => {
