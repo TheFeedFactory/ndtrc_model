@@ -39,7 +39,12 @@ export const FileSchema = z
     main: z.boolean().optional(),
     copyright: z.string().optional(),
     filename: z.string().optional(),
-    hlink: z.string().url().optional(),
+    /**
+     * URL of the file. Required: a File without a link points at nothing, and every
+     * producer in the API sets it (a file built from a blank URL is dropped rather than
+     * stored). Validated as a URL, so an empty string or a bare path fails.
+     */
+    hlink: z.string().url(),
     filetype: FileTypeSchema.optional(),
     mediatype: MediaTypeSchema.optional(),
     targetLanguage: LangCodeSchema.optional(),

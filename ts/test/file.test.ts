@@ -45,21 +45,35 @@ describe("FileSchema", () => {
     expect(result.title?.label).toBe("Main photo");
   });
 
-  it("accepts an empty object", () => {
-    expect(FileSchema.parse({})).toEqual({});
+  it("parses a file that carries nothing but its link", () => {
+    const result = FileSchema.parse({ hlink: "https://example.com/photo.jpg" });
+    expect(result.hlink).toBe("https://example.com/photo.jpg");
+  });
+
+  it("rejects a file without an hlink", () => {
+    // A File without a link points at nothing. The API never produces one: a file built
+    // from a blank URL is dropped rather than stored.
+    expect(() => FileSchema.parse({})).toThrow();
+    expect(() => FileSchema.parse({ filetype: "jpg", mediatype: "photo" })).toThrow();
   });
 
   it("rejects bad enum values", () => {
-    expect(() => FileSchema.parse({ filetype: "svg" })).toThrow();
-    expect(() => FileSchema.parse({ mediatype: "unknown" })).toThrow();
+    const hlink = "https://example.com/photo.jpg";
+    expect(() => FileSchema.parse({ hlink, filetype: "svg" })).toThrow();
+    expect(() => FileSchema.parse({ hlink, mediatype: "unknown" })).toThrow();
   });
 
   it("rejects bad URL", () => {
     expect(() => FileSchema.parse({ hlink: "not-a-url" })).toThrow();
+    expect(() => FileSchema.parse({ hlink: "" })).toThrow();
+    expect(() => FileSchema.parse({ hlink: "/content/img/1/img.jpg" })).toThrow();
   });
 
   it("preserves unknown keys via passthrough", () => {
-    const result = FileSchema.parse({ extra: true });
+    const result = FileSchema.parse({
+      hlink: "https://example.com/photo.jpg",
+      extra: true,
+    });
     expect((result as Record<string, unknown>).extra).toBe(true);
   });
 });
