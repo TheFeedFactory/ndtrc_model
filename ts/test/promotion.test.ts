@@ -57,7 +57,7 @@ describe("PromotionSchema", () => {
     expect(result.externalReference).toBe("ref-456");
   });
 
-  it("defaults discountValueRequired and image to absent", () => {
+  it("leaves discountValueRequired and image absent when omitted", () => {
     const result = PromotionSchema.parse({ product: "citycard" });
     expect(result.discountValueRequired).toBeUndefined();
     expect(result.image).toBeUndefined();

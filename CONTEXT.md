@@ -222,7 +222,10 @@ discourages new use.
   rather than staying invisible; an admin sets it to `false` once on the account-level
   promotion product (`Account.eventPromotionProducts` / `.locationPromotionProducts` /
   `.venuePromotionProducts`) for offers that need no value — a gift, a present, free
-  entrance — and every item using that product follows.
+  entrance. An item picks the value up when the promotion is *added* to it; ff-api's
+  `AutomaticPromotionService` re-syncs only `enabled` onto a promotion an item already
+  carries, so changing the catalog afterwards does not rewrite existing items — the same
+  as for `discount` and `translations`.
 - Being a primitive boolean it is always on the wire (same as `enabled`), and a document
   stored before the field existed reads back as `true`, so no existing promotion is
   silently exempted from the check.

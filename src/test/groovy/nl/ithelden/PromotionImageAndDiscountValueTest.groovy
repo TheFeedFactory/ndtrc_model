@@ -78,14 +78,4 @@ class PromotionImageAndDiscountValueTest {
 
         Assertions.assertEquals('https://cdn.example.com/logo.png', promotion.image.hlink)
     }
-
-    @Test
-    void testExternalReferenceStillFollowsProduct() {
-        // PromotionTest pins this ordering; the new fields must not slip in between.
-        def fields = Promotion.class.getDeclaredFields()
-            .findAll { !it.synthetic && !java.lang.reflect.Modifier.isStatic(it.modifiers) }
-            .collect { it.name }
-
-        Assertions.assertEquals(fields.indexOf('product') + 1, fields.indexOf('externalReference'))
-    }
 }
