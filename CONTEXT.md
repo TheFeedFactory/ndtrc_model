@@ -211,6 +211,26 @@ discourages new use.
   Groovy-side tolerance for empty/whitespace times is treated as a bug
   not worth perpetuating in the schema.
 
+### Promotion-specific notes
+
+- **`discountValueRequired`** (primitive `boolean`, default `true`) says whether the
+  promotion must carry a `discount.percentage` or `discount.amount` to count as
+  complete. It is deliberately *not* derived from `promotionType`: the type says what
+  kind of offer it is, this says whether a value is expected, and a `discount` whose
+  price lives in a partner system answers those two differently. The default is `true`
+  so a promotion missing its value surfaces in the event/location completion check
+  rather than staying invisible; an admin sets it to `false` once on the account-level
+  promotion product (`Account.eventPromotionProducts` / `.locationPromotionProducts` /
+  `.venuePromotionProducts`) for offers that need no value — a gift, a present, free
+  entrance — and every item using that product follows.
+- Being a primitive boolean it is always on the wire (same as `enabled`), and a document
+  stored before the field existed reads back as `true`, so no existing promotion is
+  silently exempted from the check.
+- **`image`** is a single `File`, normally the logo of the offer, reusing the model's one
+  image shape so it carries `hlink`, `copyright` and `title` translations. It is for
+  display — in the editor and on the publishing sites — and is unrelated to
+  `TRCItem.files`.
+
 ### Entity shape: one TRCItem, not five
 
 Following the Groovy canonical model, the TS port exposes one

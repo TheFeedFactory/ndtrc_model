@@ -57,6 +57,57 @@ describe("PromotionSchema", () => {
     expect(result.externalReference).toBe("ref-456");
   });
 
+  it("defaults discountValueRequired and image to absent", () => {
+    const result = PromotionSchema.parse({ product: "citycard" });
+    expect(result.discountValueRequired).toBeUndefined();
+    expect(result.image).toBeUndefined();
+  });
+
+  it("parses discountValueRequired (Maven 1.6.0)", () => {
+    expect(
+      PromotionSchema.parse({ discountValueRequired: true }).discountValueRequired,
+    ).toBe(true);
+    expect(
+      PromotionSchema.parse({ discountValueRequired: false }).discountValueRequired,
+    ).toBe(false);
+  });
+
+  it("rejects a non-boolean discountValueRequired", () => {
+    expect(() =>
+      PromotionSchema.parse({ discountValueRequired: "false" }),
+    ).toThrow();
+  });
+
+  it("parses an image as a File (Maven 1.6.0)", () => {
+    const result = PromotionSchema.parse({
+      product: "citycard",
+      promotionType: "gift",
+      discountValueRequired: false,
+      image: {
+        hlink: "https://cdn.example.com/citycard-logo.png",
+        filename: "citycard-logo.png",
+        filetype: "png",
+        mediatype: "logo",
+        copyright: "City Card",
+        title: { label: "City Card", titleTranslations: [{ lang: "nl", label: "City Card" }] },
+      },
+    });
+    expect(result.image?.hlink).toBe("https://cdn.example.com/citycard-logo.png");
+    expect(result.image?.mediatype).toBe("logo");
+  });
+
+  it("rejects an image whose hlink is not a URL", () => {
+    expect(() =>
+      PromotionSchema.parse({ image: { hlink: "not-a-url" } }),
+    ).toThrow();
+  });
+
+  it("rejects an image whose mediatype is not a known media type", () => {
+    expect(() =>
+      PromotionSchema.parse({ image: { mediatype: "bogus" } }),
+    ).toThrow();
+  });
+
   it("preserves unknown keys via passthrough", () => {
     const result = PromotionSchema.parse({ extra: true });
     expect((result as Record<string, unknown>).extra).toBe(true);

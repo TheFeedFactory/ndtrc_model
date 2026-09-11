@@ -1,6 +1,7 @@
 import { z } from "zod";
 import { LangCodeSchema } from "./internal/lang-code.js";
 import { UrlSchema } from "./contactinfo.js";
+import { FileSchema } from "./file.js";
 
 export const ValidityStrategySchema = z.enum([
   "always", "dateRange", "earlyBird", "lastMinute",
@@ -49,8 +50,21 @@ export const PromotionSchema = z
     externalReference: z.string().optional(),
     promotionType: PromotionTypeSchema.optional(),
     discount: DiscountSchema.optional(),
+    /**
+     * Whether this promotion must carry a `discount.percentage` or `discount.amount`
+     * to count as complete. Server default is `true`; set it to `false` for offers that
+     * need no value (a gift, a present, free entrance). Primitive boolean on the Groovy
+     * side, so a response always carries it — optional here because a request body may
+     * omit it and take the default.
+     */
+    discountValueRequired: z.boolean().optional(),
     translations: z.array(PromotionTranslationSchema).optional(),
     detailsUrls: z.array(UrlSchema).optional(),
+    /**
+     * Optional image for the promotion, typically the logo of the offer, shown next to
+     * it in the editor and on the publishing sites.
+     */
+    image: FileSchema.optional(),
     enabled: z.boolean().optional(),
     restrictedToRegisteredUsers: z.boolean().optional(),
     validityStrategy: ValidityStrategySchema.optional(),

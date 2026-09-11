@@ -14,8 +14,32 @@ class Promotion {
     String externalReference
     PromotionType promotionType
     Discount discount
+
+    /**
+     * Whether this promotion must carry a concrete discount value — a
+     * {@link Discount#percentage} or a {@link Discount#amount} — to count as complete.
+     *
+     * Defaults to {@code true}: a promotion on an event or a location that has neither is
+     * reported as incomplete, so the missing data becomes visible. Set it to {@code false}
+     * for the offers that genuinely need no value (a gift, a present, free entrance), which
+     * exempts every event and location using that promotion product from the check.
+     *
+     * Deliberately explicit rather than derived from {@link #promotionType}: the type says
+     * what kind of offer it is, this says whether a value is expected, and the two are not
+     * the same question (a {@code discount} with a partner-side price still has no
+     * percentage here).
+     */
+    boolean discountValueRequired = true
     List<PromotionTranslation> translations
     List<Contactinfo.Url> detailsUrls
+
+    /**
+     * Optional image for the promotion, typically the logo of the offer (a city card, a
+     * partner brand) shown next to it in the editor and on the publishing sites.
+     * Uses the same {@link File} shape as the rest of the model, so it carries
+     * {@code hlink}, {@code copyright} and {@code title} translations.
+     */
+    File image
     boolean enabled = true
     Boolean restrictedToRegisteredUsers
     ValidityStrategy validityStrategy = ValidityStrategy.always
