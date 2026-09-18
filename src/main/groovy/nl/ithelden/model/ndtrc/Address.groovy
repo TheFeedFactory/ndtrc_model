@@ -74,6 +74,14 @@ class Address {
             // only change if it is either all lowercase or all uppercase
             if (city.matches(/^[a-z\s]+$/) || city.matches(/^[A-Z\s]+$/)) {
                 city = city.toLowerCase().replaceAll(/(\w)(\w*)/, { match, first, rest -> first.toUpperCase() + rest })
+
+                // IJ is one Dutch letter written as two characters, and it capitalises
+                // as a pair: IJmuiden, IJsselstein, Oude IJsselstreek. Capitalising only
+                // the I spells the name wrong, and a wrong spelling written by a
+                // normaliser is worse than the unnormalised value it replaced, because
+                // nothing downstream can tell it was not typed that way. Only at the
+                // start of a word, so that Nijmegen and Wijhe are left alone.
+                city = city.replaceAll(/(^|\s)Ij/, '$1IJ')
             }
         }
     }
