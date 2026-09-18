@@ -54,6 +54,34 @@ class AddressNormaliseTest {
     }
 
     @Test
+    void testNormaliseKeepsTheIJDigraph() {
+        // IJ is one Dutch letter written as two characters, and it capitalises as
+        // a pair. Lowercasing the J spells the name wrong.
+        ["IJMUIDEN": "IJmuiden",
+         "ijmuiden": "IJmuiden",
+         "IJSSELSTEIN": "IJsselstein",
+         "IJZENDOORN": "IJzendoorn",
+         "OUDE IJSSELSTREEK": "Oude IJsselstreek"].each { String given, String expected ->
+            Address address = new Address(city: given)
+            address.normaliseAdresItems()
+
+            Assertions.assertEquals(expected, address.city)
+        }
+    }
+
+    @Test
+    void testNormaliseLeavesIJInsideAWordAlone() {
+        ["NIJMEGEN": "Nijmegen",
+         "WIJHE": "Wijhe",
+         "RIJSSEN": "Rijssen"].each { String given, String expected ->
+            Address address = new Address(city: given)
+            address.normaliseAdresItems()
+
+            Assertions.assertEquals(expected, address.city)
+        }
+    }
+
+    @Test
     void testNormaliseNull() {
         Address address = new Address(
                 zipcode: null,
