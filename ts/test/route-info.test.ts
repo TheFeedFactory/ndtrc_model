@@ -9,7 +9,7 @@ import {
 
 describe("RouteTypeSchema", () => {
   it("accepts all values", () => {
-    for (const v of ["driving_traffic", "driving", "walking", "cycling", "boating"]) {
+    for (const v of ["driving_traffic", "driving", "walking", "cycling", "boating", "horse_riding"]) {
       expect(RouteTypeSchema.parse(v)).toBe(v);
     }
   });

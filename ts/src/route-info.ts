@@ -4,7 +4,7 @@ import { FileSchema } from "./file.js";
 import { TRCItemDetailSchema } from "./trc-item-detail.js";
 
 export const RouteTypeSchema = z.enum([
-  "driving_traffic", "driving", "walking", "cycling", "boating",
+  "driving_traffic", "driving", "walking", "cycling", "boating", "horse_riding",
 ]);
 
 export type RouteType = z.infer<typeof RouteTypeSchema>;
