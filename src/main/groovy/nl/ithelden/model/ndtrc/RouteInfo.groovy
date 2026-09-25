@@ -70,6 +70,8 @@ class RouteInfo {
         cycling,          // Bicycle navigation
         boating,          // Water navigation - not a Mapbox profile; calculatedCoordinates is a
                           // straight line between routeCoordinates instead of a Directions API call
+        horse_riding,     // Horse riding - not a Mapbox profile either; routed with the walking profile,
+                          // the closest Mapbox has to a bridle path
     }
 
     static enum Type {
