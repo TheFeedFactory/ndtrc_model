@@ -1,17 +1,28 @@
 import { readdir, readFile } from "node:fs/promises";
 import { join } from "node:path";
 
-export async function extractGroovyFields(
+/**
+ * Extracts the instance field names of every class in the `.java` files of a
+ * directory (not recursive), keyed by the dotted nested class name
+ * (`Calendar.PatternDate.Open`). Enums are not included; static fields
+ * (constants, loggers, patterns) are skipped because they are not part of the
+ * wire format.
+ *
+ * This is a deliberately small line-based parser for the plain-bean style the
+ * model is written in (one class per file, fields declared at the top level of
+ * a class body), not a Java parser.
+ */
+export async function extractJavaFields(
   dirPath: string,
 ): Promise<Record<string, Set<string>>> {
   const entries = await readdir(dirPath);
-  const groovyFiles = entries.filter((f: string) => f.endsWith(".groovy")).sort();
+  const javaFiles = entries.filter((f: string) => f.endsWith(".java")).sort();
 
   const result: Record<string, Set<string>> = {};
 
-  for (const file of groovyFiles) {
+  for (const file of javaFiles) {
     const content = await readFile(join(dirPath, file), "utf-8");
-    const classFields = parseGroovyFile(content);
+    const classFields = parseJavaFile(content);
     for (const [className, fields] of Object.entries(classFields)) {
       result[className] = fields;
     }
@@ -20,8 +31,8 @@ export async function extractGroovyFields(
   return result;
 }
 
-export function parseGroovyFile(content: string): Record<string, Set<string>> {
-  const lines = content.split("\n");
+export function parseJavaFile(content: string): Record<string, Set<string>> {
+  const lines = stripComments(content).split("\n");
   const result: Record<string, Set<string>> = {};
 
   const classStack: string[] = [];
@@ -31,13 +42,13 @@ export function parseGroovyFile(content: string): Record<string, Set<string>> {
   let enumBraceDepth = 0;
 
   for (const rawLine of lines) {
-    const line = stripLineComment(rawLine).trim();
+    const line = rawLine.trim();
     if (!line) continue;
 
     const preBraceDepth = braceDepth;
     let isDeclaration = false;
 
-    const classMatch = line.match(/\b(?:static\s+)?class\s+(\w+)/);
+    const classMatch = line.match(/\bclass\s+(\w+)/);
     if (classMatch) {
       isDeclaration = true;
       classStack.push(classMatch[1]!);
@@ -46,7 +57,7 @@ export function parseGroovyFile(content: string): Record<string, Set<string>> {
       if (!result[fullName]) result[fullName] = new Set();
     }
 
-    const enumMatch = line.match(/\b(?:static\s+)?enum\s+(\w+)/);
+    const enumMatch = line.match(/\benum\s+(\w+)/);
     if (enumMatch && !classMatch) {
       isDeclaration = true;
       const openCount = (line.match(/\{/g) ?? []).length;
@@ -91,25 +102,54 @@ export function parseGroovyFile(content: string): Record<string, Set<string>> {
   return result;
 }
 
-function stripLineComment(line: string): string {
-  let inString = false;
-  let stringChar = "";
-  for (let i = 0; i < line.length; i++) {
-    const ch = line[i]!;
-    if (inString) {
-      if (ch === stringChar && line[i - 1] !== "\\") inString = false;
+/**
+ * Removes `//` and `/* *\/` comments (Javadoc included) while keeping string
+ * and char literals and every newline, so line structure survives. Javadoc
+ * regularly says things like "see {@link Open} class for details", which
+ * would otherwise read as a class declaration.
+ */
+function stripComments(source: string): string {
+  let out = "";
+  let i = 0;
+  while (i < source.length) {
+    const ch = source[i]!;
+    const next = source[i + 1];
+    if (ch === "/" && next === "/") {
+      while (i < source.length && source[i] !== "\n") i++;
+      continue;
+    }
+    if (ch === "/" && next === "*") {
+      i += 2;
+      while (i < source.length && !(source[i] === "*" && source[i + 1] === "/")) {
+        if (source[i] === "\n") out += "\n";
+        i++;
+      }
+      i += 2;
       continue;
     }
     if (ch === '"' || ch === "'") {
-      inString = true;
-      stringChar = ch;
+      out += ch;
+      i++;
+      while (i < source.length && source[i] !== ch && source[i] !== "\n") {
+        if (source[i] === "\\") {
+          out += source[i]!;
+          i++;
+        }
+        if (i < source.length) {
+          out += source[i]!;
+          i++;
+        }
+      }
+      if (i < source.length) {
+        out += source[i]!;
+        i++;
+      }
       continue;
     }
-    if (ch === "/" && line[i + 1] === "/") {
-      return line.substring(0, i);
-    }
+    out += ch;
+    i++;
   }
-  return line;
+  return out;
 }
 
 function extractFieldNames(line: string): string[] {
@@ -118,32 +158,23 @@ function extractFieldNames(line: string): string[] {
   s = s.replace(/@\w+(?:\([^)]*\))?\s*/g, "").trim();
   if (!s) return [];
 
+  if (!s.endsWith(";")) return [];
   s = s.replace(/;/g, "").trim();
 
   const modifierRe = /^(?:public|private|protected|static|final|volatile|transient)\s+/;
+  let isStatic = false;
   while (modifierRe.test(s)) {
+    if (s.startsWith("static")) isStatic = true;
     s = s.replace(modifierRe, "").trim();
   }
+  if (isStatic) return [];
 
   if (
-    s.startsWith("class ") ||
-    s.startsWith("enum ") ||
-    s.startsWith("interface ") ||
-    s.startsWith("void ") ||
-    s.startsWith("def ") ||
     s.startsWith("return ") ||
-    s.startsWith("if ") ||
-    s.startsWith("if(") ||
-    s.startsWith("for ") ||
-    s.startsWith("for(") ||
-    s.startsWith("while ") ||
-    s.startsWith("while(") ||
-    s.startsWith("this.") ||
     s.startsWith("throw ") ||
     s.startsWith("package ") ||
     s.startsWith("import ") ||
-    s === "{" ||
-    s === "}" ||
+    s.startsWith("this.") ||
     s === ""
   ) {
     return [];
@@ -161,7 +192,7 @@ function extractFieldNames(line: string): string[] {
   }
 
   const match = namesPart.match(
-    /^(\w[\w.<>,?\s]*?)\s+(\w+(?:\s*,\s*\w+)*)$/,
+    /^(\w[\w.<>,?\[\]\s]*?)\s+(\w+(?:\s*,\s*\w+)*)$/,
   );
   if (!match) return [];
 

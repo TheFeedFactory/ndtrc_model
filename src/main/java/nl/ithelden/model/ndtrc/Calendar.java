@@ -1,11 +1,14 @@
-package nl.ithelden.model.ndtrc
+package nl.ithelden.model.ndtrc;
 
-import com.fasterxml.jackson.annotation.JsonIgnore
-import com.fasterxml.jackson.annotation.JsonInclude
-import com.fasterxml.jackson.annotation.JsonProperty
-import groovy.transform.ToString
-import nl.ithelden.model.util.StringUtils
-import org.joda.time.DateTime
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
+import nl.ithelden.model.util.StringUtils;
+import nl.ithelden.model.util.ToStringBuilder;
+import org.joda.time.DateTime;
 
 /**
  * Represents the opening times and scheduling information for events or locations.
@@ -72,65 +75,229 @@ import org.joda.time.DateTime
  *   <li><strong>NONE</strong> - When no scheduling information is provided</li>
  * </ol>
  */
-@ToString(includeNames = true)
 @JsonInclude(JsonInclude.Include.NON_NULL)
-class Calendar {
-    @JsonProperty List<SingleDate> singleDates = []      // Specific individual dates with times
-    @JsonProperty List<PatternDate> patternDates = []    // Recurring patterns (e.g., "every Monday from 10:00-17:00")
+public class Calendar {
+    @JsonProperty private List<SingleDate> singleDates = new ArrayList<>();      // Specific individual dates with times
+    @JsonProperty private List<PatternDate> patternDates = new ArrayList<>();    // Recurring patterns (e.g., "every Monday from 10:00-17:00")
 
-    @JsonProperty List<ExceptionDate> opens = []         // Special opening dates that override regular schedule
-    @JsonProperty List<ExceptionDate> closeds = []       // Special closure dates (e.g., holidays)
-    @JsonProperty List<ExceptionDate> soldouts = []      // Dates when sold out
-    @JsonProperty List<ExceptionDate> cancelleds = []    // Dates when cancelled
+    @JsonProperty private List<ExceptionDate> opens = new ArrayList<>();         // Special opening dates that override regular schedule
+    @JsonProperty private List<ExceptionDate> closeds = new ArrayList<>();       // Special closure dates (e.g., holidays)
+    @JsonProperty private List<ExceptionDate> soldouts = new ArrayList<>();      // Dates when sold out
+    @JsonProperty private List<ExceptionDate> cancelleds = new ArrayList<>();    // Dates when cancelled
 
-    @JsonProperty boolean excludeholidays                // Exclude public holidays from the schedule
-    @JsonProperty boolean cancelled = false              // Event/location is cancelled
-    @JsonProperty boolean soldout = false                // Event/location is sold out
+    @JsonProperty private boolean excludeholidays;                // Exclude public holidays from the schedule
+    @JsonProperty private boolean cancelled = false;              // Event/location is cancelled
+    @JsonProperty private boolean soldout = false;                // Event/location is sold out
 
-    @JsonProperty Boolean onrequest                      // Opening times available on request only
-    @JsonProperty Boolean alwaysopen                     // Location is always accessible (24/7)
+    @JsonProperty private Boolean onrequest;                      // Opening times available on request only
+    @JsonProperty private Boolean alwaysopen;                     // Location is always accessible (24/7)
 
-    @JsonProperty Comment comment                        // Additional comments about the schedule
-    @JsonProperty CalendarType calendarType              // Type of calendar pattern used
+    @JsonProperty private Comment comment;                        // Additional comments about the schedule
+    @JsonProperty private CalendarType calendarType;              // Type of calendar pattern used
+
+    public List<SingleDate> getSingleDates() {
+        return singleDates;
+    }
+
+    public void setSingleDates(List<SingleDate> singleDates) {
+        this.singleDates = singleDates;
+    }
+
+    public List<PatternDate> getPatternDates() {
+        return patternDates;
+    }
+
+    public void setPatternDates(List<PatternDate> patternDates) {
+        this.patternDates = patternDates;
+    }
+
+    public List<ExceptionDate> getOpens() {
+        return opens;
+    }
+
+    public void setOpens(List<ExceptionDate> opens) {
+        this.opens = opens;
+    }
+
+    public List<ExceptionDate> getCloseds() {
+        return closeds;
+    }
+
+    public void setCloseds(List<ExceptionDate> closeds) {
+        this.closeds = closeds;
+    }
+
+    public List<ExceptionDate> getSoldouts() {
+        return soldouts;
+    }
+
+    public void setSoldouts(List<ExceptionDate> soldouts) {
+        this.soldouts = soldouts;
+    }
+
+    public List<ExceptionDate> getCancelleds() {
+        return cancelleds;
+    }
+
+    public void setCancelleds(List<ExceptionDate> cancelleds) {
+        this.cancelleds = cancelleds;
+    }
+
+    public boolean getExcludeholidays() {
+        return excludeholidays;
+    }
+
+    public boolean isExcludeholidays() {
+        return excludeholidays;
+    }
+
+    public void setExcludeholidays(boolean excludeholidays) {
+        this.excludeholidays = excludeholidays;
+    }
+
+    public boolean getCancelled() {
+        return cancelled;
+    }
+
+    public boolean isCancelled() {
+        return cancelled;
+    }
+
+    public void setCancelled(boolean cancelled) {
+        this.cancelled = cancelled;
+    }
+
+    public boolean getSoldout() {
+        return soldout;
+    }
+
+    public boolean isSoldout() {
+        return soldout;
+    }
+
+    public void setSoldout(boolean soldout) {
+        this.soldout = soldout;
+    }
+
+    public Boolean getOnrequest() {
+        return onrequest;
+    }
+
+    public Boolean isOnrequest() {
+        return onrequest;
+    }
+
+    public void setOnrequest(Boolean onrequest) {
+        this.onrequest = onrequest;
+    }
+
+    public Boolean getAlwaysopen() {
+        return alwaysopen;
+    }
+
+    public Boolean isAlwaysopen() {
+        return alwaysopen;
+    }
+
+    public void setAlwaysopen(Boolean alwaysopen) {
+        this.alwaysopen = alwaysopen;
+    }
+
+    public Comment getComment() {
+        return comment;
+    }
+
+    public void setComment(Comment comment) {
+        this.comment = comment;
+    }
+
+    public CalendarType getCalendarType() {
+        return calendarType;
+    }
+
+    public void setCalendarType(CalendarType calendarType) {
+        this.calendarType = calendarType;
+    }
 
     /**
      * Defines the primary calendar pattern type.
      * The type is automatically determined based on the data provided, following a priority order.
      */
-    static enum CalendarType {
+    public static enum CalendarType {
         NONE,           // No scheduling information provided
         ALWAYSOPEN,     // Always accessible (24/7)
         ONREQUEST,      // Available by appointment/request
         OPENINGTIMES,   // Recurring pattern without date limits (ongoing hours)
         PATTERNDATES,   // Recurring pattern with start/end dates (time-limited)
-        SINGLEDATES     // Specific individual dates
+        SINGLEDATES;    // Specific individual dates
+
+        // Groovy gives every enum these members; kept so the 1.x API is unchanged.
+        public static final CalendarType MIN_VALUE = NONE;
+        public static final CalendarType MAX_VALUE = SINGLEDATES;
+
+        public CalendarType next() {
+            CalendarType[] values = values();
+            int ordinal = ordinal() + 1;
+            return values[ordinal >= values.length ? 0 : ordinal];
+        }
+
+        public CalendarType previous() {
+            CalendarType[] values = values();
+            int ordinal = ordinal() - 1;
+            return values[ordinal < 0 ? values.length - 1 : ordinal];
+        }
     }
 
-    void cleanupData() {
-        singleDates?.each {
-            it.when = it.when?.findAll { it.isValid() }
-        }
-        patternDates?.each {
-            it.opens?.each {
-                it.whens = it.whens?.findAll( {it.isValid() } )
+    public void cleanupData() {
+        if (singleDates != null) {
+            for (SingleDate singleDate : singleDates) {
+                singleDate.setWhen(validWhens(singleDate.getWhen()));
             }
+        }
+        if (patternDates != null) {
+            for (PatternDate patternDate : patternDates) {
+                if (patternDate.getOpens() != null) {
+                    for (PatternDate.Open open : patternDate.getOpens()) {
+                        open.setWhens(validWhens(open.getWhens()));
+                    }
+                }
 
-            if (it.opens && !it.recurrencyType) {
-                it.recurrencyType = PatternDate.RecurrencyType.weekly
+                if (patternDate.getOpens() != null && !patternDate.getOpens().isEmpty() && patternDate.getRecurrencyType() == null) {
+                    patternDate.setRecurrencyType(PatternDate.RecurrencyType.weekly);
+                }
             }
         }
-        opens?.each {
-            it.whens = it.whens?.findAll( {it.isValid() } )
+        cleanupExceptionDates(opens);
+        cleanupExceptionDates(closeds);
+        cleanupExceptionDates(cancelleds);
+        cleanupExceptionDates(soldouts);
+    }
+
+    private static void cleanupExceptionDates(List<ExceptionDate> exceptionDates) {
+        if (exceptionDates == null) return;
+        for (ExceptionDate exceptionDate : exceptionDates) {
+            exceptionDate.setWhens(validWhens(exceptionDate.getWhens()));
         }
-        closeds?.each {
-            it.whens = it.whens?.findAll( {it.isValid() } )
+    }
+
+    // `whens?.findAll { it.isValid() }`: null stays null, otherwise a new list of the valid ones
+    private static List<When> validWhens(List<When> whens) {
+        if (whens == null) return null;
+        List<When> valid = new ArrayList<>();
+        for (When when : whens) {
+            if (when.isValid()) {
+                valid.add(when);
+            }
         }
-        cancelleds?.each {
-            it.whens = it.whens?.findAll( {it.isValid() } )
-        }
-        soldouts?.each {
-            it.whens = it.whens?.findAll( {it.isValid() } )
-        }
+        return valid;
+    }
+
+    // Groovy `==` on two Comparables (DateTime): compareTo() == 0, so the same instant in a
+    // different time zone or chronology is equal — unlike DateTime.equals().
+    private static boolean sameInstant(DateTime left, DateTime right) {
+        if (left == right) return true;
+        if (left == null || right == null) return false;
+        return left.compareTo(right) == 0;
     }
 
     /**
@@ -146,27 +313,50 @@ class Calendar {
      * <p>Each SingleDate can have multiple time slots (When objects) for different
      * opening periods on the same day (e.g., 10:00-13:00 and 15:00-18:00).</p>
      */
-    @ToString(includeNames = true)
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    static class SingleDate {
-        @JsonProperty DateTime date                  // The specific date
-        @JsonProperty List<When> when                // Time slots for this date (e.g., 10:00-13:00, 15:00-18:00)
+    public static class SingleDate {
+        @JsonProperty private DateTime date;                  // The specific date
+        @JsonProperty private List<When> when;                // Time slots for this date (e.g., 10:00-13:00, 15:00-18:00)
+
+        public DateTime getDate() {
+            return date;
+        }
+
+        public void setDate(DateTime date) {
+            this.date = date;
+        }
+
+        public List<When> getWhen() {
+            return when;
+        }
+
+        public void setWhen(List<When> when) {
+            this.when = when;
+        }
 
         @Override
-        boolean equals(Object o) {
-            if (this.is(o)) return true // Use Groovy's `is` for identity check
-            if (o == null || getClass() != o.getClass()) return false
-            SingleDate singleDate = (SingleDate) o
+        public boolean equals(Object o) {
+            if (this == o) return true; // identity check
+            if (o == null || getClass() != o.getClass()) return false;
+            SingleDate singleDate = (SingleDate) o;
 
-            if (this.date != singleDate.date) return false
+            if (!sameInstant(this.date, singleDate.date)) return false;
             // Instead of comparing the lists directly, compare their contents in a way that avoids recursion
-            if (this.when.size() != singleDate.when.size()) return false
+            if (this.when.size() != singleDate.when.size()) return false;
             for (int i = 0; i < this.when.size(); i++) {
-                if (!this.when.get(i).isValid() || !singleDate.when.get(i).isValid()) return false
+                if (!this.when.get(i).isValid() || !singleDate.when.get(i).isValid()) return false;
                 // Implement further non-recursive element comparison logic here
-                if (this.when.get(i) != singleDate.when.get(i)) return false
+                if (!Objects.equals(this.when.get(i), singleDate.when.get(i))) return false;
             }
-            return true
+            return true;
+        }
+
+        @Override
+        public String toString() {
+            return new ToStringBuilder(SingleDate.class, this)
+                    .add("date", date)
+                    .add("when", when)
+                    .build();
         }
     }
 
@@ -192,53 +382,129 @@ class Calendar {
      *   <li>First Saturday of month: monthlyComplex with weeknumber=1, day=7 (Saturday)</li>
      * </ul>
      */
-    @ToString(includeNames = true)
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    static class PatternDate {
-        @JsonProperty DateTime startdate             // Start date of pattern (null for ongoing)
-        @JsonProperty DateTime enddate               // End date of pattern (null for ongoing)
-        @JsonProperty RecurrencyType recurrencyType  // Type of recurrence (daily, weekly, monthly, yearly)
+    public static class PatternDate {
+        @JsonProperty private DateTime startdate;             // Start date of pattern (null for ongoing)
+        @JsonProperty private DateTime enddate;               // End date of pattern (null for ongoing)
+        @JsonProperty private RecurrencyType recurrencyType;  // Type of recurrence (daily, weekly, monthly, yearly)
 
-        @JsonProperty Integer occurrence // How many times the pattern repeats
+        @JsonProperty private Integer occurrence; // How many times the pattern repeats
                                         // (e.g., 2 with weekly = valid for 2 weeks)
 
-        @JsonProperty Integer recurrence // Interval between repetitions
+        @JsonProperty private Integer recurrence; // Interval between repetitions
                                         // (e.g., 2 with weekly = bi-weekly pattern)
-        @JsonProperty List<Open> opens = []          // Opening details (days, times)
+        @JsonProperty private List<Open> opens = new ArrayList<>();          // Opening details (days, times)
+
+        public DateTime getStartdate() {
+            return startdate;
+        }
+
+        public void setStartdate(DateTime startdate) {
+            this.startdate = startdate;
+        }
+
+        public DateTime getEnddate() {
+            return enddate;
+        }
+
+        public void setEnddate(DateTime enddate) {
+            this.enddate = enddate;
+        }
+
+        public RecurrencyType getRecurrencyType() {
+            return recurrencyType;
+        }
+
+        public void setRecurrencyType(RecurrencyType recurrencyType) {
+            this.recurrencyType = recurrencyType;
+        }
+
+        public Integer getOccurrence() {
+            return occurrence;
+        }
+
+        public void setOccurrence(Integer occurrence) {
+            this.occurrence = occurrence;
+        }
+
+        public Integer getRecurrence() {
+            return recurrence;
+        }
+
+        public void setRecurrence(Integer recurrence) {
+            this.recurrence = recurrence;
+        }
+
+        public List<Open> getOpens() {
+            return opens;
+        }
+
+        public void setOpens(List<Open> opens) {
+            this.opens = opens;
+        }
 
         /**
          * Defines how the pattern repeats over time.
          */
-        enum RecurrencyType {
+        public enum RecurrencyType {
             daily,           // Every day or every N days
             weekly,          // Specific days of the week (most common for regular hours)
             monthlySimple,   // Same day each month (e.g., 15th of every month)
             monthlyComplex,  // Relative day in month (e.g., "first Monday", "last Friday")
-            yearly           // Annual events
+            yearly;          // Annual events
+
+            // Groovy gives every enum these members; kept so the 1.x API is unchanged.
+            public static final RecurrencyType MIN_VALUE = daily;
+            public static final RecurrencyType MAX_VALUE = yearly;
+
+            public RecurrencyType next() {
+                RecurrencyType[] values = values();
+                int ordinal = ordinal() + 1;
+                return values[ordinal >= values.length ? 0 : ordinal];
+            }
+
+            public RecurrencyType previous() {
+                RecurrencyType[] values = values();
+                int ordinal = ordinal() - 1;
+                return values[ordinal < 0 ? values.length - 1 : ordinal];
+            }
         }
 
         @Override
-        boolean equals(Object obj) {
-            if (this.is(obj)) return true
-            if (obj == null || getClass() != obj.getClass()) return false
-            PatternDate that = (PatternDate) obj
+        public boolean equals(Object obj) {
+            if (this == obj) return true;
+            if (obj == null || getClass() != obj.getClass()) return false;
+            PatternDate that = (PatternDate) obj;
 
-            return this.startdate == that.startdate &&
-                    this.enddate == that.enddate &&
+            return sameInstant(this.startdate, that.startdate) &&
+                    sameInstant(this.enddate, that.enddate) &&
                     this.recurrencyType == that.recurrencyType &&
-                    this.occurrence == that.occurrence &&
-                    this.recurrence == that.recurrence &&
+                    Objects.equals(this.occurrence, that.occurrence) &&
+                    Objects.equals(this.recurrence, that.recurrence) &&
                     // Compare the 'opens' list carefully to avoid recursion
-                    opensEquals(this.opens, that.opens)
+                    opensEquals(this.opens, that.opens);
         }
 
         private boolean opensEquals(List<Open> opens1, List<Open> opens2) {
-            if (opens1.size() != opens2.size()) return false
+            if (opens1.size() != opens2.size()) return false;
             for (int i = 0; i < opens1.size(); i++) {
-                if (opens1.get(i) != opens2.get(i)) return false
+                if (!Objects.equals(opens1.get(i), opens2.get(i))) return false;
             }
-            return true
+            return true;
         }
+
+        @Override
+        public String toString() {
+            return new ToStringBuilder(PatternDate.class, this)
+                    .add("startdate", startdate)
+                    .add("enddate", enddate)
+                    .add("recurrencyType", recurrencyType)
+                    .add("occurrence", occurrence)
+                    .add("recurrence", recurrence)
+                    .add("opens", opens)
+                    .build();
+        }
+
         /**
          * Represents the specific opening details within a recurring pattern.
          *
@@ -284,35 +550,85 @@ class Calendar {
          *   </li>
          * </ul>
          */
-        @ToString(includeNames = true)
         @JsonInclude(JsonInclude.Include.NON_NULL)
-        static class Open {
-            @JsonProperty Integer month       // Month number (1-12) for yearly patterns
-            @JsonProperty Integer weeknumber  // Week of the month (1-5, where 5 = last week)
-            @JsonProperty Integer daynumber   // Day of the month (1-31) for monthly patterns
-            @JsonProperty Integer day         // Day of the week (1=Sun, 2=Mon, 3=Tue, 4=Wed, 5=Thu, 6=Fri, 7=Sat)
+        public static class Open {
+            @JsonProperty private Integer month;       // Month number (1-12) for yearly patterns
+            @JsonProperty private Integer weeknumber;  // Week of the month (1-5, where 5 = last week)
+            @JsonProperty private Integer daynumber;   // Day of the month (1-31) for monthly patterns
+            @JsonProperty private Integer day;         // Day of the week (1=Sun, 2=Mon, 3=Tue, 4=Wed, 5=Thu, 6=Fri, 7=Sat)
 
-            @JsonProperty List<When> whens = []  // Time slots for this opening (e.g., 10:00-13:00, 15:00-18:00)
+            @JsonProperty private List<When> whens = new ArrayList<>();  // Time slots for this opening (e.g., 10:00-13:00, 15:00-18:00)
+
+            public Integer getMonth() {
+                return month;
+            }
+
+            public void setMonth(Integer month) {
+                this.month = month;
+            }
+
+            public Integer getWeeknumber() {
+                return weeknumber;
+            }
+
+            public void setWeeknumber(Integer weeknumber) {
+                this.weeknumber = weeknumber;
+            }
+
+            public Integer getDaynumber() {
+                return daynumber;
+            }
+
+            public void setDaynumber(Integer daynumber) {
+                this.daynumber = daynumber;
+            }
+
+            public Integer getDay() {
+                return day;
+            }
+
+            public void setDay(Integer day) {
+                this.day = day;
+            }
+
+            public List<When> getWhens() {
+                return whens;
+            }
+
+            public void setWhens(List<When> whens) {
+                this.whens = whens;
+            }
 
             @Override
-            boolean equals(Object obj) {
-                if (this.is(obj)) return true
-                if (obj == null || getClass() != obj.getClass()) return false
-                Open open = (Open) obj
+            public boolean equals(Object obj) {
+                if (this == obj) return true;
+                if (obj == null || getClass() != obj.getClass()) return false;
+                Open open = (Open) obj;
 
-                return this.month == open.month &&
-                        this.weeknumber == open.weeknumber &&
-                        this.daynumber == open.daynumber &&
-                        this.day == open.day &&
-                        whensEquals(this.whens, open.whens)
+                return Objects.equals(this.month, open.month) &&
+                        Objects.equals(this.weeknumber, open.weeknumber) &&
+                        Objects.equals(this.daynumber, open.daynumber) &&
+                        Objects.equals(this.day, open.day) &&
+                        whensEquals(this.whens, open.whens);
             }
 
             private boolean whensEquals(List<When> whens1, List<When> whens2) {
-                if (whens1.size() != whens2.size()) return false
+                if (whens1.size() != whens2.size()) return false;
                 for (int i = 0; i < whens1.size(); i++) {
-                    if (whens1.get(i).timestart != whens2.get(i).timestart) return false
+                    if (!Objects.equals(whens1.get(i).getTimestart(), whens2.get(i).getTimestart())) return false;
                 }
-                return true
+                return true;
+            }
+
+            @Override
+            public String toString() {
+                return new ToStringBuilder(Open.class, this)
+                        .add("month", month)
+                        .add("weeknumber", weeknumber)
+                        .add("daynumber", daynumber)
+                        .add("day", day)
+                        .add("whens", whens)
+                        .build();
             }
         }
     }
@@ -332,71 +648,207 @@ class Calendar {
      *
      * <p>Time format is typically "HH:mm" (24-hour format).</p>
      */
-    @ToString(includeNames = true)
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    static class When {
-        @JsonProperty String timestart                          // Start time (e.g., "10:00")
-        @JsonProperty String timeend                            // End time (e.g., "17:00")
-        @JsonProperty Status status                             // Status of this time slot
-        @JsonProperty Boolean valid                             // Whether this time slot is valid
-        @JsonProperty List<StatusTranslation> statustranslations = []  // Translated status messages
-        @JsonProperty List<ExtraInformation> extrainformations = []    // Additional information
-        @JsonProperty List<Contactinfo.Url> urls = []
+    public static class When {
+        @JsonProperty private String timestart;                          // Start time (e.g., "10:00")
+        @JsonProperty private String timeend;                            // End time (e.g., "17:00")
+        @JsonProperty private Status status;                             // Status of this time slot
+        @JsonProperty private Boolean valid;                             // Whether this time slot is valid
+        @JsonProperty private List<StatusTranslation> statustranslations = new ArrayList<>();  // Translated status messages
+        @JsonProperty private List<ExtraInformation> extrainformations = new ArrayList<>();    // Additional information
+        @JsonProperty private List<Contactinfo.Url> urls = new ArrayList<>();
 
+        public String getTimestart() {
+            return timestart;
+        }
+
+        public void setTimestart(String timestart) {
+            this.timestart = timestart;
+        }
+
+        public String getTimeend() {
+            return timeend;
+        }
+
+        public void setTimeend(String timeend) {
+            this.timeend = timeend;
+        }
+
+        public Status getStatus() {
+            return status;
+        }
+
+        public void setStatus(Status status) {
+            this.status = status;
+        }
+
+        public Boolean getValid() {
+            return valid;
+        }
+
+        public void setValid(Boolean valid) {
+            this.valid = valid;
+        }
+
+        public List<StatusTranslation> getStatustranslations() {
+            return statustranslations;
+        }
+
+        public void setStatustranslations(List<StatusTranslation> statustranslations) {
+            this.statustranslations = statustranslations;
+        }
+
+        public List<ExtraInformation> getExtrainformations() {
+            return extrainformations;
+        }
+
+        public void setExtrainformations(List<ExtraInformation> extrainformations) {
+            this.extrainformations = extrainformations;
+        }
+
+        public List<Contactinfo.Url> getUrls() {
+            return urls;
+        }
+
+        public void setUrls(List<Contactinfo.Url> urls) {
+            this.urls = urls;
+        }
+
+        // Two When objects are equal when timestart and timeend are equal. The 1.x Groovy
+        // version wrote `this == o` as its identity check, which in Groovy calls equals()
+        // again, so comparing two distinct When objects overflowed the stack; this is the
+        // identity check that line was meant to be.
         @Override
-        boolean equals(Object o) {
+        public boolean equals(Object o) {
             if (this == o) return true;
             if (o == null || getClass() != o.getClass()) return false;
             When when = (When) o;
-            return this.timestart == when.timestart && this.timeend == when.timeend;
+            return Objects.equals(this.timestart, when.timestart) && Objects.equals(this.timeend, when.timeend);
         }
 
         @JsonIgnore
-        boolean isValid() {
-            return isTimeStartValid() || isTimeEndValid()
+        public boolean isValid() {
+            return isTimeStartValid() || isTimeEndValid();
         }
 
         @JsonIgnore
-        boolean isTimeStartValid() {
-            return !StringUtils.isEmpty(timestart?.trim())
+        public boolean isTimeStartValid() {
+            return !StringUtils.isEmpty(timestart == null ? null : timestart.trim());
         }
 
         @JsonIgnore
-        boolean isTimeEndValid() {
-            return !StringUtils.isEmpty(timeend?.trim())
+        public boolean isTimeEndValid() {
+            return !StringUtils.isEmpty(timeend == null ? null : timeend.trim());
         }
-        
+
         /**
          * Status of a time slot, indicating special conditions.
          */
-        enum Status {
+        public enum Status {
             normal,      // Regular opening
             cancelled,   // This time slot is cancelled
             soldout,     // Tickets/capacity sold out
             movedto,     // Event moved to different time/location
             premiere,    // First showing/performance
-            reprise      // Repeat showing/performance
+            reprise;     // Repeat showing/performance
+
+            // Groovy gives every enum these members; kept so the 1.x API is unchanged.
+            public static final Status MIN_VALUE = normal;
+            public static final Status MAX_VALUE = reprise;
+
+            public Status next() {
+                Status[] values = values();
+                int ordinal = ordinal() + 1;
+                return values[ordinal >= values.length ? 0 : ordinal];
+            }
+
+            public Status previous() {
+                Status[] values = values();
+                int ordinal = ordinal() - 1;
+                return values[ordinal < 0 ? values.length - 1 : ordinal];
+            }
+        }
+
+        @Override
+        public String toString() {
+            return new ToStringBuilder(When.class, this)
+                    .add("timestart", timestart)
+                    .add("timeend", timeend)
+                    .add("status", status)
+                    .add("valid", valid)
+                    .add("statustranslations", statustranslations)
+                    .add("extrainformations", extrainformations)
+                    .add("urls", urls)
+                    .add("timeEndValid", isTimeEndValid())
+                    .add("timeStartValid", isTimeStartValid())
+                    .build();
         }
     }
 
     /**
      * Represents a translation for the status of a time slot (`When`) in a specific language.
      */
-    @ToString(includeNames = true)
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    static class StatusTranslation {
-        @JsonProperty String lang
-        @JsonProperty String text
+    public static class StatusTranslation {
+        @JsonProperty private String lang;
+        @JsonProperty private String text;
+
+        public String getLang() {
+            return lang;
+        }
+
+        public void setLang(String lang) {
+            this.lang = lang;
+        }
+
+        public String getText() {
+            return text;
+        }
+
+        public void setText(String text) {
+            this.text = text;
+        }
+
+        @Override
+        public String toString() {
+            return new ToStringBuilder(StatusTranslation.class, this)
+                    .add("lang", lang)
+                    .add("text", text)
+                    .build();
+        }
     }
 
     /**
      * Provides extra information associated with a time slot (`When`) in a specific language.
      */
-    @ToString(includeNames = true)
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    static class ExtraInformation {
-        @JsonProperty String lang
-        @JsonProperty String text
+    public static class ExtraInformation {
+        @JsonProperty private String lang;
+        @JsonProperty private String text;
+
+        public String getLang() {
+            return lang;
+        }
+
+        public void setLang(String lang) {
+            this.lang = lang;
+        }
+
+        public String getText() {
+            return text;
+        }
+
+        public void setText(String text) {
+            this.text = text;
+        }
+
+        @Override
+        public String toString() {
+            return new ToStringBuilder(ExtraInformation.class, this)
+                    .add("lang", lang)
+                    .add("text", text)
+                    .build();
+        }
     }
 
     /**
@@ -418,11 +870,34 @@ class Calendar {
      *   <li>Event sold out on Saturday evening: add to soldouts with date and specific whens</li>
      * </ul>
      */
-    @ToString(includeNames = true)
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    static class ExceptionDate {
-        @JsonProperty DateTime date                  // The exception date
-        @JsonProperty List<When> whens = []          // Time slots for this exception (if applicable)
+    public static class ExceptionDate {
+        @JsonProperty private DateTime date;                  // The exception date
+        @JsonProperty private List<When> whens = new ArrayList<>();          // Time slots for this exception (if applicable)
+
+        public DateTime getDate() {
+            return date;
+        }
+
+        public void setDate(DateTime date) {
+            this.date = date;
+        }
+
+        public List<When> getWhens() {
+            return whens;
+        }
+
+        public void setWhens(List<When> whens) {
+            this.whens = whens;
+        }
+
+        @Override
+        public String toString() {
+            return new ToStringBuilder(ExceptionDate.class, this)
+                    .add("date", date)
+                    .add("whens", whens)
+                    .build();
+        }
     }
 
     /**
@@ -436,21 +911,67 @@ class Calendar {
      *   <li>"Reservation recommended"</li>
      * </ul>
      */
-    @ToString(includeNames = true)
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    static class Comment {
-        @JsonProperty String label                          // Main comment text
-        @JsonProperty List<CommentTranslation> commentTranslations = []  // Translated versions
+    public static class Comment {
+        @JsonProperty private String label;                          // Main comment text
+        @JsonProperty private List<CommentTranslation> commentTranslations = new ArrayList<>();  // Translated versions
+
+        public String getLabel() {
+            return label;
+        }
+
+        public void setLabel(String label) {
+            this.label = label;
+        }
+
+        public List<CommentTranslation> getCommentTranslations() {
+            return commentTranslations;
+        }
+
+        public void setCommentTranslations(List<CommentTranslation> commentTranslations) {
+            this.commentTranslations = commentTranslations;
+        }
+
+        @Override
+        public String toString() {
+            return new ToStringBuilder(Comment.class, this)
+                    .add("label", label)
+                    .add("commentTranslations", commentTranslations)
+                    .build();
+        }
     }
 
     /**
      * Represents a translation for a calendar comment in a specific language.
      */
-    @ToString(includeNames = true)
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    static class CommentTranslation {
-        @JsonProperty String label                          // Translated comment text
-        @JsonProperty String lang                           // Language code (e.g., "en", "nl", "de")
+    public static class CommentTranslation {
+        @JsonProperty private String label;                          // Translated comment text
+        @JsonProperty private String lang;                           // Language code (e.g., "en", "nl", "de")
+
+        public String getLabel() {
+            return label;
+        }
+
+        public void setLabel(String label) {
+            this.label = label;
+        }
+
+        public String getLang() {
+            return lang;
+        }
+
+        public void setLang(String lang) {
+            this.lang = lang;
+        }
+
+        @Override
+        public String toString() {
+            return new ToStringBuilder(CommentTranslation.class, this)
+                    .add("label", label)
+                    .add("lang", lang)
+                    .build();
+        }
     }
 
     /**
@@ -470,36 +991,55 @@ class Calendar {
      * <p>This method is typically called after populating the calendar data to ensure
      * the correct type is set for proper display and processing.</p>
      */
-    void determineCalendarType() {
+    public void determineCalendarType() {
         if (calendarType != null) {
             // never change it whenever it is set
-            return
+            return;
         }
 
-        if (this.alwaysopen) {
-            this.calendarType = CalendarType.ALWAYSOPEN
-            return
+        if (Boolean.TRUE.equals(this.alwaysopen)) {
+            this.calendarType = CalendarType.ALWAYSOPEN;
+            return;
         }
 
-        if (this.onrequest) {
-            this.calendarType = CalendarType.ONREQUEST
-            return
+        if (Boolean.TRUE.equals(this.onrequest)) {
+            this.calendarType = CalendarType.ONREQUEST;
+            return;
         }
 
-        if (this.singleDates?.size() > 0) {
-            this.calendarType = CalendarType.SINGLEDATES
-            return
+        if (this.singleDates != null && this.singleDates.size() > 0) {
+            this.calendarType = CalendarType.SINGLEDATES;
+            return;
         }
 
-        if (this.patternDates?.size() > 0) {
-            if (!this.patternDates[0].enddate && !this.patternDates[0].startdate) {
-                this.calendarType = CalendarType.OPENINGTIMES
+        if (this.patternDates != null && this.patternDates.size() > 0) {
+            if (this.patternDates.get(0).getEnddate() == null && this.patternDates.get(0).getStartdate() == null) {
+                this.calendarType = CalendarType.OPENINGTIMES;
             } else {
-                this.calendarType = CalendarType.PATTERNDATES
+                this.calendarType = CalendarType.PATTERNDATES;
             }
-            return
+            return;
         }
 
-        this.calendarType = CalendarType.NONE
+        this.calendarType = CalendarType.NONE;
+    }
+
+    @Override
+    public String toString() {
+        return new ToStringBuilder(Calendar.class, this)
+                .add("singleDates", singleDates)
+                .add("patternDates", patternDates)
+                .add("opens", opens)
+                .add("closeds", closeds)
+                .add("soldouts", soldouts)
+                .add("cancelleds", cancelleds)
+                .add("excludeholidays", excludeholidays)
+                .add("cancelled", cancelled)
+                .add("soldout", soldout)
+                .add("onrequest", onrequest)
+                .add("alwaysopen", alwaysopen)
+                .add("comment", comment)
+                .add("calendarType", calendarType)
+                .build();
     }
 }

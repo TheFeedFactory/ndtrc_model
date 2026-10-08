@@ -1,6 +1,8 @@
-package nl.ithelden.model.ndtrc
+package nl.ithelden.model.ndtrc;
 
-import groovy.transform.ToString
+import java.util.ArrayList;
+import java.util.List;
+import nl.ithelden.model.util.ToStringBuilder;
 
 /**
  * Contains comprehensive information about a route, including its type, URL, distance,
@@ -40,29 +42,125 @@ import groovy.transform.ToString
  *       to help users understand where along the route they are located</li>
  * </ul>
  */
-@ToString(includeNames = true)
-class RouteInfo {
+public class RouteInfo {
     // Route identification
-    Type type
-    RouteType routeType // determines the external source of the route
-    String url // URL to access the route in external system
+    private Type type;
+    private RouteType routeType; // determines the external source of the route
+    private String url; // URL to access the route in external system
 
     // Basic route metrics
-    Double distanceInKilometers
-    Integer durationInMinutes
-    Address start, end // start and end address, eg for parking, leave end empty if the same as start
+    private Double distanceInKilometers;
+    private Integer durationInMinutes;
+    private Address start; // start and end address, eg for parking, leave end empty if the same as start
+    private Address end;
 
     // Route points
-    List<Poi> pois = []
-    List<LatLng> routeCoordinates = []     // Points plotted by route editor - waypoints defining the intended path
-    List<LatLng> calculatedCoordinates = [] // Detailed routing path: from a mapping service (e.g., Mapbox) for every
+    private List<Poi> pois = new ArrayList<>();
+    private List<LatLng> routeCoordinates = new ArrayList<>();     // Points plotted by route editor - waypoints defining the intended path
+    private List<LatLng> calculatedCoordinates = new ArrayList<>(); // Detailed routing path: from a mapping service (e.g., Mapbox) for every
                                              // RouteType except boating, where it's routeCoordinates joined by straight lines
 
     // Route metadata
-    RouteDifficulty difficulty           // Route difficulty level
-    SurfaceType primarySurface           // Main surface type
+    private RouteDifficulty difficulty;           // Route difficulty level
+    private SurfaceType primarySurface;           // Main surface type
 
-    static enum RouteType {
+    public Type getType() {
+        return type;
+    }
+
+    public void setType(Type type) {
+        this.type = type;
+    }
+
+    public RouteType getRouteType() {
+        return routeType;
+    }
+
+    public void setRouteType(RouteType routeType) {
+        this.routeType = routeType;
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
+    }
+
+    public Double getDistanceInKilometers() {
+        return distanceInKilometers;
+    }
+
+    public void setDistanceInKilometers(Double distanceInKilometers) {
+        this.distanceInKilometers = distanceInKilometers;
+    }
+
+    public Integer getDurationInMinutes() {
+        return durationInMinutes;
+    }
+
+    public void setDurationInMinutes(Integer durationInMinutes) {
+        this.durationInMinutes = durationInMinutes;
+    }
+
+    public Address getStart() {
+        return start;
+    }
+
+    public void setStart(Address start) {
+        this.start = start;
+    }
+
+    public Address getEnd() {
+        return end;
+    }
+
+    public void setEnd(Address end) {
+        this.end = end;
+    }
+
+    public List<Poi> getPois() {
+        return pois;
+    }
+
+    public void setPois(List<Poi> pois) {
+        this.pois = pois;
+    }
+
+    public List<LatLng> getRouteCoordinates() {
+        return routeCoordinates;
+    }
+
+    public void setRouteCoordinates(List<LatLng> routeCoordinates) {
+        this.routeCoordinates = routeCoordinates;
+    }
+
+    public List<LatLng> getCalculatedCoordinates() {
+        return calculatedCoordinates;
+    }
+
+    public void setCalculatedCoordinates(List<LatLng> calculatedCoordinates) {
+        this.calculatedCoordinates = calculatedCoordinates;
+    }
+
+    public RouteDifficulty getDifficulty() {
+        return difficulty;
+    }
+
+    public void setDifficulty(RouteDifficulty difficulty) {
+        this.difficulty = difficulty;
+    }
+
+    public SurfaceType getPrimarySurface() {
+        return primarySurface;
+    }
+
+    public void setPrimarySurface(SurfaceType primarySurface) {
+        this.primarySurface = primarySurface;
+    }
+
+    public static enum RouteType {
         // Mapbox API routing profiles
         driving_traffic,  // Driving with real-time traffic data
         driving,          // Driving without traffic data
@@ -72,25 +170,74 @@ class RouteInfo {
                           // straight line between routeCoordinates instead of a Directions API call
         horse_riding,     // Horse riding - not a Mapbox profile either; routed with the walking profile,
                           // the closest Mapbox has to a bridle path
+        ;
+
+        // Groovy gives every enum these members; kept so the 1.x API is unchanged.
+        public static final RouteType MIN_VALUE = driving_traffic;
+        public static final RouteType MAX_VALUE = horse_riding;
+
+        public RouteType next() {
+            RouteType[] values = values();
+            int ordinal = ordinal() + 1;
+            return values[ordinal >= values.length ? 0 : ordinal];
+        }
+
+        public RouteType previous() {
+            RouteType[] values = values();
+            int ordinal = ordinal() - 1;
+            return values[ordinal < 0 ? values.length - 1 : ordinal];
+        }
     }
 
-    static enum Type {
+    public static enum Type {
         eventConnectors, // source is from Event Connectors
         route_maker, // source is from Route Maker
         route_iq,
         odp_routes, // source is from ODP or CityNavigator
-        other
+        other;
+
+        // Groovy gives every enum these members; kept so the 1.x API is unchanged.
+        public static final Type MIN_VALUE = eventConnectors;
+        public static final Type MAX_VALUE = other;
+
+        public Type next() {
+            Type[] values = values();
+            int ordinal = ordinal() + 1;
+            return values[ordinal >= values.length ? 0 : ordinal];
+        }
+
+        public Type previous() {
+            Type[] values = values();
+            int ordinal = ordinal() - 1;
+            return values[ordinal < 0 ? values.length - 1 : ordinal];
+        }
     }
 
-    static enum RouteDifficulty {
+    public static enum RouteDifficulty {
         easy,           // Suitable for all fitness levels
         moderate,       // Requires basic fitness
         challenging,    // Requires good fitness
         difficult,      // Requires excellent fitness
-        expert          // Technical/extreme routes
+        expert;         // Technical/extreme routes
+
+        // Groovy gives every enum these members; kept so the 1.x API is unchanged.
+        public static final RouteDifficulty MIN_VALUE = easy;
+        public static final RouteDifficulty MAX_VALUE = expert;
+
+        public RouteDifficulty next() {
+            RouteDifficulty[] values = values();
+            int ordinal = ordinal() + 1;
+            return values[ordinal >= values.length ? 0 : ordinal];
+        }
+
+        public RouteDifficulty previous() {
+            RouteDifficulty[] values = values();
+            int ordinal = ordinal() - 1;
+            return values[ordinal < 0 ? values.length - 1 : ordinal];
+        }
     }
 
-    static enum SurfaceType {
+    public static enum SurfaceType {
         paved,          // Asphalt/concrete
         gravel,         // Gravel paths
         dirt,           // Dirt roads/trails
@@ -101,7 +248,23 @@ class RouteInfo {
         rock,           // Rocky terrain
         snow,           // Snow covered
         water,          // Water routes
-        mixed           // Multiple surfaces
+        mixed;          // Multiple surfaces
+
+        // Groovy gives every enum these members; kept so the 1.x API is unchanged.
+        public static final SurfaceType MIN_VALUE = paved;
+        public static final SurfaceType MAX_VALUE = mixed;
+
+        public SurfaceType next() {
+            SurfaceType[] values = values();
+            int ordinal = ordinal() + 1;
+            return values[ordinal >= values.length ? 0 : ordinal];
+        }
+
+        public SurfaceType previous() {
+            SurfaceType[] values = values();
+            int ordinal = ordinal() - 1;
+            return values[ordinal < 0 ? values.length - 1 : ordinal];
+        }
     }
 
     /**
@@ -141,28 +304,132 @@ class RouteInfo {
      *       a cross-reference for additional location data</li>
      * </ul>
      */
-    @ToString(includeNames = true)
-    static class Poi {
+    public static class Poi {
         // Position along route
-        Double distanceInKilometersFromStart  // How far from the route start point
-        Integer durationInMinutesFromStart    // Estimated travel time from route start
-        LatLng coordinate                      // GPS coordinates of the POI
-        Location location                      // General location reference (empty if not registered in FF)
+        private Double distanceInKilometersFromStart;  // How far from the route start point
+        private Integer durationInMinutesFromStart;    // Estimated travel time from route start
+        private LatLng coordinate;                      // GPS coordinates of the POI
+        private Location location;                      // General location reference (empty if not registered in FF)
 
         // POI identification
-        String label                           // Short text for display on map icon
-        String icon                            // Font Awesome icon name (e.g., "museum", "restaurant", "park")
-        PoiCategory category                   // Category determines POI type and default icon
+        private String label;                           // Short text for display on map icon
+        private String icon;                            // Font Awesome icon name (e.g., "museum", "restaurant", "park")
+        private PoiCategory category;                   // Category determines POI type and default icon
 
         // Content from TRC system (similar to TRCItem structure)
-        List<TRCItemDetail> trcItemDetails    // Title, short description, and long description
-        List<File> files                       // Images, videos, and other media attachments
+        private List<TRCItemDetail> trcItemDetails;    // Title, short description, and long description
+        private List<File> files;                       // Images, videos, and other media attachments
 
         // Additional metadata
-        Calendar calendar                      // Opening hours information (if applicable)
+        private Calendar calendar;                      // Opening hours information (if applicable)
 
         // Cross-reference to existing FeedFactory location (optional)
-        Location.LocationItem locationItem     // Populated only if this POI is also registered as a Location in FeedFactory
+        private Location.LocationItem locationItem;     // Populated only if this POI is also registered as a Location in FeedFactory
+
+        public Double getDistanceInKilometersFromStart() {
+            return distanceInKilometersFromStart;
+        }
+
+        public void setDistanceInKilometersFromStart(Double distanceInKilometersFromStart) {
+            this.distanceInKilometersFromStart = distanceInKilometersFromStart;
+        }
+
+        public Integer getDurationInMinutesFromStart() {
+            return durationInMinutesFromStart;
+        }
+
+        public void setDurationInMinutesFromStart(Integer durationInMinutesFromStart) {
+            this.durationInMinutesFromStart = durationInMinutesFromStart;
+        }
+
+        public LatLng getCoordinate() {
+            return coordinate;
+        }
+
+        public void setCoordinate(LatLng coordinate) {
+            this.coordinate = coordinate;
+        }
+
+        public Location getLocation() {
+            return location;
+        }
+
+        public void setLocation(Location location) {
+            this.location = location;
+        }
+
+        public String getLabel() {
+            return label;
+        }
+
+        public void setLabel(String label) {
+            this.label = label;
+        }
+
+        public String getIcon() {
+            return icon;
+        }
+
+        public void setIcon(String icon) {
+            this.icon = icon;
+        }
+
+        public PoiCategory getCategory() {
+            return category;
+        }
+
+        public void setCategory(PoiCategory category) {
+            this.category = category;
+        }
+
+        public List<TRCItemDetail> getTrcItemDetails() {
+            return trcItemDetails;
+        }
+
+        public void setTrcItemDetails(List<TRCItemDetail> trcItemDetails) {
+            this.trcItemDetails = trcItemDetails;
+        }
+
+        public List<File> getFiles() {
+            return files;
+        }
+
+        public void setFiles(List<File> files) {
+            this.files = files;
+        }
+
+        public Calendar getCalendar() {
+            return calendar;
+        }
+
+        public void setCalendar(Calendar calendar) {
+            this.calendar = calendar;
+        }
+
+        public Location.LocationItem getLocationItem() {
+            return locationItem;
+        }
+
+        public void setLocationItem(Location.LocationItem locationItem) {
+            this.locationItem = locationItem;
+        }
+
+        @Override
+        public String toString() {
+            return new ToStringBuilder(Poi.class, this)
+                    .add("distanceInKilometersFromStart", distanceInKilometersFromStart)
+                    .add("durationInMinutesFromStart", durationInMinutesFromStart)
+                    .add("coordinate", coordinate)
+                    .add("location", location)
+                    .add("label", label)
+                    .add("icon", icon)
+                    .add("category", category)
+                    .add("trcItemDetails", trcItemDetails)
+                    .add("files", files)
+                    .add("calendar", calendar)
+                    .add("locationItem", locationItem)
+                    .build();
+        }
     }
 
     /**
@@ -229,7 +496,7 @@ class RouteInfo {
      *   </li>
      * </ul>
      */
-    static enum PoiCategory {
+    public static enum PoiCategory {
         // Attractions
         museum, monument, castle, church, nature_area,
         // Facilities
@@ -243,7 +510,23 @@ class RouteInfo {
         // Transport
         bus_stop, train_station, ferry, bike_rental,
         // Other
-        viewpoint, information_point, other
+        viewpoint, information_point, other;
+
+        // Groovy gives every enum these members; kept so the 1.x API is unchanged.
+        public static final PoiCategory MIN_VALUE = museum;
+        public static final PoiCategory MAX_VALUE = other;
+
+        public PoiCategory next() {
+            PoiCategory[] values = values();
+            int ordinal = ordinal() + 1;
+            return values[ordinal >= values.length ? 0 : ordinal];
+        }
+
+        public PoiCategory previous() {
+            PoiCategory[] values = values();
+            int ordinal = ordinal() - 1;
+            return values[ordinal < 0 ? values.length - 1 : ordinal];
+        }
     }
 
     /**
@@ -258,32 +541,93 @@ class RouteInfo {
      * <p>Coordinates must be valid (latitude: -90 to 90, longitude: -180 to 180) and the class
      * provides validation and distance calculation methods.</p>
      */
-    @ToString(includeNames = true)
-    static class LatLng {
-        Double lat, lng
-        Double altitude  // Elevation in meters (optional)
-        String label     // Optional short identifier for display on map (e.g., "01", "14")
+    public static class LatLng {
+        private Double lat;
+        private Double lng;
+        private Double altitude;  // Elevation in meters (optional)
+        private String label;     // Optional short identifier for display on map (e.g., "01", "14")
+
+        public Double getLat() {
+            return lat;
+        }
+
+        public void setLat(Double lat) {
+            this.lat = lat;
+        }
+
+        public Double getLng() {
+            return lng;
+        }
+
+        public void setLng(Double lng) {
+            this.lng = lng;
+        }
+
+        public Double getAltitude() {
+            return altitude;
+        }
+
+        public void setAltitude(Double altitude) {
+            this.altitude = altitude;
+        }
+
+        public String getLabel() {
+            return label;
+        }
+
+        public void setLabel(String label) {
+            this.label = label;
+        }
 
         // Validation method
-        boolean isValid() {
+        public boolean isValid() {
             return lat != null && lng != null &&
                    lat >= -90 && lat <= 90 &&
-                   lng >= -180 && lng <= 180
+                   lng >= -180 && lng <= 180;
         }
 
         // Calculate distance to another point (Haversine formula)
-        Double distanceTo(LatLng other) {
-            if (!this.isValid() || !other?.isValid()) return null
+        public Double distanceTo(LatLng other) {
+            if (!this.isValid() || other == null || !other.isValid()) return null;
 
-            double R = 6371 // Earth's radius in kilometers
-            double dLat = Math.toRadians(other.lat - this.lat)
-            double dLng = Math.toRadians(other.lng - this.lng)
+            double R = 6371; // Earth's radius in kilometers
+            double dLat = Math.toRadians(other.lat - this.lat);
+            double dLng = Math.toRadians(other.lng - this.lng);
             double a = Math.sin(dLat/2) * Math.sin(dLat/2) +
                       Math.cos(Math.toRadians(this.lat)) *
                       Math.cos(Math.toRadians(other.lat)) *
-                      Math.sin(dLng/2) * Math.sin(dLng/2)
-            double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a))
-            return R * c
+                      Math.sin(dLng/2) * Math.sin(dLng/2);
+            double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+            return R * c;
         }
+
+        @Override
+        public String toString() {
+            return new ToStringBuilder(LatLng.class, this)
+                    .add("lat", lat)
+                    .add("lng", lng)
+                    .add("altitude", altitude)
+                    .add("label", label)
+                    .add("valid", isValid())
+                    .build();
+        }
+    }
+
+    @Override
+    public String toString() {
+        return new ToStringBuilder(RouteInfo.class, this)
+                .add("type", type)
+                .add("routeType", routeType)
+                .add("url", url)
+                .add("distanceInKilometers", distanceInKilometers)
+                .add("durationInMinutes", durationInMinutes)
+                .add("start", start)
+                .add("end", end)
+                .add("pois", pois)
+                .add("routeCoordinates", routeCoordinates)
+                .add("calculatedCoordinates", calculatedCoordinates)
+                .add("difficulty", difficulty)
+                .add("primarySurface", primarySurface)
+                .build();
     }
 }

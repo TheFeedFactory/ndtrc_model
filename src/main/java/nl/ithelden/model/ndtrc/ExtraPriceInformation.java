@@ -1,15 +1,38 @@
-package nl.ithelden.model.ndtrc
+package nl.ithelden.model.ndtrc;
 
-import com.fasterxml.jackson.annotation.JsonInclude
-import com.fasterxml.jackson.annotation.JsonProperty
-import groovy.transform.ToString
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import nl.ithelden.model.util.ToStringBuilder;
 
 /**
  * Provides additional pricing information in a specific language.
  */
-@ToString(includeNames = true)
 @JsonInclude(JsonInclude.Include.NON_NULL)
-class ExtraPriceInformation {
-    @JsonProperty String lang
-    @JsonProperty String text
+public class ExtraPriceInformation {
+    @JsonProperty private String lang;
+    @JsonProperty private String text;
+
+    public String getLang() {
+        return lang;
+    }
+
+    public void setLang(String lang) {
+        this.lang = lang;
+    }
+
+    public String getText() {
+        return text;
+    }
+
+    public void setText(String text) {
+        this.text = text;
+    }
+
+    @Override
+    public String toString() {
+        return new ToStringBuilder(ExtraPriceInformation.class, this)
+                .add("lang", lang)
+                .add("text", text)
+                .build();
+    }
 }

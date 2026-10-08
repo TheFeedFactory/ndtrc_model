@@ -1,85 +1,305 @@
-package nl.ithelden.model.ndtrc
+package nl.ithelden.model.ndtrc;
 
-import com.fasterxml.jackson.annotation.JsonIgnore
-import com.fasterxml.jackson.annotation.JsonInclude
-import com.fasterxml.jackson.annotation.JsonProperty
-import groovy.transform.ToString
-import nl.ithelden.model.util.StringUtils
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
+import nl.ithelden.model.util.StringUtils;
+import nl.ithelden.model.util.ToStringBuilder;
 
 /**
  * Represents contact information for a TRC item, including label, email, phone, fax,
  * URLs, and address details. Contains methods to convert between V1 (single contact)
  * and V2 (multiple contacts - deprecated fields) formats.
  */
-@ToString(includeNames = true)
 @JsonInclude(JsonInclude.Include.NON_NULL)
-class Contactinfo {
-    @JsonProperty String label
-    @Deprecated @JsonProperty List<Mail> mails = []
-    @Deprecated @JsonProperty List<Phone> phones = []
-    @Deprecated @JsonProperty List<Fax> faxes = []
-    @JsonProperty List<Url> urls = []
-    @Deprecated @JsonProperty List<Address> addresses = []
+public class Contactinfo {
+    @JsonProperty private String label;
+    @Deprecated @JsonProperty private List<Mail> mails = new ArrayList<>();
+    @Deprecated @JsonProperty private List<Phone> phones = new ArrayList<>();
+    @Deprecated @JsonProperty private List<Fax> faxes = new ArrayList<>();
+    @JsonProperty private List<Url> urls = new ArrayList<>();
+    @Deprecated @JsonProperty private List<Address> addresses = new ArrayList<>();
 
-    @JsonProperty Mail mail
-    @JsonProperty Phone phone
-    @JsonProperty Fax fax
-    @JsonProperty Address address
+    @JsonProperty private Mail mail;
+    @JsonProperty private Phone phone;
+    @JsonProperty private Fax fax;
+    @JsonProperty private Address address;
+
+    public String getLabel() {
+        return label;
+    }
+
+    public void setLabel(String label) {
+        this.label = label;
+    }
+
+    public List<Mail> getMails() {
+        return mails;
+    }
+
+    public void setMails(List<Mail> mails) {
+        this.mails = mails;
+    }
+
+    public List<Phone> getPhones() {
+        return phones;
+    }
+
+    public void setPhones(List<Phone> phones) {
+        this.phones = phones;
+    }
+
+    public List<Fax> getFaxes() {
+        return faxes;
+    }
+
+    public void setFaxes(List<Fax> faxes) {
+        this.faxes = faxes;
+    }
+
+    public List<Url> getUrls() {
+        return urls;
+    }
+
+    public void setUrls(List<Url> urls) {
+        this.urls = urls;
+    }
+
+    public List<Address> getAddresses() {
+        return addresses;
+    }
+
+    public void setAddresses(List<Address> addresses) {
+        this.addresses = addresses;
+    }
+
+    public Mail getMail() {
+        return mail;
+    }
+
+    public void setMail(Mail mail) {
+        this.mail = mail;
+    }
+
+    public Phone getPhone() {
+        return phone;
+    }
+
+    public void setPhone(Phone phone) {
+        this.phone = phone;
+    }
+
+    public Fax getFax() {
+        return fax;
+    }
+
+    public void setFax(Fax fax) {
+        this.fax = fax;
+    }
+
+    public Address getAddress() {
+        return address;
+    }
+
+    public void setAddress(Address address) {
+        this.address = address;
+    }
 
     /**
      * Represents an email address with an optional description code and translations.
      */
-    @ToString(includeNames = true)
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    static class Mail {
-        @JsonProperty String email
-        @JsonProperty String descriptioncode // Type defining the format and data structure for codes.
+    public static class Mail {
+        @JsonProperty private String email;
+        @JsonProperty private String descriptioncode; // Type defining the format and data structure for codes.
         // Codes must have the format XXX-NNN where XXX a 3 char string and
         // XXX a 3-digit number
-        @JsonProperty Boolean reservations
-        @JsonProperty List<DescriptionTranslation> descriptionTranslations = []
+        @JsonProperty private Boolean reservations;
+        @JsonProperty private List<DescriptionTranslation> descriptionTranslations = new ArrayList<>();
+
+        public String getEmail() {
+            return email;
+        }
+
+        public void setEmail(String email) {
+            this.email = email;
+        }
+
+        public String getDescriptioncode() {
+            return descriptioncode;
+        }
+
+        public void setDescriptioncode(String descriptioncode) {
+            this.descriptioncode = descriptioncode;
+        }
+
+        public Boolean getReservations() {
+            return reservations;
+        }
+
+        public Boolean isReservations() {
+            return reservations;
+        }
+
+        public void setReservations(Boolean reservations) {
+            this.reservations = reservations;
+        }
+
+        public List<DescriptionTranslation> getDescriptionTranslations() {
+            return descriptionTranslations;
+        }
+
+        public void setDescriptionTranslations(List<DescriptionTranslation> descriptionTranslations) {
+            this.descriptionTranslations = descriptionTranslations;
+        }
 
         @JsonIgnore
-        boolean isEmpty() {
-            return StringUtils.isEmpty(email)
+        public boolean isEmpty() {
+            return StringUtils.isEmpty(email);
+        }
+
+        @Override
+        public String toString() {
+            return new ToStringBuilder(Mail.class, this)
+                    .add("email", email)
+                    .add("descriptioncode", descriptioncode)
+                    .add("reservations", reservations)
+                    .add("descriptionTranslations", descriptionTranslations)
+                    .add("empty", isEmpty())
+                    .build();
         }
     }
 
     /**
      * Represents a phone number with an optional description code and translations.
      */
-    @ToString(includeNames = true)
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    static class Phone {
-        @JsonProperty String number
-        @JsonProperty String descriptioncode // Type defining the format and data structure for codes.
+    public static class Phone {
+        @JsonProperty private String number;
+        @JsonProperty private String descriptioncode; // Type defining the format and data structure for codes.
         // Codes must have the format XXX-NNN where XXX a 3 char string and
         // XXX a 3-digit number
-        @JsonProperty Boolean reservations
-        @JsonProperty List<DescriptionTranslation> descriptionTranslations = []
+        @JsonProperty private Boolean reservations;
+        @JsonProperty private List<DescriptionTranslation> descriptionTranslations = new ArrayList<>();
+
+        public String getNumber() {
+            return number;
+        }
+
+        public void setNumber(String number) {
+            this.number = number;
+        }
+
+        public String getDescriptioncode() {
+            return descriptioncode;
+        }
+
+        public void setDescriptioncode(String descriptioncode) {
+            this.descriptioncode = descriptioncode;
+        }
+
+        public Boolean getReservations() {
+            return reservations;
+        }
+
+        public Boolean isReservations() {
+            return reservations;
+        }
+
+        public void setReservations(Boolean reservations) {
+            this.reservations = reservations;
+        }
+
+        public List<DescriptionTranslation> getDescriptionTranslations() {
+            return descriptionTranslations;
+        }
+
+        public void setDescriptionTranslations(List<DescriptionTranslation> descriptionTranslations) {
+            this.descriptionTranslations = descriptionTranslations;
+        }
 
         @JsonIgnore
-        boolean isEmpty() {
-            return StringUtils.isEmpty(number)
+        public boolean isEmpty() {
+            return StringUtils.isEmpty(number);
+        }
+
+        @Override
+        public String toString() {
+            return new ToStringBuilder(Phone.class, this)
+                    .add("number", number)
+                    .add("descriptioncode", descriptioncode)
+                    .add("reservations", reservations)
+                    .add("descriptionTranslations", descriptionTranslations)
+                    .add("empty", isEmpty())
+                    .build();
         }
     }
 
     /**
      * Represents a fax number with an optional description code and translations.
      */
-    @ToString(includeNames = true)
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    static class Fax {
-        @JsonProperty String number
-        @JsonProperty String descriptioncode // Type defining the format and data structure for codes.
+    public static class Fax {
+        @JsonProperty private String number;
+        @JsonProperty private String descriptioncode; // Type defining the format and data structure for codes.
         // Codes must have the format XXX-NNN where XXX a 3 char string and
         // XXX a 3-digit number
-        @JsonProperty Boolean reservations
-        @JsonProperty List<DescriptionTranslation> descriptionTranslations = []
+        @JsonProperty private Boolean reservations;
+        @JsonProperty private List<DescriptionTranslation> descriptionTranslations = new ArrayList<>();
+
+        public String getNumber() {
+            return number;
+        }
+
+        public void setNumber(String number) {
+            this.number = number;
+        }
+
+        public String getDescriptioncode() {
+            return descriptioncode;
+        }
+
+        public void setDescriptioncode(String descriptioncode) {
+            this.descriptioncode = descriptioncode;
+        }
+
+        public Boolean getReservations() {
+            return reservations;
+        }
+
+        public Boolean isReservations() {
+            return reservations;
+        }
+
+        public void setReservations(Boolean reservations) {
+            this.reservations = reservations;
+        }
+
+        public List<DescriptionTranslation> getDescriptionTranslations() {
+            return descriptionTranslations;
+        }
+
+        public void setDescriptionTranslations(List<DescriptionTranslation> descriptionTranslations) {
+            this.descriptionTranslations = descriptionTranslations;
+        }
 
         @JsonIgnore
-        boolean isEmpty() {
-            return StringUtils.isEmpty(number)
+        public boolean isEmpty() {
+            return StringUtils.isEmpty(number);
+        }
+
+        @Override
+        public String toString() {
+            return new ToStringBuilder(Fax.class, this)
+                    .add("number", number)
+                    .add("descriptioncode", descriptioncode)
+                    .add("reservations", reservations)
+                    .add("descriptionTranslations", descriptionTranslations)
+                    .add("empty", isEmpty())
+                    .build();
         }
     }
 
@@ -87,36 +307,118 @@ class Contactinfo {
      * Represents a URL associated with the contact information, including type, language,
      * and description.
      */
-    @ToString(includeNames = true)
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    static class Url {
-        @JsonProperty URL url // max len = 1000
-        @JsonProperty String descriptioncode // Type defining the format and data structure for codes.
+    public static class Url {
+        @JsonProperty private URL url; // max len = 1000
+        @JsonProperty private String descriptioncode; // Type defining the format and data structure for codes.
         // Codes must have the format XXX-NNN where XXX a 3 char string and
         // XXX a 3-digit number
-        @JsonProperty String targetLanguage
-        @JsonProperty Boolean reservations
-        @JsonProperty URLServiceType urlServiceType
+        @JsonProperty private String targetLanguage;
+        @JsonProperty private Boolean reservations;
+        @JsonProperty private URLServiceType urlServiceType;
 
         // `booking` predates the ticket/reservation split below and is kept for existing data;
         // new URLs should use `ticket` (buy tickets) or `reservation` (reserve a table/slot/visit).
-        enum URLServiceType { general, booking, review, video, webshop, socialmedia, lastminute, virtualtour, dmo,
-                              sustainability, venuefinder, travelbase, homepage, ticket, reservation }
+        public enum URLServiceType {
+            general, booking, review, video, webshop, socialmedia, lastminute, virtualtour, dmo,
+            sustainability, venuefinder, travelbase, homepage, ticket, reservation;
 
-        @JsonProperty List<DescriptionTranslation> descriptionTranslations = []
+            // Groovy gives every enum these members; kept so the 1.x API is unchanged.
+            public static final URLServiceType MIN_VALUE = general;
+            public static final URLServiceType MAX_VALUE = reservation;
 
-        @JsonIgnore
-        boolean isEmpty() {
-            return url == null
+            public URLServiceType next() {
+                URLServiceType[] values = values();
+                int ordinal = ordinal() + 1;
+                return values[ordinal >= values.length ? 0 : ordinal];
+            }
+
+            public URLServiceType previous() {
+                URLServiceType[] values = values();
+                int ordinal = ordinal() - 1;
+                return values[ordinal < 0 ? values.length - 1 : ordinal];
+            }
         }
 
-        static URLServiceType getTypeFromString(String type) {
+        @JsonProperty private List<DescriptionTranslation> descriptionTranslations = new ArrayList<>();
+
+        public URL getUrl() {
+            return url;
+        }
+
+        public void setUrl(URL url) {
+            this.url = url;
+        }
+
+        public String getDescriptioncode() {
+            return descriptioncode;
+        }
+
+        public void setDescriptioncode(String descriptioncode) {
+            this.descriptioncode = descriptioncode;
+        }
+
+        public String getTargetLanguage() {
+            return targetLanguage;
+        }
+
+        public void setTargetLanguage(String targetLanguage) {
+            this.targetLanguage = targetLanguage;
+        }
+
+        public Boolean getReservations() {
+            return reservations;
+        }
+
+        public Boolean isReservations() {
+            return reservations;
+        }
+
+        public void setReservations(Boolean reservations) {
+            this.reservations = reservations;
+        }
+
+        public URLServiceType getUrlServiceType() {
+            return urlServiceType;
+        }
+
+        public void setUrlServiceType(URLServiceType urlServiceType) {
+            this.urlServiceType = urlServiceType;
+        }
+
+        public List<DescriptionTranslation> getDescriptionTranslations() {
+            return descriptionTranslations;
+        }
+
+        public void setDescriptionTranslations(List<DescriptionTranslation> descriptionTranslations) {
+            this.descriptionTranslations = descriptionTranslations;
+        }
+
+        @JsonIgnore
+        public boolean isEmpty() {
+            return url == null;
+        }
+
+        public static URLServiceType getTypeFromString(String type) {
             for (URLServiceType serviceType : URLServiceType.values()) {
-                if (serviceType.toString() == type) {
+                if (serviceType.toString().equals(type)) {
                     return serviceType;
                 }
             }
             throw new IllegalArgumentException("No enum found with type: " + type);
+        }
+
+        @Override
+        public String toString() {
+            return new ToStringBuilder(Url.class, this)
+                    .add("url", url)
+                    .add("descriptioncode", descriptioncode)
+                    .add("targetLanguage", targetLanguage)
+                    .add("reservations", reservations)
+                    .add("urlServiceType", urlServiceType)
+                    .add("descriptionTranslations", descriptionTranslations)
+                    .add("empty", isEmpty())
+                    .build();
         }
     }
 
@@ -124,49 +426,92 @@ class Contactinfo {
      * Represents a translation for a description field (e.g., for email, phone, fax, URL)
      * in a specific language.
      */
-    @ToString(includeNames = true)
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    static class DescriptionTranslation {
-        @JsonProperty String lang
-        @JsonProperty String label
+    public static class DescriptionTranslation {
+        @JsonProperty private String lang;
+        @JsonProperty private String label;
+
+        public String getLang() {
+            return lang;
+        }
+
+        public void setLang(String lang) {
+            this.lang = lang;
+        }
+
+        public String getLabel() {
+            return label;
+        }
+
+        public void setLabel(String label) {
+            this.label = label;
+        }
+
+        @Override
+        public String toString() {
+            return new ToStringBuilder(DescriptionTranslation.class, this)
+                    .add("lang", lang)
+                    .add("label", label)
+                    .build();
+        }
     }
 
-    void convertToV1() {
-        if (this.mails && (!this.mail || this.mail.isEmpty())) {
-            this.mail = mails.first()
+    public void convertToV1() {
+        if (this.mails != null && !this.mails.isEmpty() && (this.mail == null || this.mail.isEmpty())) {
+            this.mail = mails.get(0);
         }
-        if (this.addresses && (!this.address || this.address.isEmpty())) {
-            this.address = addresses.first()
+        if (this.addresses != null && !this.addresses.isEmpty() && (this.address == null || this.address.isEmpty())) {
+            this.address = addresses.get(0);
         }
-        if (this.faxes && (!this.fax || this.fax.isEmpty())) {
-            this.fax = faxes.first()
+        if (this.faxes != null && !this.faxes.isEmpty() && (this.fax == null || this.fax.isEmpty())) {
+            this.fax = faxes.get(0);
         }
-        if (this.phones && (!this.phone || this.phone.isEmpty())) {
-            this.phone = phones.first()
+        if (this.phones != null && !this.phones.isEmpty() && (this.phone == null || this.phone.isEmpty())) {
+            this.phone = phones.get(0);
         }
     }
 
-    void convertToV2() {
+    public void convertToV2() {
         // in V2 format we only support 1 phone and or email address
-        if (this.mail) {
-            this.mails = [this.mail]
+        if (this.mail != null) {
+            this.mails = new ArrayList<>();
+            this.mails.add(this.mail);
         } else {
-            this.mails = []
+            this.mails = new ArrayList<>();
         }
-        if (this.address) {
-            this.addresses = [this.address]
+        if (this.address != null) {
+            this.addresses = new ArrayList<>();
+            this.addresses.add(this.address);
         } else {
-            this.addresses = []
+            this.addresses = new ArrayList<>();
         }
-        if (this.fax) {
-            this.faxes = [this.fax]
+        if (this.fax != null) {
+            this.faxes = new ArrayList<>();
+            this.faxes.add(this.fax);
         } else {
-            this.faxes = []
+            this.faxes = new ArrayList<>();
         }
-        if (this.phone) {
-            this.phones = [this.phone]
+        if (this.phone != null) {
+            this.phones = new ArrayList<>();
+            this.phones.add(this.phone);
         } else {
-            this.phones = []
+            this.phones = new ArrayList<>();
         }
+    }
+
+    @Override
+    public String toString() {
+        return new ToStringBuilder(Contactinfo.class, this)
+                .add("label", label)
+                .add("mails", mails)
+                .add("phones", phones)
+                .add("faxes", faxes)
+                .add("urls", urls)
+                .add("addresses", addresses)
+                .add("mail", mail)
+                .add("phone", phone)
+                .add("fax", fax)
+                .add("address", address)
+                .build();
     }
 }
