@@ -53,7 +53,7 @@ export const PromotionSchema = z
     /**
      * Whether this promotion must carry a `discount.percentage` or `discount.amount`
      * to count as complete. Server default is `true`; set it to `false` for offers that
-     * need no value (a gift, a present, free entrance). Primitive boolean on the Groovy
+     * need no value (a gift, a present, free entrance). Primitive boolean on the Java
      * side, so a response always carries it — optional here because a request body may
      * omit it and take the default.
      */

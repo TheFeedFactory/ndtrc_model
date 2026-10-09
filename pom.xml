@@ -6,7 +6,7 @@
 
     <groupId>nl.eventconnectors.ff</groupId>
     <artifactId>ff-model</artifactId>
-    <version>1.7.0</version>
+    <version>2.0.0</version>
     <name>Feed Factory Model</name>
     <description>A model library for the Feed Factory project</description>
     <url>https://eventconnectors.nl</url>
@@ -35,8 +35,9 @@
     </scm>
 
     <properties>
-        <maven.compiler.source>8</maven.compiler.source>
-        <maven.compiler.target>8</maven.compiler.target>
+        <!-- Java 17 bytecode (consumers run 17 and 25); compiled with -release so a newer JDK
+             cannot leak post-17 APIs into the artifact. -->
+        <maven.compiler.release>17</maven.compiler.release>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
@@ -56,11 +57,6 @@
 
     <dependencies>
         <dependency>
-            <groupId>org.codehaus.groovy</groupId>
-            <artifactId>groovy</artifactId>
-            <version>2.5.23</version>
-        </dependency>
-        <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
             <version>2.0.17</version>
@@ -69,7 +65,7 @@
             <groupId>joda-time</groupId>
             <artifactId>joda-time</artifactId>
             <version>2.14.0</version>
-        </dependency>        
+        </dependency>
         <dependency>
             <groupId>com.fasterxml.jackson.datatype</groupId>
             <artifactId>jackson-datatype-joda</artifactId>
@@ -77,7 +73,7 @@
         </dependency>
         <dependency>
             <groupId>org.junit.jupiter</groupId>
-            <artifactId>junit-jupiter-api</artifactId>
+            <artifactId>junit-jupiter</artifactId>
             <version>5.12.2</version>
             <scope>test</scope>
         </dependency>
@@ -86,31 +82,11 @@
     <build>
         <plugins>
             <plugin>
-                <groupId>org.codehaus.gmavenplus</groupId>
-                <artifactId>gmavenplus-plugin</artifactId>
-                <version>2.1.0</version>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>addSources</goal>
-                            <goal>addTestSources</goal>
-                            <goal>generateStubs</goal>
-                            <goal>compile</goal>
-                            <goal>generateTestStubs</goal>
-                            <goal>compileTests</goal>
-                            <goal>removeStubs</goal>
-                            <goal>removeTestStubs</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-            <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.11.0</version>
                 <configuration>
-                    <source>8</source>
-                    <target>8</target>
+                    <release>17</release>
                 </configuration>
             </plugin>
             <plugin>
@@ -145,6 +121,13 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-javadoc-plugin</artifactId>
                 <version>3.11.2</version>
+                <configuration>
+                    <!-- The model's Javadoc predates the Java sources (it was written for Groovy,
+                         whose build never ran doclint over it): h3/h4 headings without an h1/h2
+                         parent, a bare '&', no comments on accessors. doclint would fail the
+                         release on those, and Central only needs a javadoc jar to exist. -->
+                    <doclint>none</doclint>
+                </configuration>
                 <executions>
                     <execution>
                         <id>generate-javadoc</id>

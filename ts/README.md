@@ -1,6 +1,6 @@
 # @eventconnectors/ndtrc_model
 
-Zod schemas for the **NDTRC tourism data model** — a TypeScript port of the Groovy [ndtrc_model](https://github.com/TheFeedFactory/ndtrc_model) library. Every entity, enum, and nested type from the Groovy source has a matching Zod schema with field-for-field parity, enforced by automated tests.
+Zod schemas for the **NDTRC tourism data model** — a TypeScript port of the Java [ndtrc_model](https://github.com/TheFeedFactory/ndtrc_model) library. Every entity, enum, and nested type from the Java source has a matching Zod schema with field-for-field parity, enforced by automated tests.
 
 ## Installation
 
@@ -64,7 +64,7 @@ strict.parse({ xcoordinate: "5.12", unknownField: true }); // throws ZodError
 
 ## Extending schemas
 
-Use Zod's `.extend()` to add fields that exist in the wire format but aren't in the Groovy model:
+Use Zod's `.extend()` to add fields that exist in the wire format but aren't in the Java model:
 
 ```ts
 import { TRCItemSchema } from "@eventconnectors/ndtrc_model";
@@ -77,7 +77,7 @@ const MyTRCItemSchema = TRCItemSchema.extend({
 
 ## Version lockstep
 
-This package version tracks the Groovy `ndtrc_model` version. When the Groovy model adds or changes fields, a corresponding release of this package follows with the same version bump. Automated parity tests ensure no field drift between the two.
+This package version tracks the Java `ndtrc_model` version (Maven `nl.eventconnectors.ff:ff-model`). When the Java model adds or changes fields, a corresponding release of this package follows with the same version bump. Automated parity tests ensure no field drift between the two.
 
 ## Exported schemas
 

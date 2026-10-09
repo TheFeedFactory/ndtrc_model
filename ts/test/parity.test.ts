@@ -1,6 +1,6 @@
 import { describe, it, expect } from "vitest";
 import { join } from "node:path";
-import { extractGroovyFields } from "../src/internal/groovy-fields.js";
+import { extractJavaFields } from "../src/internal/java-fields.js";
 import { zodKeys } from "../src/internal/zod-keys.js";
 import {
   AddressSchema,
@@ -62,26 +62,26 @@ import {
 } from "../src/index.js";
 import type { ZodTypeAny } from "zod";
 
-const GROOVY_NDTRC_DIR = join(
+const JAVA_NDTRC_DIR = join(
   import.meta.dirname,
   "..",
   "..",
   "src",
   "main",
-  "groovy",
+  "java",
   "nl",
   "ithelden",
   "model",
   "ndtrc",
 );
 
-const GROOVY_MODEL_DIR = join(
+const JAVA_MODEL_DIR = join(
   import.meta.dirname,
   "..",
   "..",
   "src",
   "main",
-  "groovy",
+  "java",
   "nl",
   "ithelden",
   "model",
@@ -150,7 +150,7 @@ const modelEntityMap: Record<string, ZodTypeAny> = {
 };
 
 /**
- * Fields present in Groovy but intentionally excluded from the Zod schema.
+ * Fields present in Java but intentionally excluded from the Zod schema.
  *
  * - TRCItem.forceoverwrite: workflow field, not part of the wire format
  */
@@ -159,54 +159,54 @@ const allowlist: Record<string, Set<string>> = {
 };
 
 function checkParity(
-  groovyFields: Record<string, Set<string>>,
+  javaFields: Record<string, Set<string>>,
   map: Record<string, ZodTypeAny>,
   dirLabel: string,
 ) {
   for (const [className, schema] of Object.entries(map)) {
-    const groovy = groovyFields[className];
+    const java = javaFields[className];
     expect(
-      groovy,
-      `Groovy class "${className}" not found in ${dirLabel}`,
+      java,
+      `Java class "${className}" not found in ${dirLabel}`,
     ).toBeDefined();
 
     const zod = zodKeys(schema);
     const allowed = allowlist[className] ?? new Set<string>();
 
-    const groovyMinusAllowlist = new Set(
-      [...groovy!].filter((f) => !allowed.has(f)),
+    const javaMinusAllowlist = new Set(
+      [...java!].filter((f) => !allowed.has(f)),
     );
 
-    const missingInZod = [...groovyMinusAllowlist].filter(
+    const missingInZod = [...javaMinusAllowlist].filter(
       (f) => !zod.has(f),
     );
-    const extraInZod = [...zod].filter((f) => !groovyMinusAllowlist.has(f));
+    const extraInZod = [...zod].filter((f) => !javaMinusAllowlist.has(f));
 
     expect(
       missingInZod,
-      `${className}: fields in Groovy but missing from Zod schema: ${missingInZod.join(", ")}`,
+      `${className}: fields in Java but missing from Zod schema: ${missingInZod.join(", ")}`,
     ).toEqual([]);
     expect(
       extraInZod,
-      `${className}: fields in Zod schema but missing from Groovy: ${extraInZod.join(", ")}`,
+      `${className}: fields in Zod schema but missing from Java: ${extraInZod.join(", ")}`,
     ).toEqual([]);
   }
 }
 
-describe("Groovy ↔ Zod parity", () => {
+describe("Java ↔ Zod parity", () => {
   it("every mapped ndtrc entity has matching field sets", async () => {
-    const groovyFields = await extractGroovyFields(GROOVY_NDTRC_DIR);
-    checkParity(groovyFields, entityMap, GROOVY_NDTRC_DIR);
+    const javaFields = await extractJavaFields(JAVA_NDTRC_DIR);
+    checkParity(javaFields, entityMap, JAVA_NDTRC_DIR);
   });
 
   it("every mapped model entity has matching field sets", async () => {
-    const groovyFields = await extractGroovyFields(GROOVY_MODEL_DIR);
-    checkParity(groovyFields, modelEntityMap, GROOVY_MODEL_DIR);
+    const javaFields = await extractJavaFields(JAVA_MODEL_DIR);
+    checkParity(javaFields, modelEntityMap, JAVA_MODEL_DIR);
   });
 
-  it("fails when a Groovy field is added without a TS counterpart", async () => {
-    const groovyFields = await extractGroovyFields(GROOVY_NDTRC_DIR);
-    const gisFields = groovyFields["GISCoordinate"]!;
+  it("fails when a Java field is added without a TS counterpart", async () => {
+    const javaFields = await extractJavaFields(JAVA_NDTRC_DIR);
+    const gisFields = javaFields["GISCoordinate"]!;
 
     const fakeGisFields = new Set([...gisFields, "newField"]);
     const zodFields = zodKeys(GISCoordinateSchema);

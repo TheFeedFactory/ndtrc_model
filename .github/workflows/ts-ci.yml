@@ -4,10 +4,13 @@ on:
   push:
     paths:
       - "ts/**"
+      # the parity test reads the Java model, so a model change must run it too
+      - "src/main/java/**"
       - ".github/workflows/ts-ci.yml"
   pull_request:
     paths:
       - "ts/**"
+      - "src/main/java/**"
       - ".github/workflows/ts-ci.yml"
 
 defaults:

@@ -19,17 +19,40 @@ in the TypeScript port — see "TypeScript port → Schema variants" below.
 
 ## Source-of-truth rules
 
-- **Groovy classes under `src/main/groovy/nl/ithelden/model/`** are canonical.
-- The TypeScript + Zod port is a **hand-maintained mirror**. When the Groovy
+- **Java classes under `src/main/java/nl/ithelden/model/`** are canonical.
+  Up to 1.7.0 they were Groovy; 2.0.0 is a behaviour-preserving conversion
+  to plain Java (no Groovy at runtime), see "Java model" below.
+- The TypeScript + Zod port is a **hand-maintained mirror**. When the Java
   model changes, TS must be updated in the same change. Drift is caught by
   CI/test rather than codegen.
+
+## Java model
+
+- Plain hand-written beans: private fields, public accessors, no Lombok and
+  no runtime dependency beyond Jackson annotations, Joda-Time and slf4j.
+  Bytecode is Java 17 (`--release 17`).
+- The accessors reproduce what Groovy generated in 1.x, because consumers
+  (ff-api and the Groovy feed services) use property syntax and Jackson:
+  every `boolean` **and** `Boolean` property has both `getX()` and `isX()`
+  (a field named `isDefault` therefore has `getIsDefault()` and
+  `isIsDefault()`); a property whose name collides with a hand-written
+  method keeps only the accessor Groovy generated (`When.valid` has
+  `getValid()`, while `isValid()` is the computed check).
+- Every enum keeps Groovy's `next()`, `previous()`, `MIN_VALUE` and
+  `MAX_VALUE`; `toString()` keeps Groovy's `@ToString(includeNames = true)`
+  format (`nl.ithelden.model.ndtrc.Address(city:x, ...)`, including the
+  pseudo-properties such as `empty:false`) via
+  `nl.ithelden.model.util.ToStringBuilder`.
+- Field declaration order is wire order (Jackson follows it), so new fields
+  go where they should appear in the JSON.
+- `Groovy1xCompatibilityTest` pins all of the above.
 
 ## TypeScript port
 
 - Lives at `ts/` inside this repository (colocated, not a separate repo).
 - Published as **`@eventconnectors/ndtrc_model`** to public npm.
 - Field names are **verbatim wire format** — the Zod schemas validate the
-  JSON exactly as Jackson emits it from the Groovy classes. No
+  JSON exactly as Jackson emits it from the Java classes. No
   camelCase/snake_case translation, no transform layer. `creationdate` stays
   `creationdate`, `trcItemDetails` stays `trcItemDetails`. Cleanup of legacy
   wire-format inconsistencies is a separate cross-cutting project that would
@@ -83,7 +106,7 @@ Empty string, uppercase, locale-tagged forms (`nl-BE`), and three-letter
 
 ### Enums and external vocabularies
 
-- Groovy `enum` types map to Zod `z.enum([...])` with **verbatim** wire
+- Java `enum` types map to Zod `z.enum([...])` with **verbatim** wire
   values (each enum's case is preserved — `WFStatus` is lowercase,
   `EntityType` is UPPERCASE, `PriceDescriptionValue` is Capitalized). No TS
   `enum` declarations; the Zod-derived string-literal union is the type.
@@ -159,27 +182,29 @@ File layout under `ts/src/`: one file per entity (e.g. `trc-item.ts`,
 re-exported through `ts/src/index.ts`. The 1:1 mapping is what makes the
 parity test mechanical.
 
-### Out-of-Groovy wire fields
+### Out-of-model wire fields
 
-When the OpenAPI documents wire fields the Groovy model doesn't have
+When the OpenAPI documents wire fields the Java model doesn't have
 (`Event.acl`, `Event.links`, possibly others), the TS port follows the
 **strict canonical rule**: those fields are NOT in the Zod schema or the
 inferred type, but they survive parsing through `.passthrough()`.
 Consumers who need typed access either extend the schema locally with
 `.merge()` / `.extend()`, or open an issue here to resolve the divergence
-canonically (probably by adding the field to `TRCItem.groovy`).
+canonically (probably by adding the field to `TRCItem.java`).
 
-This keeps the parity test mechanical: TS keys = Groovy fields, no
+This keeps the parity test mechanical: TS keys = Java fields, no
 allowlist exceptions for "things documented elsewhere."
 
 ### Drift detection
 
-Drift between the Groovy canonical model and the TS port is caught by:
+Drift between the Java canonical model and the TS port is caught by:
 
 1. **Static field-name parity test** (enforced): a test under `ts/test/`
-   parses each `src/main/groovy/nl/ithelden/model/ndtrc/*.groovy` class,
-   extracts field names, and asserts they match the corresponding Zod
-   schema's known keys (modulo a small allowlist).
+   parses each `src/main/java/nl/ithelden/model/ndtrc/*.java` class
+   (`ts/src/internal/java-fields.ts`: instance fields only, comments and
+   static fields skipped), extracts field names, and asserts they match the
+   corresponding Zod schema's known keys (modulo a small allowlist). The
+   parser's own tests use the sample classes in `ts/test/fixtures/java/`.
 2. **JSON fixture corpus** (additive): `ts/test/fixtures/` holds real API
    responses fetched via `tff-cli` and sanitized of identifiable data.
    Each fixture must `Schema.parse()` cleanly. The corpus grows
@@ -208,7 +233,7 @@ discourages new use.
   on the response variant. Same pattern as `wfstatus`.
 - **Time-of-day strings (`When.timestart`, `When.timeend`)** validate as
   24-hour `HH:mm` — regex `^([01]\d|2[0-3]):[0-5]\d$`, optional. The
-  Groovy-side tolerance for empty/whitespace times is treated as a bug
+  Java-side tolerance for empty/whitespace times is treated as a bug
   not worth perpetuating in the schema.
 
 ### Promotion-specific notes
@@ -236,7 +261,7 @@ discourages new use.
 
 ### Entity shape: one TRCItem, not five
 
-Following the Groovy canonical model, the TS port exposes one
+Following the canonical Java model, the TS port exposes one
 `TRCItemSchema` (and one `TRCItemResponseSchema`) discriminated at runtime
 by the `entitytype` field — not a `z.discriminatedUnion` of `Event`,
 `Location`, `Venue`, `Route`, `EventGroup` like the OpenAPI doc does. Thin
