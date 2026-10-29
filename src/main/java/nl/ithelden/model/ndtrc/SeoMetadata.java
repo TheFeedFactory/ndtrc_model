@@ -187,7 +187,11 @@ public class SeoMetadata {
          *
          * <p>Deliberately snake_case: the name is part of the contract agreed with CMS integrators
          * (Umbraco), so the Java field, the Mongo field and the JSON field are all {@code seo_slug}.</p>
+         *
+         * <p>Always serialized, as {@code null} when empty, so an integration can read the key
+         * without a presence check. Every other field here is omitted when null.</p>
          */
+        @JsonInclude(JsonInclude.Include.ALWAYS)
         private String seo_slug;
 
         public String getLang() {
