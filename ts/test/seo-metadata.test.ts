@@ -58,4 +58,17 @@ describe("SeoMetadataSchema", () => {
     const result = SeoMetadataSchema.parse({ extra: true });
     expect((result as Record<string, unknown>).extra).toBe(true);
   });
+
+  it("keeps seo_slug per language and treats it as optional", () => {
+    const result = SeoMetadataSchema.parse({
+      seoDetails: [
+        { lang: "nl", seo_slug: "north-sea-jazz" },
+        { lang: "en", seo_slug: null },
+        { lang: "de" },
+      ],
+    });
+    expect(result.seoDetails?.[0]?.seo_slug).toBe("north-sea-jazz");
+    expect(result.seoDetails?.[1]?.seo_slug).toBeNull();
+    expect(result.seoDetails?.[2]?.seo_slug).toBeUndefined();
+  });
 });

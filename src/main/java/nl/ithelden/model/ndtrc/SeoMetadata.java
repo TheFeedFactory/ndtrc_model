@@ -180,6 +180,16 @@ public class SeoMetadata {
         private String twitterImageUrl;
         private String twitterImageAlt;
 
+        /**
+         * Fixed URL slug for this language, so a recurring item (a yearly festival) keeps the same
+         * URL when its title changes. Null when empty. Lowercase a-z, 0-9 and hyphens, max 80
+         * characters; validated by the API on save, not here.
+         *
+         * <p>Deliberately snake_case: the name is part of the contract agreed with CMS integrators
+         * (Umbraco), so the Java field, the Mongo field and the JSON field are all {@code seo_slug}.</p>
+         */
+        private String seo_slug;
+
         public String getLang() {
             return lang;
         }
@@ -252,6 +262,14 @@ public class SeoMetadata {
             this.twitterImageAlt = twitterImageAlt;
         }
 
+        public String getSeo_slug() {
+            return seo_slug;
+        }
+
+        public void setSeo_slug(String seo_slug) {
+            this.seo_slug = seo_slug;
+        }
+
         public enum OGType {
             event, place, article, organization;
 
@@ -304,6 +322,7 @@ public class SeoMetadata {
                     .add("twitterCardType", twitterCardType)
                     .add("twitterImageUrl", twitterImageUrl)
                     .add("twitterImageAlt", twitterImageAlt)
+                    .add("seo_slug", seo_slug)
                     .build();
         }
     }

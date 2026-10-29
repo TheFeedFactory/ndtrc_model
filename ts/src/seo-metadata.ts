@@ -27,6 +27,11 @@ export const SeoDetailSchema = z
     twitterCardType: TwitterCardTypeSchema.optional(),
     twitterImageUrl: z.string().optional(),
     twitterImageAlt: z.string().optional(),
+    /**
+     * Fixed URL slug for this language (lowercase a-z, 0-9, hyphens; max 80). Snake_case on
+     * purpose: the name is the contract agreed with CMS integrators. Null/absent when empty.
+     */
+    seo_slug: z.string().nullish(),
   })
   .passthrough();
 
