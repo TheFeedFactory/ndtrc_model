@@ -1,7 +1,26 @@
 import { z } from "zod";
 import { LangCodeSchema } from "./internal/lang-code.js";
 
-export const OGTypeSchema = z.enum(["event", "place", "article", "organization"]);
+// Mirrors the Java enum: the 1.x values first, then the rest of the Open Graph object types
+// (ogp.me/#types). The music.*/video.* entries use "_" here, as in Java; ogType itself stays
+// a free string (see SeoDetailSchema) and carries the real dotted value.
+export const OGTypeSchema = z.enum([
+  "event",
+  "place",
+  "article",
+  "organization",
+  "website",
+  "book",
+  "profile",
+  "music_song",
+  "music_album",
+  "music_playlist",
+  "music_radio_station",
+  "video_movie",
+  "video_episode",
+  "video_tv_show",
+  "video_other",
+]);
 export type OGType = z.infer<typeof OGTypeSchema>;
 
 export const TwitterCardTypeSchema = z.enum([

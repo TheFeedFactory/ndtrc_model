@@ -252,12 +252,21 @@ public class SeoMetadata {
             this.twitterImageAlt = twitterImageAlt;
         }
 
+        // Not referenced by the ogType field above (free String, deliberately - see its comment) -
+        // kept only as documentation of the values ff-gui's SeoConfigWidget offers. The first four
+        // are the 1.x values and stay first so existing callers keep working; the rest complete
+        // the official Open Graph object type list (ogp.me/#types). Java enum constants can't hold
+        // a literal ".", so the music.*/video.* entries substitute "_" for "." here only - ff-gui
+        // writes the real dotted value (e.g. "music.song").
         public enum OGType {
-            event, place, article, organization;
+            event, place, article, organization,
+            website, book, profile,
+            music_song, music_album, music_playlist, music_radio_station,
+            video_movie, video_episode, video_tv_show, video_other;
 
             // Groovy gives every enum these members; kept so the 1.x API is unchanged.
             public static final OGType MIN_VALUE = event;
-            public static final OGType MAX_VALUE = organization;
+            public static final OGType MAX_VALUE = video_other;
 
             public OGType next() {
                 OGType[] values = values();

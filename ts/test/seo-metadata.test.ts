@@ -12,6 +12,16 @@ describe("OGTypeSchema", () => {
     }
   });
 
+  it("accepts the Open Graph object types added after 1.x", () => {
+    for (const v of ["website", "book", "profile", "music_song", "video_tv_show", "video_other"]) {
+      expect(OGTypeSchema.parse(v)).toBe(v);
+    }
+  });
+
+  it("rejects the dotted wire form, which only the free-form ogType string carries", () => {
+    expect(() => OGTypeSchema.parse("music.song")).toThrow();
+  });
+
   it("rejects invalid value", () => {
     expect(() => OGTypeSchema.parse("blog")).toThrow();
   });
